@@ -14,7 +14,7 @@ export const HomePage = () => {
   const { t } = useTranslation();
   
   const handleLogin = () => {
-    navigate("/admin/login");
+    navigate("/login");
   };
 
   return (
