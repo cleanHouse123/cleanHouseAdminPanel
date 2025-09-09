@@ -1,8 +1,10 @@
 import { AdminLayout } from "@/core/components/layout/AdminLayout";
+import { OrdersPage } from "@/pages/orders";
 import { HomePage } from "@/pages/home";
 import { LoginPage } from "@/pages/login";
 import { RegisterPage } from "@/pages/register";
 import { createBrowserRouter } from "react-router-dom";
+import { AdminPage } from "@/pages/admins";
 
 export const router = createBrowserRouter([
   {
@@ -22,12 +24,12 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-        path: "",
-        element: <div>Home</div>,
+        path: "orders",
+        element: <OrdersPage />,
       },
       {
-        path: "orders",
-        element: <div>Orders</div>,
+        path: "admin",
+        element: <AdminPage />,
       },
     ],
   },

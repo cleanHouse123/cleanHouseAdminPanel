@@ -38,6 +38,7 @@
   },
   "nav": {
     "orders": "Orders",
+    "admins": "Admins",
     "logout": "Logout"
   },
   "auth": {
@@ -115,6 +116,60 @@
         "value": "100%",
         "subtitle": "System protected"
       }
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Total orders: {{count}}",
+    "list": "Orders List",
+    "empty": "No orders found",
+    "order": "Order",
+    "description": "Description",
+    "address": "Address",
+    "customer": "Customer",
+    "courier": "Courier",
+    "amount": "Amount",
+    "unknown": "Unknown",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "paid": "Paid"
+    },
+    "stats": {
+      "total": "Total Orders",
+      "totalSubtitle": "Total count",
+      "pending": "Pending",
+      "pendingSubtitle": "Require attention",
+      "inProgress": "In Progress",
+      "inProgressSubtitle": "Being processed",
+      "completed": "Completed",
+      "completedSubtitle": "Successfully completed"
+    }
+  },
+  "admins": {
+    "title": "Administrators",
+    "subtitle": "Total administrators: {{count}}",
+    "list": "Administrators list",
+    "empty": "No administrators found",
+    "role": {
+      "admin": "Administrator"
+    },
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "id": "ID",
+    "lastUpdated": "Last updated",
+    "stats": {
+      "total": "Total admins",
+      "totalSubtitle": "Total count",
+      "verified": "Verified",
+      "verifiedSubtitle": "Fully verified",
+      "unverified": "Unverified",
+      "unverifiedSubtitle": "Require verification",
+      "emailVerified": "Email verified",
+      "emailVerifiedSubtitle": "Email verified"
     }
   }
 } 

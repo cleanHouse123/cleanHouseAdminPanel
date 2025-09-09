@@ -1,6 +1,6 @@
 import { Button } from '@/core/components/ui/button'
 import { ROUTES } from '@/core/constants/routes'
-import { List } from 'lucide-react'
+import { List, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -28,6 +28,19 @@ export const AdminNavBar = () => {
       >
         <List className="h-4 w-4" />
         {t('nav.orders')}
+      </Button>
+
+      <Button
+        variant={isActive(ROUTES.ADMIN.ADMIN.LIST) ? 'default' : 'ghost'}
+        onClick={() => navigate(`${ROUTES.ADMIN.ADMIN.LIST}`)}
+        className={`justify-start gap-2 rounded-lg ${
+          isActive(ROUTES.ADMIN.ADMIN.LIST) 
+            ? 'bg-secondary hover:bg-secondary text-foreground' 
+            : 'hover:bg-accent text-foreground'
+        }`}
+      >
+        <Users className="h-4 w-4" />
+        {t('nav.admins')}
       </Button>
     </nav>
   )

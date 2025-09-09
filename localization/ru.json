@@ -38,6 +38,7 @@
   },
   "nav": {
     "orders": "Заказы",
+    "admins": "Администраторы",
     "logout": "Выход"
   },
   "auth": {
@@ -115,6 +116,60 @@
         "value": "100%",
         "subtitle": "Система защищена"
       }
+    }
+  },
+  "orders": {
+    "title": "Заказы",
+    "subtitle": "Всего заказов: {{count}}",
+    "list": "Список заказов",
+    "empty": "Заказы не найдены",
+    "order": "Заказ",
+    "description": "Описание",
+    "address": "Адрес",
+    "customer": "Клиент",
+    "courier": "Курьер",
+    "amount": "Сумма",
+    "unknown": "Неизвестно",
+    "status": {
+      "pending": "Ожидает",
+      "confirmed": "Подтвержден",
+      "in_progress": "В работе",
+      "completed": "Завершен",
+      "cancelled": "Отменен",
+      "paid": "Оплачен"
+    },
+    "stats": {
+      "total": "Всего заказов",
+      "totalSubtitle": "Общее количество",
+      "pending": "Ожидают",
+      "pendingSubtitle": "Требуют внимания",
+      "inProgress": "В работе",
+      "inProgressSubtitle": "Выполняются",
+      "completed": "Завершены",
+      "completedSubtitle": "Успешно выполнены"
+    }
+  },
+  "admins": {
+    "title": "Администраторы",
+    "subtitle": "Всего администраторов: {{count}}",
+    "list": "Список администраторов",
+    "empty": "Администраторы не найдены",
+    "role": {
+      "admin": "Администратор"
+    },
+    "verified": "Подтвержден",
+    "notVerified": "Не подтвержден",
+    "id": "ID",
+    "lastUpdated": "Последнее обновление",
+    "stats": {
+      "total": "Всего админов",
+      "totalSubtitle": "Общее количество",
+      "verified": "Подтверждены",
+      "verifiedSubtitle": "Полностью верифицированы",
+      "unverified": "Не подтверждены",
+      "unverifiedSubtitle": "Требуют верификации",
+      "emailVerified": "Email подтвержден",
+      "emailVerifiedSubtitle": "Email верифицирован"
     }
   }
 }
