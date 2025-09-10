@@ -83,7 +83,7 @@ axiosInstance.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        const { data } = await axiosPublic.post("/auth/admin/refresh", {
+        const { data } = await axiosPublic.post("/auth/refresh", {
           refreshToken: authState.refreshToken,
         });
 
