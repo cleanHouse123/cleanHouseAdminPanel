@@ -3,10 +3,12 @@ import { Shield, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AdminCard } from "./ui/AdminCard";
 import { AdminStats } from "./ui/AdminStats";
+import { Button } from "@/core/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export const AdminPage = () => {
   const { t } = useTranslation();
-  
+  const navigate = useNavigate();
   const { data: admins, isLoading, error } = useAdmins();
 
   if (isLoading) {
@@ -41,10 +43,13 @@ export const AdminPage = () => {
     emailVerified: adminsList.filter(admin => admin.isEmailVerified).length,
   };
 
+  const handleCreateAdmin = () => {
+    navigate("/admin/create-admin");
+  };
+
   return (
     <div className="space-y-6 p-6">
-      {/* Заголовок */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-3">
         <div className="p-2 bg-primary/10 rounded-lg">
           <Shield className="h-6 w-6 text-primary" />
         </div>
@@ -54,6 +59,8 @@ export const AdminPage = () => {
             {t("admins.subtitle", { count: total })}
           </p>
         </div>
+
+        <Button onClick={handleCreateAdmin}>{t("admins.createAdmin")}</Button>
       </div>
 
       <AdminStats stats={stats} />

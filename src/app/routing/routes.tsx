@@ -5,6 +5,7 @@ import { LoginPage } from "@/pages/login";
 import { RegisterPage } from "@/pages/register";
 import { createBrowserRouter } from "react-router-dom";
 import { AdminPage } from "@/pages/admins";
+import { CreateAdminPage } from "@/pages/create-admin";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "admin",
         element: <AdminPage />,
+      },
+      {
+        path: "create-admin",
+        element: <CreateAdminPage />,
       },
     ],
   },

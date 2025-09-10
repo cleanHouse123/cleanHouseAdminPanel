@@ -22,6 +22,7 @@
     "noData": "No data",
     "required": "Required",
     "of": "of",
+    "back": "Back",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -80,15 +81,26 @@
   },
   "validation": {
     "required": "This field is required",
-    "email": "Invalid email format",
+    "email": {
+      "invalid": "Invalid email format",
+      "required": "Email is required"
+    },
     "password": {
       "min": "Password must be at least {{min}} characters",
       "match": "Passwords do not match",
-      "complex": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      "complex": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "required": "Password is required",
+      "minLength": "Password must be at least 6 characters"
     },
     "name": {
       "min": "Name must be at least {{min}} characters",
-      "max": "Name must not exceed {{max}} characters"
+      "max": "Name must not exceed {{max}} characters",
+      "required": "Name is required",
+      "minLength": "Name must be at least 2 characters"
+    },
+    "phone": {
+      "required": "Phone is required",
+      "minLength": "Phone must be at least 10 digits"
     }
   },
   "home": {
@@ -171,5 +183,28 @@
       "emailVerified": "Email verified",
       "emailVerifiedSubtitle": "Email verified"
     }
+  },
+  "createAdmin": {
+    "title": "Create Administrator",
+    "description": "Fill out the form to create a new administrator",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter administrator name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter administrator email"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter password for administrator"
+    },
+    "submit": "Create Administrator",
+    "success": "Administrator created successfully",
+    "error": "Error creating administrator"
   }
 } 
