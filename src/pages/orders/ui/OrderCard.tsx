@@ -65,59 +65,59 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Package className="h-5 w-5 text-blue-600" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+              <Package className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </div>
-            <div>
-              <CardTitle className="text-lg font-semibold">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-base sm:text-lg font-semibold truncate">
                 {t("orders.order")} #{order.id.slice(-8)}
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {formatDate(order.createdAt)}
               </p>
             </div>
           </div>
-          <Badge className={cn("border", getStatusColor(order.status))}>
+          <Badge className={cn("border self-start sm:self-center", getStatusColor(order.status))}>
             {getStatusText(order.status, t)}
           </Badge>
         </div>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 sm:space-y-4">
         {/* Описание заказа */}
         <div>
-          <h4 className="font-medium text-sm text-muted-foreground mb-1">
+          <h4 className="font-medium text-xs sm:text-sm text-muted-foreground mb-1">
             {t("orders.description")}
           </h4>
-          <p className="text-sm">{order.description}</p>
+          <p className="text-xs sm:text-sm break-words">{order.description}</p>
         </div>
 
         {/* Адрес */}
         <div className="flex items-start gap-2">
-          <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="text-sm font-medium">{t("orders.address")}</p>
-            <p className="text-sm text-muted-foreground">{order.address}</p>
+          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+          <div className="min-w-0 flex-1">
+            <p className="text-xs sm:text-sm font-medium">{t("orders.address")}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground break-words">{order.address}</p>
           </div>
         </div>
 
         {/* Телефон */}
         <div className="flex items-center gap-2">
-          <Phone className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">{order.phone}</span>
+          <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+          <span className="text-xs sm:text-sm">{order.phone}</span>
         </div>
 
         {/* Информация о клиенте и курьере */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 border-t">
           <div className="flex items-center gap-2">
-            <User className="h-4 w-4 text-muted-foreground" />
-            <div>
+            <User className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+            <div className="min-w-0 flex-1">
               <p className="text-xs font-medium text-muted-foreground">
                 {t("orders.customer")}
               </p>
-              <p className="text-sm">
+              <p className="text-xs sm:text-sm truncate">
                 {order.customer?.name || t("orders.unknown")}
               </p>
             </div>
@@ -125,12 +125,12 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           
           {order.currier && (
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <div>
+              <User className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+              <div className="min-w-0 flex-1">
                 <p className="text-xs font-medium text-muted-foreground">
                   {t("orders.courier")}
                 </p>
-                <p className="text-sm">{order.currier.name}</p>
+                <p className="text-xs sm:text-sm truncate">{order.currier.name}</p>
               </div>
             </div>
           )}
@@ -139,12 +139,12 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         {/* Сумма заказа */}
         <div className="flex items-center justify-between pt-2 border-t">
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-muted-foreground">
               {t("orders.amount")}
             </span>
           </div>
-          <span className="text-lg font-bold text-primary">
+          <span className="text-base sm:text-lg font-bold text-primary">
             {order.amount} ₽
           </span>
         </div>

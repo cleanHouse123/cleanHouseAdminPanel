@@ -48,19 +48,26 @@ export const AdminPage = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <Shield className="h-6 w-6 text-primary" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">{t("admins.title")}</h1>
-          <p className="text-muted-foreground">
-            {t("admins.subtitle", { count: total })}
-          </p>
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+            <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl sm:text-2xl font-bold truncate">{t("admins.title")}</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              {t("admins.subtitle", { count: total })}
+            </p>
+          </div>
         </div>
 
-        <Button onClick={handleCreateAdmin}>{t("admins.createAdmin")}</Button>
+        <Button 
+          onClick={handleCreateAdmin}
+          className="w-full sm:w-auto flex-shrink-0"
+        >
+          {t("admins.createAdmin")}
+        </Button>
       </div>
 
       <AdminStats stats={stats} />
@@ -74,7 +81,7 @@ export const AdminPage = () => {
             <p className="text-muted-foreground">{t("admins.empty")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             {adminsList.map((admin) => (
               <AdminCard key={admin.id} admin={admin} />
             ))}

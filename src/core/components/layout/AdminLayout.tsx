@@ -22,12 +22,12 @@ export const AdminLayout = () => {
     }, [me, setUser])
 
     return (
-        <div className="min-h-screen bg-background overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-background overflow-x-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
             <AdminHeader />
             <div className="flex">
                 <AdminNavBar />
-                <main className={`flex-1 h-[calc(100vh-64px)] mt-16 overflow-hidden ${isRTL ? 'md:pr-64' : 'md:pl-64'}`}>
-                    <div className="container mx-auto p-4 h-full overflow-y-auto scrollbar-hide">
+                <main className={`flex-1 h-[calc(100vh-64px)] mt-16 overflow-x-hidden ${isRTL ? 'md:pr-64' : 'md:pl-64'}`}>
+                    <div className="container mx-auto p-2 sm:p-4 h-full overflow-y-auto overflow-x-hidden scrollbar-hide">
                         <Outlet />
                     </div>
                 </main>

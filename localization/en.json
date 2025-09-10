@@ -166,6 +166,7 @@
     "subtitle": "Total administrators: {{count}}",
     "list": "Administrators list",
     "empty": "No administrators found",
+    "createAdmin": "Create Administrator",
     "role": {
       "admin": "Administrator"
     },

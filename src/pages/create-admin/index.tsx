@@ -55,7 +55,7 @@ export const CreateAdminPage = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-2xl p-6 space-y-6">
+    <div className="container mx-auto max-w-2xl p-3 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Button
@@ -71,11 +71,11 @@ export const CreateAdminPage = () => {
 
       <div className="flex items-center gap-3">
         <div className="p-2 bg-primary/10 rounded-lg">
-          <Shield className="h-6 w-6 text-primary" />
+          <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">{t("createAdmin.title")}</h1>
-          <p className="text-muted-foreground">{t("createAdmin.description")}</p>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">{t("createAdmin.title")}</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">{t("createAdmin.description")}</p>
         </div>
       </div>
 
@@ -175,19 +175,19 @@ export const CreateAdminPage = () => {
               )}
 
               {/* Submit Button */}
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => navigate("/admins")}
-                  className="flex-1"
+                  className="flex-1 order-2 sm:order-1"
                 >
                   {t("common.cancel")}
                 </Button>
                 <Button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1"
+                  className="flex-1 order-1 sm:order-2"
                 >
                   {isPending ? (
                     <>

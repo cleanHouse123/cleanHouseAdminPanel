@@ -47,15 +47,15 @@ export const OrdersPage = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
       {/* Заголовок */}
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <Package className="h-6 w-6 text-primary" />
+        <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+          <Package className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
         </div>
-        <div>
-          <h1 className="text-2xl font-bold">{t("orders.title")}</h1>
-          <p className="text-muted-foreground">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl sm:text-2xl font-bold truncate">{t("orders.title")}</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             {t("orders.subtitle", { count: total })}
           </p>
         </div>
@@ -72,7 +72,7 @@ export const OrdersPage = () => {
             <p className="text-muted-foreground">{t("orders.empty")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             {orders.map((order) => (
               <OrderCard key={order.id} order={order} />
             ))}
