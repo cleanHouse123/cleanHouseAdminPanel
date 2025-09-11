@@ -227,5 +227,30 @@
     "submit": "Create Courier",
     "success": "Courier created successfully",
     "error": "Error creating courier"
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Total users: {{count}}",
+    "list": "Users list",
+    "empty": "No users found",
+    "role": {
+      "admin": "Administrator",
+      "customer": "Customer",
+      "currier": "Courier"
+    },
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "id": "ID",
+    "lastUpdated": "Last updated",
+    "stats": {
+      "total": "Total users",
+      "totalSubtitle": "Total count",
+      "verified": "Verified",
+      "verifiedSubtitle": "Fully verified",
+      "unverified": "Unverified",
+      "unverifiedSubtitle": "Require verification",
+      "emailVerified": "Email verified",
+      "emailVerifiedSubtitle": "Email verified"
+    }
   }
 } 

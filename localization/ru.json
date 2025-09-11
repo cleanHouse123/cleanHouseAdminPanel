@@ -239,5 +239,30 @@
     "submit": "Создать курьера",
     "success": "Курьер успешно создан",
     "error": "Ошибка при создании курьера"
+  },
+  "users": {
+    "title": "Пользователи",
+    "subtitle": "Всего пользователей: {{count}}",
+    "list": "Список пользователей",
+    "empty": "Пользователи не найдены",
+    "role": {
+      "admin": "Администратор",
+      "customer": "Клиент",
+      "currier": "Курьер"
+    },
+    "verified": "Подтвержден",
+    "notVerified": "Не подтвержден",
+    "id": "ID",
+    "lastUpdated": "Последнее обновление",
+    "stats": {
+      "total": "Всего пользователей",
+      "totalSubtitle": "Общее количество",
+      "verified": "Подтверждены",
+      "verifiedSubtitle": "Полностью верифицированы",
+      "unverified": "Не подтверждены",
+      "unverifiedSubtitle": "Требуют верификации",
+      "emailVerified": "Email подтвержден",
+      "emailVerifiedSubtitle": "Email верифицирован"
+    }
   }
 }

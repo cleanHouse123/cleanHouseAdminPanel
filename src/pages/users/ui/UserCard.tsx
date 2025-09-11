@@ -65,9 +65,9 @@ export const UserCard = ({ user }: UserCardProps) => {
                 : "bg-gray-100 text-gray-800 border-gray-200"
             )}
           >
-            {user.role === UserRole.ADMIN ? t("admins.role.admin") : 
-             user.role === UserRole.CUSTOMER ? t("common.customer") : 
-             user.role === UserRole.CURRIER ? t("common.currier") : user.role}
+            {user.role === UserRole.ADMIN ? t("users.role.admin") : 
+             user.role === UserRole.CUSTOMER ? t("users.role.customer") : 
+             user.role === UserRole.CURRIER ? t("users.role.currier") : user.role}
           </Badge>
         </div>
       </CardHeader>
@@ -107,13 +107,13 @@ export const UserCard = ({ user }: UserCardProps) => {
               )}
             >
               {user.isEmailVerified
-                ? t("admins.verified")
-                : t("admins.notVerified")}
+                ? t("users.verified")
+                : t("users.notVerified")}
             </span>
           </div>
         </div>
 
-        {/* Телефон */}
+        {/* Phone */}
         <div className="flex items-start gap-2">
           <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
@@ -137,8 +137,8 @@ export const UserCard = ({ user }: UserCardProps) => {
               )}
             >
               {user.isPhoneVerified
-                ? t("admins.verified")
-                : t("admins.notVerified")}
+                ? t("users.verified")
+                : t("users.notVerified")}
             </span>
           </div>
         </div>
@@ -148,7 +148,7 @@ export const UserCard = ({ user }: UserCardProps) => {
           <UserIcon className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-xs font-medium text-muted-foreground">
-              {t("admins.id")}
+              {t("users.id")}
             </p>
             <p className="text-xs sm:text-sm font-mono truncate">
               {user.id.slice(-8)}
@@ -161,7 +161,7 @@ export const UserCard = ({ user }: UserCardProps) => {
           <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-xs font-medium text-muted-foreground">
-              {t("admins.lastUpdated")}
+              {t("users.lastUpdated")}
             </p>
             <p className="text-xs sm:text-sm truncate">
               {formatDate(user.updatedAt)}
