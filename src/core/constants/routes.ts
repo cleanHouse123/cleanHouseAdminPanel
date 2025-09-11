@@ -11,5 +11,8 @@ export const ROUTES = {
         ADMIN: {
             LIST: '/admin/admin',
         },
+        USERS: {
+            LIST: '/admin/users',
+        },
     }
 } as const

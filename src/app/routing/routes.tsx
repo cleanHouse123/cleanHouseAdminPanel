@@ -6,6 +6,8 @@ import { RegisterPage } from "@/pages/register";
 import { createBrowserRouter } from "react-router-dom";
 import { AdminPage } from "@/pages/admins";
 import { CreateAdminPage } from "@/pages/create-admin";
+import { UsersPage } from "@/pages/users";
+import { CreateCurrierPage } from "@/pages/create-currier";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ export const router = createBrowserRouter([
       {
         path: "create-admin",
         element: <CreateAdminPage />,
+      },
+      {
+        path: "users",
+        element: <UsersPage />,
+      },
+      {
+        path: "create-currier",
+        element: <CreateCurrierPage />,
       },
     ],
   },

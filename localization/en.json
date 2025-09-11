@@ -33,6 +33,10 @@
     "register": "Register",
     "login": "Login",
     "name": "Name",
+    "role": "Role",
+    "customer": "Customer",
+    "currier": "Courier",
+    "create": "Create",
     "authError": "Authentication error",
     "loginError": "Invalid email or password",
     "registerError": "Error creating account. Please try again."
@@ -40,6 +44,7 @@
   "nav": {
     "orders": "Orders",
     "admins": "Admins",
+    "users": "Users",
     "logout": "Logout"
   },
   "auth": {
@@ -207,5 +212,20 @@
     "submit": "Create Administrator",
     "success": "Administrator created successfully",
     "error": "Error creating administrator"
+  },
+  "createCurrier": {
+    "title": "Create Courier",
+    "description": "Fill out the form to create a new courier",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter courier name"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number"
+    },
+    "submit": "Create Courier",
+    "success": "Courier created successfully",
+    "error": "Error creating courier"
   }
 } 

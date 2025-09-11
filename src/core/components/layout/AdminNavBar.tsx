@@ -42,6 +42,19 @@ export const AdminNavBar = () => {
         <Users className="h-4 w-4" />
         {t('nav.admins')}
       </Button>
+
+      <Button
+        variant={isActive(ROUTES.ADMIN.USERS.LIST) ? 'default' : 'ghost'}
+        onClick={() => navigate(`${ROUTES.ADMIN.USERS.LIST}`)}
+        className={`justify-start gap-2 rounded-lg ${
+          isActive(ROUTES.ADMIN.USERS.LIST) 
+            ? 'bg-secondary hover:bg-secondary text-foreground' 
+            : 'hover:bg-accent text-foreground'
+        }`}
+      >
+        <Users className="h-4 w-4" />
+        {t('nav.users')}
+      </Button>
     </nav>
   )
 } 
