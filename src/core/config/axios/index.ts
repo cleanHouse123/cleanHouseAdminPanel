@@ -1,5 +1,5 @@
-import { useAuthStore } from "@/modules/auth/store/authStore";
 import axios from "axios";
+import { toast } from "sonner";
 
 export const axiosInstance = axios.create({
   baseURL:
@@ -17,12 +17,10 @@ export const axiosPublic = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const authState = useAuthStore.getState();
+    const accessToken = localStorage.getItem("accessToken");
 
-    console.log(authState.accessToken, "authState.accessToken");
-
-    if (authState?.accessToken) {
-      config.headers.Authorization = `Bearer ${authState.accessToken}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -77,34 +75,59 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const authState = useAuthStore.getState();
-        if (!authState?.refreshToken) {
-          useAuthStore.getState().clearUser();
+        const refreshToken = localStorage.getItem("refreshToken");
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (!refreshToken || !accessToken) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
           return Promise.reject(error);
         }
 
         const { data } = await axiosPublic.post("/auth/refresh", {
-          refreshToken: authState.refreshToken,
+          accessToken,
+          refreshToken,
         });
 
-        const { accessToken, refreshToken } = data;
-        useAuthStore.getState().setAccessToken(accessToken);
-        useAuthStore.getState().setRefreshToken(refreshToken);
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          data;
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
 
         axiosInstance.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${accessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+        ] = `Bearer ${newAccessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
-        processQueue(null, accessToken);
+        processQueue(null, newAccessToken);
         return axiosInstance(originalRequest);
       } catch (refreshError: unknown) {
         processQueue(refreshError as Error, null);
-        useAuthStore.getState().clearUser();
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
+    }
+
+    // Обработка других ошибок
+    if (error.response?.status >= 500) {
+      toast.error("Ошибка сервера", {
+        description: "Произошла внутренняя ошибка сервера. Попробуйте позже",
+        duration: 5000,
+      });
+    } else if (error.response?.status >= 400 && error.response?.status < 500) {
+      const errorMessage = error.response?.data?.message || "Произошла ошибка";
+      toast.error("Ошибка запроса", {
+        description: errorMessage,
+        duration: 5000,
+      });
+    } else if (!error.response) {
+      toast.error("Ошибка сети", {
+        description: "Проверьте подключение к интернету",
+        duration: 5000,
+      });
     }
 
     return Promise.reject(error);

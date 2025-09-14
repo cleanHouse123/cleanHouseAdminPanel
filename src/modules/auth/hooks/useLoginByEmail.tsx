@@ -8,6 +8,10 @@ import { handleApiError } from "@/core/utils/errorHandler";
 export const useLoginByEmail = () => {
     return useMutation({
         mutationFn: (data: LoginEmailDto) => authApi.login(data),
+        onSuccess: (data) => {
+            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('refreshToken', data.refreshToken);
+        },
         onError: (error) => {
             toastManager.error(handleApiError(error, 'Login failed'));
         }
