@@ -21,6 +21,8 @@ import { ChangeOrderStatus } from "@/modules/orders/components/change-order-stat
 import { AssignCurrier } from "@/modules/orders/components/assign-currier";
 import { DeleteOrder } from "@/modules/orders/components/delete-order";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/core/constants/routes";
 
 interface OrderDetailsProps {
   order: OrderResponseDto;
@@ -28,7 +30,7 @@ interface OrderDetailsProps {
 
 export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ru-RU", {
       day: "2-digit",
@@ -80,7 +82,9 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 <Edit className="h-4 w-4" />
                 {t("orders.editOrder")}
               </Button> */}
-            <DeleteOrder orderId={order.id} />
+            <DeleteOrder orderId={order.id} onDelete={() => {
+              navigate(ROUTES.ADMIN.ORDERS.LIST, { replace: true });
+            }} />
           </div>
         </CardContent>
       </Card>
