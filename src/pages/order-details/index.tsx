@@ -1,15 +1,20 @@
 import { useOrderDetails } from "@/modules/orders/hooks/useOrders";
 import { OrderDetails } from "./ui/OrderDetails";
 import { OrderDetailsStats } from "./ui/OrderDetailsStats";
-import { Package, XCircle } from "lucide-react";
+import { ArrowLeft, Package, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "@/core/components/ui/button";
 
 export const OrderDetailsPage = () => {
   const { t } = useTranslation();
   const { orderId } = useParams<{ orderId: string }>();
-  
-  const { data: order, isLoading, error } = useOrderDetails({
+
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useOrderDetails({
     orderId: orderId || "",
     enabled: !!orderId,
   });
@@ -47,8 +52,40 @@ export const OrderDetailsPage = () => {
     );
   }
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <div className="space-y-6 p-3 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Link to="/admin/orders">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t("common.back")}
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold">
+              {t("orders.order")} #{order.id.slice(-8)}
+            </h1>
+            <p className="text-muted-foreground">
+              {formatDate(order.createdAt)}
+            </p>
+          </div>
+        </div>
+      </div>
       <OrderDetailsStats order={order} />
       <OrderDetails order={order} />
     </div>

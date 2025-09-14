@@ -1,59 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
-import { Badge } from "@/core/components/ui/badge";
 import { Button } from "@/core/components/ui/button";
 import { MapPin, Phone, User, Clock, Package, Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/core/lib/utils";
 import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
-import { TFunction } from "i18next";
 import { Link } from "react-router-dom";
+import { OrderBadge } from "@/modules/orders/components/order-badge";
 
 interface OrderCardProps {
   order: OrderResponseDto;
   onStatusChange?: (orderId: string, status: OrderStatus) => void;
 }
 
-const getStatusColor = (status: OrderStatus) => {
-  switch (status) {
-    case OrderStatus.PENDING:
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    case OrderStatus.CONFIRMED:
-      return "bg-blue-100 text-blue-800 border-blue-200";
-    case OrderStatus.ASSIGNED:
-      return "bg-purple-100 text-purple-800 border-purple-200";
-    case OrderStatus.IN_PROGRESS:
-      return "bg-orange-100 text-orange-800 border-orange-200";
-    case OrderStatus.COMPLETED:
-      return "bg-green-100 text-green-800 border-green-200";
-    case OrderStatus.CANCELLED:
-      return "bg-red-100 text-red-800 border-red-200";
-    case OrderStatus.PAID:
-      return "bg-emerald-100 text-emerald-800 border-emerald-200";
-    default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
-  }
-};
-
-const getStatusText = (status: OrderStatus, t: TFunction) => {
-  switch (status) {
-    case OrderStatus.PENDING:
-      return t("orders.status.pending");
-    case OrderStatus.CONFIRMED:
-      return t("orders.status.confirmed");
-    case OrderStatus.ASSIGNED:
-      return t("orders.status.assigned");
-    case OrderStatus.IN_PROGRESS:
-      return t("orders.status.in_progress");
-    case OrderStatus.COMPLETED:
-      return t("orders.status.completed");
-    case OrderStatus.CANCELLED:
-      return t("orders.status.cancelled");
-    case OrderStatus.PAID:
-      return t("orders.status.paid");
-    default:
-      return status;
-  }
-};
 
 export const OrderCard = ({ order }: OrderCardProps) => {
   const { t } = useTranslation();
@@ -85,9 +42,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
               </p>
             </div>
           </div>
-          <Badge className={cn("border self-start sm:self-center", getStatusColor(order.status))}>
-            {getStatusText(order.status, t)}
-          </Badge>
+          <OrderBadge status={order.status} className="self-start sm:self-center" />
         </div>
       </CardHeader>
       

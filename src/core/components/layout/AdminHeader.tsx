@@ -92,7 +92,7 @@ export const AdminHeader = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="fixed inset-0 top-16 bg-muted/50 z-40 md:hidden">
+        <div className="fixed inset-0 top-16 bg-muted/90 z-40 md:hidden">
           <nav className="flex flex-col p-4 space-y-2">
             <Button
               variant={isActive(ROUTES.ADMIN.ORDERS.LIST) ? "default" : "ghost"}
@@ -118,6 +118,22 @@ export const AdminHeader = () => {
               }}
               className={`w-full justify-start gap-2 rounded-lg ${
                 isActive(ROUTES.ADMIN.ADMIN.LIST)
+                  ? "bg-secondary hover:bg-secondary text-foreground"
+                  : "hover:bg-accent text-foreground"
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              {t("nav.admins")}
+            </Button>
+
+            <Button
+              variant={isActive(ROUTES.ADMIN.USERS.LIST) ? "default" : "ghost"}
+              onClick={() => {
+                navigate(`${ROUTES.ADMIN.USERS.LIST}`);
+                closeMenu();
+              }}
+              className={`w-full justify-start gap-2 rounded-lg ${
+                isActive(ROUTES.ADMIN.USERS.LIST)
                   ? "bg-secondary hover:bg-secondary text-foreground"
                   : "hover:bg-accent text-foreground"
               }`}

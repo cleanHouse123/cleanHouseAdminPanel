@@ -45,10 +45,10 @@ export const ChangeOrderStatus = ({ orderId, onStatusChange, currentStatus }: Ch
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={OrderStatus.NEW}>
-            {t("orders.status.pending")}
+            {t("orders.status.new")}
           </SelectItem>
           <SelectItem value={OrderStatus.PAID}>
-            {t("orders.status.confirmed")}
+            {t("orders.status.paid")}
           </SelectItem>
           <SelectItem value={OrderStatus.ASSIGNED}>
             {t("orders.status.assigned")}
@@ -57,10 +57,10 @@ export const ChangeOrderStatus = ({ orderId, onStatusChange, currentStatus }: Ch
             {t("orders.status.in_progress")}
           </SelectItem>
           <SelectItem value={OrderStatus.DONE}>
-            {t("orders.status.completed")}
+            {t("orders.status.done")}
           </SelectItem>
           <SelectItem value={OrderStatus.CANCELED}>
-            {t("orders.status.cancelled")}
+            {t("orders.status.canceled")}
           </SelectItem>
         </SelectContent>
       </Select>
