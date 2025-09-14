@@ -71,7 +71,7 @@ export const ordersApi = {
       )
       .then((res) => res.data),
 
-  cancelOrder: (id: string, data: CancelOrderDto) =>
+  cancel: (id: string, data: CancelOrderDto) =>
     axiosInstance
       .patch<CancelOrderDto, AxiosResponse<OrderResponseDto>>(
         `/orders/${id}/cancel`,

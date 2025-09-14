@@ -8,6 +8,7 @@ import { AdminPage } from "@/pages/admins";
 import { CreateAdminPage } from "@/pages/create-admin";
 import { UsersPage } from "@/pages/users";
 import { CreateCurrierPage } from "@/pages/create-currier";
+import { OrderDetailsPage } from "@/pages/order-details";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         element: <OrdersPage />,
+      },
+      {
+        path: "orders/:orderId",
+        element: <OrderDetailsPage />,
       },
       {
         path: "admin",

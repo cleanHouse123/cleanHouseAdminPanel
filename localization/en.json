@@ -150,11 +150,23 @@
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
+      "assigned": "Assigned",
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled",
-      "paid": "Paid"
+      "paid": "Paid",
+      "new": "New",
+      "done": "Done",
+      "canceled": "Canceled"
     },
+    "assignCurrier": "Assign Courier",
+    "selectCurrier": "Select Courier",
+    "noCurriersAvailable": "No couriers available",
+    "assigningCurrier": "Assigning courier...",
+    "changeStatus": "Change Status",
+    "updatingStatus": "Updating status...",
+    "orderManagement": "Order Management",
+    "currentStatus": "Current Status",
     "stats": {
       "total": "Total Orders",
       "totalSubtitle": "Total count",
@@ -164,7 +176,14 @@
       "inProgressSubtitle": "Being processed",
       "completed": "Completed",
       "completedSubtitle": "Successfully completed"
-    }
+    },
+    "orderId": "Order ID",
+    "notFound": "Order not found",
+    "noCourierAssigned": "No courier assigned",
+    "viewOnMap": "View on map",
+    "timeline": "Timeline",
+    "createdAt": "Created",
+    "updatedAt": "Updated"
   },
   "admins": {
     "title": "Administrators",

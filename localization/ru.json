@@ -162,11 +162,23 @@
     "status": {
       "pending": "Ожидает",
       "confirmed": "Подтвержден",
+      "assigned": "Назначен",
       "in_progress": "В работе",
       "completed": "Завершен",
       "cancelled": "Отменен",
-      "paid": "Оплачен"
+      "paid": "Оплачен",
+      "new": "Новый",
+      "done": "Завершен",
+      "canceled": "Отменен"
     },
+    "assignCurrier": "Назначить курьера",
+    "selectCurrier": "Выберите курьера",
+    "noCurriersAvailable": "Нет доступных курьеров",
+    "assigningCurrier": "Назначаем курьера...",
+    "changeStatus": "Изменить статус",
+    "updatingStatus": "Обновляем статус...",
+    "orderManagement": "Управление заказом",
+    "currentStatus": "Текущий статус",
     "stats": {
       "total": "Всего заказов",
       "totalSubtitle": "Общее количество",
@@ -176,7 +188,14 @@
       "inProgressSubtitle": "Выполняются",
       "completed": "Завершены",
       "completedSubtitle": "Успешно выполнены"
-    }
+    },
+    "orderId": "ID заказа",
+    "notFound": "Заказ не найден",
+    "noCourierAssigned": "Курьер не назначен",
+    "viewOnMap": "Посмотреть на карте",
+    "timeline": "Временная шкала",
+    "createdAt": "Создан",
+    "updatedAt": "Обновлен"
   },
   "admins": {
     "title": "Администраторы",

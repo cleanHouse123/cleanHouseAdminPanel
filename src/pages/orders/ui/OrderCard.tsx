@@ -1,10 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { Badge } from "@/core/components/ui/badge";
-import { MapPin, Phone, User, Clock, Package } from "lucide-react";
+import { Button } from "@/core/components/ui/button";
+import { MapPin, Phone, User, Clock, Package, Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import { TFunction } from "i18next";
+import { Link } from "react-router-dom";
 
 interface OrderCardProps {
   order: OrderResponseDto;
@@ -17,6 +19,8 @@ const getStatusColor = (status: OrderStatus) => {
       return "bg-yellow-100 text-yellow-800 border-yellow-200";
     case OrderStatus.CONFIRMED:
       return "bg-blue-100 text-blue-800 border-blue-200";
+    case OrderStatus.ASSIGNED:
+      return "bg-purple-100 text-purple-800 border-purple-200";
     case OrderStatus.IN_PROGRESS:
       return "bg-orange-100 text-orange-800 border-orange-200";
     case OrderStatus.COMPLETED:
@@ -36,6 +40,8 @@ const getStatusText = (status: OrderStatus, t: TFunction) => {
       return t("orders.status.pending");
     case OrderStatus.CONFIRMED:
       return t("orders.status.confirmed");
+    case OrderStatus.ASSIGNED:
+      return t("orders.status.assigned");
     case OrderStatus.IN_PROGRESS:
       return t("orders.status.in_progress");
     case OrderStatus.COMPLETED:
@@ -147,6 +153,16 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           <span className="text-base sm:text-lg font-bold text-primary">
             {order.amount} ₽
           </span>
+        </div>
+
+        {/* Кнопка просмотра деталей */}
+        <div className="pt-3 border-t">
+          <Link to={`/admin/orders/${order.id}`}>
+            <Button variant="outline" size="sm" className="w-full flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              {t("orders.viewOrder")}
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

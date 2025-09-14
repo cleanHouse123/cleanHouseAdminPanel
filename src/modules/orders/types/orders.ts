@@ -1,10 +1,10 @@
 export enum OrderStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  IN_PROGRESS = 'in_progress',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
+  NEW = 'new',
   PAID = 'paid',
+  ASSIGNED = 'assigned',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
+  CANCELED = 'canceled',
 }
 
 export interface CreateOrderDto {
@@ -20,6 +20,7 @@ export interface CreateOrderDto {
 
 export interface UpdateOrderStatusDto {
   status: OrderStatus;
+  currierId?: string;
 }
 
 export interface OrderResponseDto {

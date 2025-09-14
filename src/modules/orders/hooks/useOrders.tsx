@@ -1,17 +1,33 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetMe } from "@/modules/auth/hooks/useGetMe";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 import { ordersApi } from "../api";
-import { 
-  CreateOrderDto, 
-  UpdateOrderStatusDto, 
-  OrderResponseDto, 
+import {
+  CancelOrderDto,
+  OrderResponseDto,
   OrdersListResponse,
   OrderStatus,
-  TakeOrderDto,
-  StartOrderDto,
-  CompleteOrderDto,
-  CancelOrderDto
+  UpdateOrderStatusDto,
 } from "../types/orders";
 
+interface UseOrderDetailsProps {
+  orderId: string;
+  enabled?: boolean;
+}
+
+export const useOrderDetails = ({
+  orderId,
+  enabled = true,
+}: UseOrderDetailsProps) => {
+  return useQuery<OrderResponseDto>({
+    queryKey: ["order", orderId],
+    queryFn: () => ordersApi.findOne(orderId),
+    enabled: enabled && !!orderId,
+    staleTime: 5 * 60 * 1000, // 5 минут
+    retry: 3,
+  });
+};
 
 export const useOrders = (params?: {
   page?: number;
@@ -21,104 +37,109 @@ export const useOrders = (params?: {
   currierId?: string;
 }) => {
   return useQuery<OrdersListResponse>({
-    queryKey: ['orders', params],
+    queryKey: ["orders", params],
     queryFn: () => ordersApi.findAll(params),
   });
 };
 
 export const useOrder = (id: string) => {
   return useQuery<OrderResponseDto>({
-    queryKey: ['order', id],
+    queryKey: ["order", id],
     queryFn: () => ordersApi.findOne(id),
     enabled: !!id,
   });
 };
 
-// ==================== MUTATION HOOKS ====================
-
-export const useCreateOrder = () => {
+export const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
-  
+  const { data: user } = useGetMe();
+
   return useMutation({
-    mutationFn: (data: CreateOrderDto) => ordersApi.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+    mutationFn: ({ id, data }: { id: string; data: UpdateOrderStatusDto }) =>
+      ordersApi.updateStatus(id, data),
+    onSuccess: (data) => {
+      toast.success("Статус обновлен!", {
+        description: `Статус заказа #${data.id.slice(-8)} изменен на ${
+          data.status
+        }`,
+        duration: 4000,
+      });
+
+      // Обновляем кэш заказов
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order", data.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["customer-orders", user?.id],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const errorMessage =
+        (error?.response?.data as { message?: string })?.message ||
+        "Ошибка обновления статуса";
+      toast.error("Ошибка", {
+        description: errorMessage,
+        duration: 5000,
+      });
     },
   });
 };
 
-export const useUpdateOrderStatus = () => {
+// Отменить заказ
+export const useCancelOrder = () => {
   const queryClient = useQueryClient();
-  
+  const { data: user } = useGetMe();
+
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateOrderStatusDto }) => 
-      ordersApi.updateStatus(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['order', id] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+    mutationFn: ({
+      id,
+      cancelOrderDto,
+    }: {
+      id: string;
+      cancelOrderDto: CancelOrderDto;
+    }) => ordersApi.cancel(id, cancelOrderDto),
+    onSuccess: (data) => {
+      toast.success("Заказ отменен!", {
+        description: `Заказ #${data.id.slice(-8)} успешно отменен`,
+        duration: 4000,
+      });
+
+      // Обновляем кэш заказов
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order", data.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["customer-orders", user?.id],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const errorMessage =
+        (error?.response?.data as { message?: string })?.message ||
+        "Ошибка отмены заказа";
+      toast.error("Ошибка", {
+        description: errorMessage,
+        duration: 5000,
+      });
     },
   });
 };
 
 export const useDeleteOrder = () => {
   const queryClient = useQueryClient();
-  
   return useMutation({
     mutationFn: (id: string) => ordersApi.remove(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      toast.success("Заказ удален!", {
+        duration: 4000,
+      });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
-  });
-};
-
-export const useTakeOrder = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: TakeOrderDto }) => 
-      ordersApi.takeOrder(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['order', id] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-    },
-  });
-};
-
-export const useStartOrder = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: StartOrderDto }) => 
-      ordersApi.startOrder(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['order', id] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-    },
-  });
-};
-
-export const useCompleteOrder = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CompleteOrderDto }) => 
-      ordersApi.completeOrder(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['order', id] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-    },
-  });
-};
-
-export const useCancelOrder = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CancelOrderDto }) => 
-      ordersApi.cancelOrder(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['order', id] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+    onError: (error: AxiosError) => {
+      const errorMessage =
+        (error?.response?.data as { message?: string })?.message ||
+        "Ошибка удаления заказа";
+      toast.error("Ошибка", {
+        description: errorMessage,
+        duration: 5000,
+      });
     },
   });
 };
