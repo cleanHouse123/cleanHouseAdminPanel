@@ -30,7 +30,8 @@ export const useCreateCurrier = () => {
   return useMutation<User, Error, CreateUserDto>({
     mutationFn: (data) => usersApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users", "curriers"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["curriers"] });
     },
   });
 };

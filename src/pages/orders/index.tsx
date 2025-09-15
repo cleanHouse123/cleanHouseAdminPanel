@@ -41,9 +41,11 @@ export const OrdersPage = () => {
 
   const stats = {
     total,
-    pending: orders.filter(o => o.status === OrderStatus.PENDING).length,
+    new: orders.filter(o => o.status === OrderStatus.NEW).length,
+    paid: orders.filter(o => o.status === OrderStatus.PAID).length,
+    canceled: orders.filter(o => o.status === OrderStatus.CANCELED).length,
     inProgress: orders.filter(o => o.status === OrderStatus.IN_PROGRESS).length,
-    completed: orders.filter(o => o.status === OrderStatus.COMPLETED).length,
+    completed: orders.filter(o => o.status === OrderStatus.DONE).length,
   };
 
   return (

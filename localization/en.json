@@ -170,17 +170,23 @@
     "stats": {
       "total": "Total Orders",
       "totalSubtitle": "Total count",
-      "pending": "Pending",
-      "pendingSubtitle": "Require attention",
+      "new": "New",
+      "newSubtitle": "Require attention",
+      "paid": "Paid",
+      "paidSubtitle": "Paid",
       "inProgress": "In Progress",
       "inProgressSubtitle": "Being processed",
       "completed": "Completed",
-      "completedSubtitle": "Successfully completed"
+      "completedSubtitle": "Successfully completed",
+      "canceled": "Canceled",
+      "canceledSubtitle": "Canceled"
     },
     "orderId": "Order ID",
     "notFound": "Order not found",
     "noCourierAssigned": "No courier assigned",
     "viewOnMap": "View on map",
+    "viewOnCalendar": "View on calendar",
+    "deliveryTime": "Delivery Time",
     "timeline": "Timeline",
     "createdAt": "Created",
     "updatedAt": "Updated"

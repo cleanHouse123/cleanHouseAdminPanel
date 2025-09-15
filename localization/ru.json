@@ -182,17 +182,23 @@
     "stats": {
       "total": "Всего заказов",
       "totalSubtitle": "Общее количество",
-      "pending": "Ожидают",
-      "pendingSubtitle": "Требуют внимания",
+      "new": "Новые",
+      "newSubtitle": "Требуют внимания",
+      "paid": "Оплаченные",
+      "paidSubtitle": "Оплаченные",
       "inProgress": "В работе",
       "inProgressSubtitle": "Выполняются",
       "completed": "Завершены",
-      "completedSubtitle": "Успешно выполнены"
+      "completedSubtitle": "Успешно выполнены",
+      "canceled": "Отменены",
+      "canceledSubtitle": "Отменены"
     },
     "orderId": "ID заказа",
     "notFound": "Заказ не найден",
     "noCourierAssigned": "Курьер не назначен",
     "viewOnMap": "Посмотреть на карте",
+    "viewOnCalendar": "Посмотреть на календаре",
+    "deliveryTime": "Время доставки",
     "timeline": "Временная шкала",
     "createdAt": "Создан",
     "updatedAt": "Обновлен"

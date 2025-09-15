@@ -29,6 +29,7 @@ export interface OrderResponseDto {
   currierId?: string;
   description: string;
   address: string;
+  scheduledAt?: string;
   phone: string;
   coordinates?: {
     lat: number;

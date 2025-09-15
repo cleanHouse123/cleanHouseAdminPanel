@@ -39,6 +39,8 @@ export const useOrders = (params?: {
   return useQuery<OrdersListResponse>({
     queryKey: ["orders", params],
     queryFn: () => ordersApi.findAll(params),
+    staleTime: 2 * 60 * 1000,
+    refetchInterval: 2 * 60 * 1000,
   });
 };
 

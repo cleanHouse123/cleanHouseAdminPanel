@@ -19,10 +19,10 @@ interface AssignCurrierProps {
   currentCurrierId?: string;
 }
 
-export const AssignCurrier = ({ 
-  orderId, 
-  onStatusChange, 
-  currentCurrierId 
+export const AssignCurrier = ({
+  orderId,
+  onStatusChange,
+  currentCurrierId,
 }: AssignCurrierProps) => {
   const { t } = useTranslation();
 
@@ -33,12 +33,12 @@ export const AssignCurrier = ({
 
   const handleCurrierChange = async (currierId: string) => {
     try {
-      await updateOrderStatus({ 
-        id: orderId, 
-        data: { 
+      await updateOrderStatus({
+        id: orderId,
+        data: {
           status: OrderStatus.ASSIGNED,
-          currierId: currierId 
-        } 
+          currierId: currierId,
+        },
       });
       onStatusChange(OrderStatus.ASSIGNED);
     } catch (error) {
@@ -57,13 +57,23 @@ export const AssignCurrier = ({
     );
   }
 
+  if (curriers.length === 0) {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground">
+          {t("orders.noCurriersAvailable")}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium text-muted-foreground">
         {t("orders.assignCurrier")}
       </label>
-      <Select 
-        value={currentCurrierId || ""} 
+      <Select
+        value={currentCurrierId || ""}
         onValueChange={handleCurrierChange}
         disabled={isPending}
       >
@@ -71,22 +81,16 @@ export const AssignCurrier = ({
           <SelectValue placeholder={t("orders.selectCurrier")} />
         </SelectTrigger>
         <SelectContent>
-          {curriers.length === 0 ? (
-            <SelectItem value="" disabled>
-              {t("orders.noCurriersAvailable")}
+          {curriers.map((currier: User) => (
+            <SelectItem key={currier.id} value={currier.id}>
+              <div className="flex flex-col">
+                <span className="font-medium">{currier.name}</span>
+                <span className="text-xs text-muted-foreground">
+                  {currier.phone}
+                </span>
+              </div>
             </SelectItem>
-          ) : (
-            curriers.map((currier: User) => (
-              <SelectItem key={currier.id} value={currier.id}>
-                <div className="flex flex-col">
-                  <span className="font-medium">{currier.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {currier.phone}
-                  </span>
-                </div>
-              </SelectItem>
-            ))
-          )}
+          ))}
         </SelectContent>
       </Select>
       {isPending && (
