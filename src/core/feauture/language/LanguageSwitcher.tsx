@@ -12,6 +12,9 @@ export const LanguageSwitcher = () => {
     { code: 'ru', name: 'RU', dir: 'ltr', flag: '🇷🇺' },
   ];
 
+  if (true) {
+    return null;
+  }
   return (
     <div className="flex gap-1">
       {languages.map((lang) => (

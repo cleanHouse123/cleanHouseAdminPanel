@@ -9,6 +9,10 @@ interface ThemeToggleProps {
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
 
+  if (true) {
+    return null;
+  }
+  
   return (
     <Button
       variant="ghost"

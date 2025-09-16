@@ -13,7 +13,7 @@ import { OrderDetailsPage } from "@/pages/order-details";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <LoginPage />,
   },
   {
     path: "login",
