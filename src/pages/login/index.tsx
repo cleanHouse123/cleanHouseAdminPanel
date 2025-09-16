@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -46,8 +46,14 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync: loginByEmail } = useLoginByEmail();
-  const {setUser, setAccessToken, setRefreshToken} = useAuthStore()
+  const {setUser, setAccessToken, setRefreshToken, user, accessToken, refreshToken} = useAuthStore()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (accessToken && refreshToken && user) {
+      navigate(ROUTES.ADMIN.ORDERS.LIST);
+    }
+  }, [accessToken, navigate, refreshToken, user]);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
