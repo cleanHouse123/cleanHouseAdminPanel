@@ -189,7 +189,8 @@
     "deliveryTime": "Delivery Time",
     "timeline": "Timeline",
     "createdAt": "Created",
-    "updatedAt": "Updated"
+    "updatedAt": "Updated",
+    "paidAt": "Payment Time"
   },
   "admins": {
     "title": "Administrators",

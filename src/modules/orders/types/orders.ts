@@ -23,34 +23,47 @@ export interface UpdateOrderStatusDto {
   currierId?: string;
 }
 
+export interface PaymentDto {
+  id: string;
+  orderId: string;
+  amount: string;
+  status: string;
+  method: string;
+  createdAt: string;
+}
+
+export interface UserDto {
+  id: string;
+  role: string;
+  name: string;
+  phone: string;
+  isPhoneVerified: boolean;
+  email: string | null;
+  isEmailVerified: boolean;
+  hash_password: string | null;
+  refreshTokenHash: string | null;
+  lastLoginAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface OrderResponseDto {
   id: string;
-  customerId: string;
-  currierId?: string;
-  description: string;
+  customer: UserDto;
+  currier: UserDto | null;
   address: string;
-  scheduledAt?: string;
-  phone: string;
+  description: string;
+  price: string;
+  status: OrderStatus;
+  scheduledAt: string;
+  notes: string;
+  payments: PaymentDto[];
   coordinates?: {
     lat: number;
     lng: number;
   };
-  status: OrderStatus;
-  amount: number;
   createdAt: string;
   updatedAt: string;
-  customer?: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-  };
-  currier?: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-  };
 }
 
 export interface OrdersListResponse {

@@ -60,7 +60,7 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
-            {order.amount} ₽
+            {order.price} ₽
           </div>
         </CardContent>
       </Card>

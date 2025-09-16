@@ -67,7 +67,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         {/* Телефон */}
         <div className="flex items-center gap-2">
           <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
-          <span className="text-xs sm:text-sm">{order.phone}</span>
+          <span className="text-xs sm:text-sm">{order.customer.phone}</span>
         </div>
 
         {/* Информация о клиенте и курьере */}
@@ -79,7 +79,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 {t("orders.customer")}
               </p>
               <p className="text-xs sm:text-sm truncate">
-                {order.customer?.name || t("orders.unknown")}
+                {order.customer.name}
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </span>
           </div>
           <span className="text-base sm:text-lg font-bold text-primary">
-            {order.amount} ₽
+            {order.price} ₽
           </span>
         </div>
 

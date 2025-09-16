@@ -201,7 +201,8 @@
     "deliveryTime": "Время доставки",
     "timeline": "Временная шкала",
     "createdAt": "Создан",
-    "updatedAt": "Обновлен"
+    "updatedAt": "Обновлен",
+    "paidAt": "Время оплаты"
   },
   "admins": {
     "title": "Администраторы",

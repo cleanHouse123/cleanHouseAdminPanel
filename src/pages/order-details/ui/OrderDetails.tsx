@@ -9,13 +9,13 @@ import { useTranslation } from "react-i18next";
 import { OrderResponseDto } from "@/modules/orders/types/orders";
 import {
   MapPin,
-  Phone,
   User,
   Mail,
   Package,
   Navigation,
   Calendar,
   Clock,
+  CreditCard,
 } from "lucide-react";
 import { ChangeOrderStatus } from "@/modules/orders/components/change-order-status";
 import { AssignCurrier } from "@/modules/orders/components/assign-currier";
@@ -120,6 +120,20 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               {formatDate(order.updatedAt)}
             </span>
           </div>
+
+          {order.payments.length > 0 && order.payments.some(payment => payment.status === 'paid') && (
+            <div className="flex items-center justify-between py-2 border-b">
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">
+                  {t("orders.paidAt")}
+                </span>
+              </div>
+              <span className="text-sm text-muted-foreground">
+                {formatDate(order.payments.find(payment => payment.status === 'paid')?.createdAt || '')}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -172,20 +186,6 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Phone className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-            <div>
-              <h4 className="font-medium text-sm text-muted-foreground mb-1">
-                {t("common.phone")}
-              </h4>
-              <a
-                href={`tel:${order.phone}`}
-                className="text-sm text-primary hover:underline"
-              >
-                {order.phone}
-              </a>
-            </div>
-          </div>
         </CardContent>
       </Card>
 
@@ -198,43 +198,37 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {order.customer ? (
-              <>
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-1">
-                    {t("common.name")}
-                  </h4>
-                  <p className="text-sm">{order.customer.name}</p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-1">
-                    {t("common.email")}
-                  </h4>
-                  <a
-                    href={`mailto:${order.customer.email}`}
-                    className="text-sm text-primary hover:underline flex items-center gap-1"
-                  >
-                    <Mail className="h-3 w-3" />
-                    {order.customer.email}
-                  </a>
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-1">
-                    {t("common.phone")}
-                  </h4>
-                  <a
-                    href={`tel:${order.customer.phone}`}
-                    className="text-sm text-primary hover:underline"
-                  >
-                    {order.customer.phone}
-                  </a>
-                </div>
-              </>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                {t("orders.unknown")}
-              </p>
+            <div>
+              <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                {t("common.name")}
+              </h4>
+              <p className="text-sm">{order.customer.name}</p>
+            </div>
+            {order.customer.email && (
+              <div>
+                <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                  {t("common.email")}
+                </h4>
+                <a
+                  href={`mailto:${order.customer.email}`}
+                  className="text-sm text-primary hover:underline flex items-center gap-1"
+                >
+                  <Mail className="h-3 w-3" />
+                  {order.customer.email}
+                </a>
+              </div>
             )}
+            <div>
+              <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                {t("common.phone")}
+              </h4>
+              <a
+                href={`tel:${order.customer.phone}`}
+                className="text-sm text-primary hover:underline"
+              >
+                {order.customer.phone}
+              </a>
+            </div>
           </CardContent>
         </Card>
 
@@ -254,18 +248,20 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                   </h4>
                   <p className="text-sm">{order.currier.name}</p>
                 </div>
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-1">
-                    {t("common.email")}
-                  </h4>
-                  <a
-                    href={`mailto:${order.currier.email}`}
-                    className="text-sm text-primary hover:underline flex items-center gap-1"
-                  >
-                    <Mail className="h-3 w-3" />
-                    {order.currier.email}
-                  </a>
-                </div>
+                {order.currier.email && (
+                  <div>
+                    <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                      {t("common.email")}
+                    </h4>
+                    <a
+                      href={`mailto:${order.currier.email}`}
+                      className="text-sm text-primary hover:underline flex items-center gap-1"
+                    >
+                      <Mail className="h-3 w-3" />
+                      {order.currier.email}
+                    </a>
+                  </div>
+                )}
                 <div>
                   <h4 className="font-medium text-sm text-muted-foreground mb-1">
                     {t("common.phone")}
