@@ -277,5 +277,10 @@
       "emailVerified": "Email verified",
       "emailVerifiedSubtitle": "Email verified"
     }
+  },
+  "sessionExpired": {
+    "title": "Session expired",
+    "description": "Your session has expired. Please login again.",
+    "login": "Login"
   }
 } 

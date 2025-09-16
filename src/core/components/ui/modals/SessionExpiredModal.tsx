@@ -17,7 +17,7 @@ export const SessionExpiredModal = () => {
 
     const handleLoginRedirect = () => {
         setSessionExpired(false)
-        window.open('/admin/login', '_blank')
+        window.open('/login', '_blank')
     }
 
     return (

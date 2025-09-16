@@ -4,7 +4,7 @@ import { SessionExpiredModal } from '@/core/components/ui/modals/SessionExpiredM
 import { useAuthStore } from '@/modules/auth/store/authStore';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const { user, sessionExpired } = useAuthStore()
+    const { user, sessionExpired, accessToken, refreshToken } = useAuthStore()
     const location = useLocation()
 
     if (sessionExpired) {
@@ -16,7 +16,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         )
     }
 
-    if (!user) {
+    if (!user || !accessToken || !refreshToken) {
         return <Navigate to={ROUTES.ADMIN.LOGIN} state={{ from: location }} replace />
     }
 

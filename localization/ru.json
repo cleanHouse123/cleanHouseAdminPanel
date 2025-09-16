@@ -289,5 +289,10 @@
       "emailVerified": "Email подтвержден",
       "emailVerifiedSubtitle": "Email верифицирован"
     }
+  },
+  "sessionExpired": {
+    "title": "Сессия истекла",
+    "description": "Ваша сессия истекла. Пожалуйста, войдите снова.",
+    "login": "Войти"
   }
 }

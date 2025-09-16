@@ -1,6 +1,5 @@
 import { AdminLayout } from "@/core/components/layout/AdminLayout";
 import { OrdersPage } from "@/pages/orders";
-import { HomePage } from "@/pages/home";
 import { LoginPage } from "@/pages/login";
 import { RegisterPage } from "@/pages/register";
 import { createBrowserRouter } from "react-router-dom";
@@ -9,6 +8,7 @@ import { CreateAdminPage } from "@/pages/create-admin";
 import { UsersPage } from "@/pages/users";
 import { CreateCurrierPage } from "@/pages/create-currier";
 import { OrderDetailsPage } from "@/pages/order-details";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminLayout />,
+    element: (
+      <ProtectedRoute>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "orders",
