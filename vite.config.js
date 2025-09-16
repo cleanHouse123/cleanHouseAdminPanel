@@ -16,5 +16,12 @@ export default defineConfig({
     hmr: {
       overlay: false
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 }) 
