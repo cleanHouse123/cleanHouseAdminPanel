@@ -12,15 +12,19 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/core/components'),
     },
   },
-  server: {
-    hmr: {
-      overlay: false
-    }
-  },
+  // server: {
+  //   hmr: {
+  //     overlay: false
+  //   }
+  // },
   build: {
     rollupOptions: {
       output: {
         manualChunks: undefined,
+        // Убеждаемся, что JS файлы имеют правильное расширение
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
     },
   },
