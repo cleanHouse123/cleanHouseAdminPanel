@@ -23,6 +23,7 @@ import { DeleteOrder } from "@/modules/orders/components/delete-order";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/constants/routes";
+import { formatDate } from "@/core/utils/date";
 
 interface OrderDetailsProps {
   order: OrderResponseDto;
@@ -31,15 +32,6 @@ interface OrderDetailsProps {
 export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   return (
     <div className="space-y-6">

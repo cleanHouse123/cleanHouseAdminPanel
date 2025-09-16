@@ -8,6 +8,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
+import { formatDate } from "@/core/utils/date";
 
 interface OrderDetailsStatsProps {
   order: OrderResponseDto;
@@ -16,24 +17,6 @@ interface OrderDetailsStatsProps {
 
 export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
   const { t } = useTranslation();
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const formatDateShort = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -75,7 +58,7 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
         </CardHeader>
         <CardContent>
           <div className="text-sm font-medium">
-            {formatDateShort(order.createdAt)}
+            {formatDate(order.createdAt, {isShort: true})}
           </div>
           <div className="text-xs text-muted-foreground">
             {formatDate(order.createdAt)}

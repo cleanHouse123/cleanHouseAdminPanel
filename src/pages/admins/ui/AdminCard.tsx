@@ -4,6 +4,7 @@ import { Mail, Phone, User, Shield, CheckCircle, XCircle, Calendar } from "lucid
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { Admin } from "@/modules/admins/types/admin";
+import { formatDate } from "@/core/utils/date";
 
 interface AdminCardProps {
   admin: Admin;
@@ -11,16 +12,6 @@ interface AdminCardProps {
 
 export const AdminCard = ({ admin }: AdminCardProps) => {
   const { t } = useTranslation();
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
 
   return (
     <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">

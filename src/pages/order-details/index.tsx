@@ -5,6 +5,7 @@ import { ArrowLeft, Package, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@/core/components/ui/button";
+import { formatDate } from "@/core/utils/date";
 
 export const OrderDetailsPage = () => {
   const { t } = useTranslation();
@@ -51,16 +52,6 @@ export const OrderDetailsPage = () => {
       </div>
     );
   }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   return (
     <div className="space-y-6 p-3 sm:p-6">

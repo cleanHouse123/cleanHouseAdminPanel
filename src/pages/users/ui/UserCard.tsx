@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { User } from "@/modules/users/types";
 import { UserRole } from "@/core/types/user";
+import { formatDate } from "@/core/utils/date";
 
 interface UserCardProps {
   user: User;
@@ -25,16 +26,6 @@ interface UserCardProps {
 
 export const UserCard = ({ user }: UserCardProps) => {
   const { t } = useTranslation();
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   return (
     <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
