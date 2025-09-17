@@ -8,6 +8,7 @@ import { CreateAdminPage } from "@/pages/create-admin";
 import { UsersPage } from "@/pages/users";
 import { CreateCurrierPage } from "@/pages/create-currier";
 import { OrderDetailsPage } from "@/pages/order-details";
+import { SubscriptionPlansPage } from "@/pages/subscription-plans";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "create-currier",
         element: <CreateCurrierPage />,
+      },
+      {
+        path: "subscription-plans",
+        element: <SubscriptionPlansPage />,
       },
     ],
   },
