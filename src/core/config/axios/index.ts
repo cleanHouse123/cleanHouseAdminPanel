@@ -2,16 +2,12 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const axiosInstance = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    "https://cleanhouse123-cleanhouseapi-209c.twc1.net/",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   withCredentials: false,
 });
 
 export const axiosPublic = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    "https://cleanhouse123-cleanhouseapi-209c.twc1.net/",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   withCredentials: false,
 });
 

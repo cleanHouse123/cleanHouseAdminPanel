@@ -13,7 +13,17 @@ import { ProtectedRoute } from "./ProtectedRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
+    element: (
+      <ProtectedRoute>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <OrdersPage />,
+      },
+    ],
   },
   {
     path: "login",

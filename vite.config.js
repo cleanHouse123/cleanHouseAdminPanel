@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    fastRefresh: true,
+    jsxRuntime: 'automatic'
+  })],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -12,13 +15,6 @@ export default defineConfig({
     },
   },
   base: '/',
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@core': path.resolve(__dirname, './src/core'),
-      '@components': path.resolve(__dirname, './src/core/components'),
-    },
-  },
   server: {
     hmr: {
       overlay: false
