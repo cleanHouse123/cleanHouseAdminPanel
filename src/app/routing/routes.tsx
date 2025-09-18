@@ -10,6 +10,8 @@ import { CreateCurrierPage } from "@/pages/create-currier";
 import { OrderDetailsPage } from "@/pages/order-details";
 import { SubscriptionPlansPage } from "@/pages/subscription-plans";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { LocationsPage } from "@/pages/locations";
+import { CreateLocationPage } from "@/pages/create-location";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +71,14 @@ export const router = createBrowserRouter([
       {
         path: "subscription-plans",
         element: <SubscriptionPlansPage />,
+      },
+      {
+        path: "locations",
+        element: <LocationsPage />,
+      },
+      {
+        path: "create-location",
+        element: <CreateLocationPage />,
       },
     ],
   },

@@ -45,7 +45,9 @@
     "orders": "Orders",
     "admins": "Admins",
     "users": "Users",
-    "logout": "Logout"
+    "locations": "Locations",
+    "logout": "Logout",
+    "subscriptionPlans": "Subscription Plans"
   },
   "auth": {
     "login": {
@@ -106,6 +108,22 @@
     "phone": {
       "required": "Phone is required",
       "minLength": "Phone must be at least 10 digits"
+    },
+    "region": {
+      "required": "Region is required",
+      "minLength": "Region must be at least 2 characters"
+    },
+    "area": {
+      "required": "Area is required",
+      "minLength": "Area must be at least 2 characters"
+    },
+    "city": {
+      "required": "City is required",
+      "minLength": "City must be at least 2 characters"
+    },
+    "settlement": {
+      "required": "Settlement is required",
+      "minLength": "Settlement must be at least 2 characters"
     }
   },
   "home": {
@@ -192,6 +210,33 @@
     "updatedAt": "Updated",
     "paidAt": "Payment Time"
   },
+  "locations": {
+    "title": "Locations",
+    "subtitle": "Total locations: {{count}}",
+    "list": "Locations list",
+    "empty": "No locations found",
+    "createLocation": "Create Location",
+    "stats": {
+      "total": "Total locations",
+      "totalSubtitle": "Total count",
+      "regions": "Regions",
+      "regionsSubtitle": "Total regions",
+      "cities": "Cities",
+      "citiesSubtitle": "Total cities",
+      "settlements": "Settlements",
+      "settlementsSubtitle": "Total settlements"
+    },
+    "type": {
+      "region": "Region",
+      "area": "Area",
+      "city": "City",
+      "settlement": "Settlement"
+    },
+    "deleteLocation": "Delete Location",
+    "deleteLocationConfirm": "Are you sure you want to delete this location?",
+    "deleteLocationSuccess": "Location deleted successfully",
+    "deleteLocationError": "Error deleting location"
+  },
   "admins": {
     "title": "Administrators",
     "subtitle": "Total administrators: {{count}}",
@@ -238,6 +283,29 @@
     "submit": "Create Administrator",
     "success": "Administrator created successfully",
     "error": "Error creating administrator"
+  },
+  "createLocation": {
+    "title": "Create Location",
+    "description": "Fill out the form to create a new location",
+    "region": {
+      "label": "Region",
+      "placeholder": "Enter region name"
+    },
+    "area": {
+      "label": "Area",
+      "placeholder": "Enter area name"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Enter city name"
+    },
+    "settlement": {
+      "label": "Settlement",
+      "placeholder": "Enter settlement name"
+    },
+    "submit": "Create Location",
+    "success": "Location created successfully",
+    "error": "Error creating location"
   },
   "createCurrier": {
     "title": "Create Courier",

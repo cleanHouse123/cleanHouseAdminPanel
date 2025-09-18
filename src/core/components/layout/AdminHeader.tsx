@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/core/components/ui/popover";
 import { ROUTES } from "@/core/constants/routes";
-import { Menu, X, User, LogOut, List, Users } from "lucide-react";
+import { Menu, X, User, LogOut, List, Users, MapPin, CreditCard } from "lucide-react";
 import { useAuthStore } from "@/modules/auth/store/authStore";
 import { LanguageSwitcher } from "@/core/feauture/language/LanguageSwitcher";
 import { ThemeToggle } from "@/core/feauture/theme/theme-toggle";
@@ -139,7 +139,39 @@ export const AdminHeader = () => {
               }`}
             >
               <Users className="h-4 w-4" />
-              {t("nav.admins")}
+              {t("nav.users")}
+            </Button>
+
+            <Button
+              variant={isActive(ROUTES.ADMIN.USERS.LIST) ? "default" : "ghost"}
+              onClick={() => {
+                navigate(`${ROUTES.ADMIN.LOCATIONS.LIST}`);
+                closeMenu();
+              }}
+              className={`w-full justify-start gap-2 rounded-lg ${
+                isActive(ROUTES.ADMIN.LOCATIONS.LIST)
+                  ? "bg-secondary hover:bg-secondary text-foreground"
+                  : "hover:bg-accent text-foreground"
+              }`}
+            >
+              <MapPin className="h-4 w-4" />
+              {t("nav.locations")}
+            </Button>
+
+            <Button
+              variant={isActive(ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST) ? "default" : "ghost"}
+              onClick={() => {
+                navigate(`${ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST}`);
+                closeMenu();  
+              }}
+              className={`w-full justify-start gap-2 rounded-lg ${
+                isActive(ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST)
+                  ? "bg-secondary hover:bg-secondary text-foreground"
+                  : "hover:bg-accent text-foreground"
+              }`}
+            >
+              <CreditCard className="h-4 w-4" />
+              {t("nav.subscriptionPlans")}
             </Button>
           </nav>
         </div>
