@@ -14,7 +14,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/core/components'),
     },
   },
-  base: './',
+  base: '/',
   server: {
     hmr: {
       overlay: false
