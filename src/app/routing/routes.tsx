@@ -12,6 +12,7 @@ import { SubscriptionPlansPage } from "@/pages/subscription-plans";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { LocationsPage } from "@/pages/locations";
 import { CreateLocationPage } from "@/pages/create-location";
+import AdTokensPage from "@/pages/ad-tokens";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: "create-location",
         element: <CreateLocationPage />,
+      },
+      {
+        path: "ad-tokens",
+        element: <AdTokensPage />,
       },
     ],
   },

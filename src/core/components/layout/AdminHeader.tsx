@@ -34,7 +34,7 @@ export const AdminHeader = () => {
         {/* Левая часть - как nav bar */}
         <div className="hidden md:flex w-64 bg-muted/50 border-r border-b border-border items-center px-6">
           <div className="flex items-center">
-            <h1 className="text-xl font-semibold text-foreground">Admin Panel</h1>
+            <h1 className="text-xl font-semibold text-foreground">ЧистоДом</h1>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ export const AdminHeader = () => {
           <div className="flex items-center gap-2 sm:gap-4">
             <LanguageSwitcher />
 
-            <ThemeToggle/>
+            <ThemeToggle />
 
             <Popover>
               <PopoverTrigger asChild>
@@ -100,11 +100,10 @@ export const AdminHeader = () => {
                 navigate(`${ROUTES.ADMIN.ORDERS.LIST}`);
                 closeMenu();
               }}
-              className={`w-full justify-start gap-2 rounded-lg ${
-                isActive(ROUTES.ADMIN.ORDERS.LIST)
-                  ? "bg-secondary hover:bg-secondary text-foreground"
-                  : "hover:bg-accent text-foreground"
-              }`}
+              className={`w-full justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.ORDERS.LIST)
+                ? "bg-secondary hover:bg-secondary text-foreground"
+                : "hover:bg-accent text-foreground"
+                }`}
             >
               <List className="h-4 w-4" />
               {t("nav.orders")}
@@ -116,11 +115,10 @@ export const AdminHeader = () => {
                 navigate(`${ROUTES.ADMIN.ADMIN.LIST}`);
                 closeMenu();
               }}
-              className={`w-full justify-start gap-2 rounded-lg ${
-                isActive(ROUTES.ADMIN.ADMIN.LIST)
-                  ? "bg-secondary hover:bg-secondary text-foreground"
-                  : "hover:bg-accent text-foreground"
-              }`}
+              className={`w-full justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.ADMIN.LIST)
+                ? "bg-secondary hover:bg-secondary text-foreground"
+                : "hover:bg-accent text-foreground"
+                }`}
             >
               <Users className="h-4 w-4" />
               {t("nav.admins")}
@@ -132,11 +130,10 @@ export const AdminHeader = () => {
                 navigate(`${ROUTES.ADMIN.USERS.LIST}`);
                 closeMenu();
               }}
-              className={`w-full justify-start gap-2 rounded-lg ${
-                isActive(ROUTES.ADMIN.USERS.LIST)
-                  ? "bg-secondary hover:bg-secondary text-foreground"
-                  : "hover:bg-accent text-foreground"
-              }`}
+              className={`w-full justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.USERS.LIST)
+                ? "bg-secondary hover:bg-secondary text-foreground"
+                : "hover:bg-accent text-foreground"
+                }`}
             >
               <Users className="h-4 w-4" />
               {t("nav.users")}
@@ -148,11 +145,10 @@ export const AdminHeader = () => {
                 navigate(`${ROUTES.ADMIN.LOCATIONS.LIST}`);
                 closeMenu();
               }}
-              className={`w-full justify-start gap-2 rounded-lg ${
-                isActive(ROUTES.ADMIN.LOCATIONS.LIST)
-                  ? "bg-secondary hover:bg-secondary text-foreground"
-                  : "hover:bg-accent text-foreground"
-              }`}
+              className={`w-full justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.LOCATIONS.LIST)
+                ? "bg-secondary hover:bg-secondary text-foreground"
+                : "hover:bg-accent text-foreground"
+                }`}
             >
               <MapPin className="h-4 w-4" />
               {t("nav.locations")}
@@ -162,13 +158,12 @@ export const AdminHeader = () => {
               variant={isActive(ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST) ? "default" : "ghost"}
               onClick={() => {
                 navigate(`${ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST}`);
-                closeMenu();  
+                closeMenu();
               }}
-              className={`w-full justify-start gap-2 rounded-lg ${
-                isActive(ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST)
-                  ? "bg-secondary hover:bg-secondary text-foreground"
-                  : "hover:bg-accent text-foreground"
-              }`}
+              className={`w-full justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.SUBSCRIPTION_PLANS.LIST)
+                ? "bg-secondary hover:bg-secondary text-foreground"
+                : "hover:bg-accent text-foreground"
+                }`}
             >
               <CreditCard className="h-4 w-4" />
               {t("nav.subscriptionPlans")}

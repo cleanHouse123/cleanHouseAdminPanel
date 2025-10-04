@@ -1,6 +1,6 @@
-import {AdminHeader} from "@/core/components/layout/AdminHeader";
-import {AdminNavBar} from "@/core/components/layout/AdminNavBar";
-import {Outlet} from "react-router-dom";
+import { AdminHeader } from "@/core/components/layout/AdminHeader";
+import { AdminNavBar } from "@/core/components/layout/AdminNavBar";
+import { Outlet } from "react-router-dom";
 import { useDocumentTitle } from "@/core/hooks/utils/useDocumentTitle";
 import { Toaster } from "../ui/toast/sonner";
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/modules/auth/store/authStore";
 export const AdminLayout = () => {
 
-    useDocumentTitle("Admin Panel")
+    useDocumentTitle("Админ Панель - ЧистоДом")
     const { i18n } = useTranslation();
     const isRTL = i18n.language === 'ar' || i18n.language === 'he';
     const { setUser } = useAuthStore()
