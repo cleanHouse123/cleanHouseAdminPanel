@@ -48,7 +48,7 @@ export const SubscriptionPlansPage = () => {
     const handleFormSubmit = (formData: SubscriptionPlanFormData) => {
         const submitData = {
             ...formData,
-            priceInKopecks: Math.round(formData.priceInRubles * 100),
+            priceInKopecks: Math.round((formData.priceInRubles || 0) * 100),
         };
 
         if (editingPlan) {
@@ -100,7 +100,7 @@ export const SubscriptionPlansPage = () => {
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {plans.map((plan) => (
                         <SubscriptionPlanCard
                             key={plan.id}

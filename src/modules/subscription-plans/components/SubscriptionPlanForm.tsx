@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/core/components/ui/switch';
 import { Label } from '@/core/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/components/ui/card';
-import { Plus, X, Calendar, Zap, Star, Crown, Diamond, Shield, Rocket, Heart } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 
 interface SubscriptionPlanFormProps {
     plan?: SubscriptionPlan;
@@ -16,23 +16,9 @@ interface SubscriptionPlanFormProps {
     isLoading?: boolean;
 }
 
-const iconOptions = [
-    { value: 'calendar', label: 'Календарь', icon: Calendar },
-    { value: 'zap', label: 'Молния', icon: Zap },
-    { value: 'star', label: 'Звезда', icon: Star },
-    { value: 'crown', label: 'Корона', icon: Crown },
-    { value: 'diamond', label: 'Алмаз', icon: Diamond },
-    { value: 'shield', label: 'Щит', icon: Shield },
-    { value: 'rocket', label: 'Ракета', icon: Rocket },
-    { value: 'heart', label: 'Сердце', icon: Heart },
-];
-
 const badgeColorOptions = [
     { value: 'blue', label: 'Синий' },
-    { value: 'purple', label: 'Фиолетовый' },
-    { value: 'green', label: 'Зеленый' },
-    { value: 'yellow', label: 'Желтый' },
-    { value: 'red', label: 'Красный' },
+    { value: 'green', label: 'Зелёный' },
 ];
 
 export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: SubscriptionPlanFormProps) => {
@@ -40,7 +26,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
         type: 'monthly',
         name: '',
         description: '',
-        priceInRubles: 0,
+        priceInRubles: undefined as any,
         duration: '',
         features: [''],
         icon: 'calendar',
@@ -63,6 +49,21 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 badgeColor: plan.badgeColor,
                 popular: plan.popular,
             });
+            setNewFeature('');
+        } else {
+            // Сброс формы при создании нового плана
+            setFormData({
+                type: 'monthly',
+                name: '',
+                description: '',
+                priceInRubles: undefined as any,
+                duration: '',
+                features: [''],
+                icon: 'calendar',
+                badgeColor: 'blue',
+                popular: false,
+            });
+            setNewFeature('');
         }
     }, [plan]);
 
@@ -152,9 +153,11 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                value={formData.priceInRubles}
+                                value={formData.priceInRubles || ''}
                                 onChange={(e) => setFormData(prev => ({ ...prev, priceInRubles: parseFloat(e.target.value) || 0 }))}
+                                placeholder="Введите цену"
                                 required
+                                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             />
                         </div>
 
@@ -171,55 +174,24 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                     </div>
 
                     <div>
-                        <Label className="mb-2 block">Иконка</Label>
-                        <div className="grid grid-cols-4 gap-2">
-                            {iconOptions.map(option => {
-                                const IconComponent = option.icon;
-                                return (
-                                    <label
-                                        key={option.value}
-                                        className={`flex flex-col items-center p-3 border rounded-lg cursor-pointer transition-colors ${formData.icon === option.value
-                                            ? 'border-[#008000]'
-                                            : 'border-gray-200 hover:border-gray-300'
-                                            }`}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="icon"
-                                            value={option.value}
-                                            checked={formData.icon === option.value}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
-                                            className="sr-only"
-                                        />
-                                        <IconComponent className="w-6 h-6 mb-1" />
-                                        <span className="text-xs text-center">{option.label}</span>
-                                    </label>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <Label htmlFor="badgeColor" className="mb-2 block">Цвет значка</Label>
-                            <Select
-                                value={formData.badgeColor}
-                                onValueChange={(value: 'blue' | 'purple' | 'green' | 'yellow' | 'red') =>
-                                    setFormData(prev => ({ ...prev, badgeColor: value }))
-                                }
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Выберите цвет значка" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {badgeColorOptions.map(option => (
-                                        <SelectItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        <Label className="mb-2 block">Цвет возможностей</Label>
+                        <Select
+                            value={formData.badgeColor}
+                            onValueChange={(value: 'blue' | 'green') =>
+                                setFormData(prev => ({ ...prev, badgeColor: value }))
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Выберите цвет возможностей" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {badgeColorOptions.map(option => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -235,33 +207,37 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                         <Label className="mb-2 block">Возможности</Label>
                         <div className="space-y-2">
                             {formData.features.map((feature, index) => (
-                                <div key={index} className="flex gap-2">
+                                <div key={index} className="flex gap-2 items-center">
                                     <Input
                                         value={feature}
                                         onChange={(e) => updateFeature(index, e.target.value)}
                                         placeholder="Введите возможность"
+                                        className="flex-1"
                                     />
                                     <Button
                                         type="button"
                                         variant="outline"
                                         size="sm"
                                         onClick={() => removeFeature(index)}
+                                        className="flex-shrink-0"
                                     >
                                         <X className="w-4 h-4" />
                                     </Button>
                                 </div>
                             ))}
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 items-center">
                                 <Input
                                     value={newFeature}
                                     onChange={(e) => setNewFeature(e.target.value)}
                                     placeholder="Добавить новую возможность"
+                                    className="flex-1"
                                 />
                                 <Button
                                     type="button"
                                     variant="outline"
                                     size="sm"
                                     onClick={addFeature}
+                                    className="flex-shrink-0"
                                 >
                                     <Plus className="w-4 h-4" />
                                 </Button>

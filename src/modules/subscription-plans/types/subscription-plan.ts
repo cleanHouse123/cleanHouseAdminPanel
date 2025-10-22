@@ -7,7 +7,7 @@ export interface SubscriptionPlan {
   duration: string;
   features: string[];
   icon: string;
-  badgeColor: "blue" | "purple" | "green" | "yellow" | "red";
+  badgeColor: "blue" | "green";
   popular: boolean;
   createdAt: string;
   updatedAt: string;
@@ -21,7 +21,7 @@ export interface CreateSubscriptionPlanDto {
   duration: string;
   features: string[];
   icon: string;
-  badgeColor: "blue" | "purple" | "green" | "yellow" | "red";
+  badgeColor: "blue" | "green";
   popular: boolean;
 }
 
@@ -36,6 +36,6 @@ export interface SubscriptionPlanFormData {
   duration: string;
   features: string[];
   icon: string;
-  badgeColor: "blue" | "purple" | "green" | "yellow" | "red";
+  badgeColor: "blue" | "green";
   popular: boolean;
 }
