@@ -26,12 +26,13 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
         type: 'monthly',
         name: '',
         description: '',
-        priceInRubles: undefined as any,
+        priceInRubles: undefined as unknown as number,
         duration: '',
         features: [''],
         icon: 'calendar',
         badgeColor: 'blue',
         popular: false,
+        ordersLimit: undefined,
     });
 
     const [newFeature, setNewFeature] = useState('');
@@ -48,6 +49,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 icon: plan.icon,
                 badgeColor: plan.badgeColor,
                 popular: plan.popular,
+                ordersLimit: plan.ordersLimit,
             });
             setNewFeature('');
         } else {
@@ -56,12 +58,13 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 type: 'monthly',
                 name: '',
                 description: '',
-                priceInRubles: undefined as any,
+                priceInRubles: undefined as unknown as number,
                 duration: '',
                 features: [''],
                 icon: 'calendar',
                 badgeColor: 'blue',
                 popular: false,
+                ordersLimit: undefined,
             });
             setNewFeature('');
         }
@@ -201,6 +204,25 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                             onCheckedChange={(checked) => setFormData(prev => ({ ...prev, popular: checked }))}
                         />
                         <Label htmlFor="popular">Популярная подписка</Label>
+                    </div>
+
+                    <div>
+                        <Label htmlFor="ordersLimit" className="mb-2 block">Лимит заказов</Label>
+                        <Input
+                            id="ordersLimit"
+                            type="number"
+                            min="-1"
+                            value={formData.ordersLimit || ''}
+                            onChange={(e) => {
+                                const value = e.target.value === '' ? undefined : parseInt(e.target.value);
+                                setFormData(prev => ({ ...prev, ordersLimit: value }));
+                            }}
+                            placeholder="-1 для безлимита, пустое для неограниченного"
+                            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                            -1 = безлимит, пустое = неограниченно
+                        </p>
                     </div>
 
                     <div>

@@ -2,7 +2,7 @@ import { SubscriptionPlan } from '../types/subscription-plan';
 import { Card } from '@/core/components/ui/card';
 import { Badge } from '@/core/components/ui/badge';
 import { Button } from '@/core/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Package } from 'lucide-react';
 import { cn } from '@/core/lib/utils';
 
 interface SubscriptionPlanCardProps {
@@ -14,6 +14,19 @@ interface SubscriptionPlanCardProps {
 function formatRubles(kopecks: number) {
     const rubles = Math.round(kopecks / 100);
     return `${rubles} рублей`;
+}
+
+function formatOrdersLimit(ordersLimit?: number, usedOrders?: number) {
+    if (ordersLimit === undefined || ordersLimit === null) {
+        return 'Лимит не установлен';
+    }
+    
+    if (ordersLimit === -1) {
+        return 'Безлимитные заказы';
+    }
+    
+    const remaining = ordersLimit - (usedOrders || 0);
+    return `${usedOrders || 0}/${ordersLimit} заказов (осталось: ${remaining})`;
 }
 
 export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPlanCardProps) => {
@@ -36,6 +49,12 @@ export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPla
                     {plan.duration}
                 </div>
                 <p className="text-xs sm:text-sm text-gray-800">{plan.description}</p>
+
+                {/* Информация о лимитах заказов */}
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 bg-gray-50 rounded-lg p-2 sm:p-3">
+                    <Package className="w-4 h-4 flex-shrink-0" />
+                    <span className="flex-1">{formatOrdersLimit(plan.ordersLimit, plan.usedOrders)}</span>
+                </div>
 
                 <div className="flex flex-wrap gap-1 sm:gap-2 pt-1 sm:pt-2">
                     {plan.features.map((feature, index) => {

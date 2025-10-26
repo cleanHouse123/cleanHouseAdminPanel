@@ -9,6 +9,8 @@ export interface SubscriptionPlan {
   icon: string;
   badgeColor: "blue" | "green";
   popular: boolean;
+  ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  usedOrders?: number; // количество использованных заказов
   createdAt: string;
   updatedAt: string;
 }
@@ -23,6 +25,7 @@ export interface CreateSubscriptionPlanDto {
   icon: string;
   badgeColor: "blue" | "green";
   popular: boolean;
+  ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
 }
 
 export interface UpdateSubscriptionPlanDto
@@ -38,4 +41,5 @@ export interface SubscriptionPlanFormData {
   icon: string;
   badgeColor: "blue" | "green";
   popular: boolean;
+  ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
 }
