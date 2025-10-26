@@ -4,16 +4,12 @@ import { Badge } from '@/core/components/ui/badge';
 import { Button } from '@/core/components/ui/button';
 import { Edit, Trash2, Package } from 'lucide-react';
 import { cn } from '@/core/lib/utils';
+import { kopecksToRubles } from '@/core/utils/price';
 
 interface SubscriptionPlanCardProps {
     plan: SubscriptionPlan;
     onEdit: (plan: SubscriptionPlan) => void;
     onDelete: (plan: SubscriptionPlan) => void;
-}
-
-function formatRubles(kopecks: number) {
-    const rubles = Math.round(kopecks / 100);
-    return `${rubles} рублей`;
 }
 
 function formatOrdersLimit(ordersLimit?: number, usedOrders?: number) {
@@ -78,7 +74,7 @@ export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPla
             <div className="flex flex-col gap-3 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                     <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">
-                        {formatRubles(plan.priceInKopecks)}
+                        {kopecksToRubles(plan.priceInKopecks)} рублей
                     </div>
                 </div>
 

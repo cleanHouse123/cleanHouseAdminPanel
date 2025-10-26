@@ -46,9 +46,10 @@ export const SubscriptionPlansPage = () => {
     };
 
     const handleFormSubmit = (formData: SubscriptionPlanFormData) => {
+        const { priceInRubles, ...otherData } = formData;
         const submitData = {
-            ...formData,
-            priceInKopecks: Math.round((formData.priceInRubles || 0) * 100),
+            ...otherData,
+            priceInKopecks: Math.round((priceInRubles || 0) * 100),
         };
 
         if (editingPlan) {

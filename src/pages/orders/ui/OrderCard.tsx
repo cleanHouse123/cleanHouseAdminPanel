@@ -6,12 +6,12 @@ import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import { Link } from "react-router-dom";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDate } from "@/core/utils/date";
+import { kopecksToRubles } from "@/core/utils/price";
 
 interface OrderCardProps {
   order: OrderResponseDto;
   onStatusChange?: (orderId: string, status: OrderStatus) => void;
 }
-
 
 export const OrderCard = ({ order }: OrderCardProps) => {
   const { t } = useTranslation();
@@ -97,7 +97,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </span>
           </div>
           <span className="text-base sm:text-lg font-bold text-primary">
-            {order.price} ₽
+            {kopecksToRubles(order.price)} ₽
           </span>
         </div>
 

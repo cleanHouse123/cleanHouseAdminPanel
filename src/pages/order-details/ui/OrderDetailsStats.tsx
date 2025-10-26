@@ -9,11 +9,11 @@ import {
 } from "lucide-react";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDate } from "@/core/utils/date";
+import { kopecksToRubles } from "@/core/utils/price";
 
 interface OrderDetailsStatsProps {
   order: OrderResponseDto;
 }
-
 
 export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
   const { t } = useTranslation();
@@ -43,7 +43,7 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
-            {order.price} ₽
+            {kopecksToRubles(order.price)} ₽
           </div>
         </CardContent>
       </Card>
