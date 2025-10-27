@@ -150,35 +150,20 @@ export const UsersPage = () => {
                 {
                   key: "name",
                   header: "Имя",
-                  render: (user) => <span className="font-medium">{user.name}</span>,
+                  render: (user) => user.name,
+                  showTooltip: true,
                 },
                 {
                   key: "email",
                   header: "Email",
-                  render: (user) => (
-                    <div className="flex items-center gap-2">
-                      <span>{user.email}</span>
-                      {user.isEmailVerified ? (
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-red-600" />
-                      )}
-                    </div>
-                  ),
+                  render: (user) => user.email,
+                  showTooltip: true,
                 },
                 {
                   key: "phone",
                   header: "Телефон",
-                  render: (user) => (
-                    <div className="flex items-center gap-2">
-                      <span>{user.phone}</span>
-                      {user.isPhoneVerified ? (
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-red-600" />
-                      )}
-                    </div>
-                  ),
+                  render: (user) => user.phone,
+                  showTooltip: true,
                 },
                 {
                   key: "role",

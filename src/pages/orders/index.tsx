@@ -1,13 +1,23 @@
-
 import { useOrders } from "@/modules/orders/hooks/useOrders";
-import { Package, XCircle } from "lucide-react";
+import { Package, XCircle, LayoutGrid, Table as TableIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { OrderStatus } from "@/modules/orders/types/orders";
+import { OrderStatus, OrderResponseDto } from "@/modules/orders/types/orders";
 import { OrderCard } from "./ui/OrderCard";
 import { OrderStats } from "./ui/OrderStats";
+import { Button } from "@/core/components/ui/button";
+import { DataTable, Column } from "@/core/components/ui/DataTable";
+import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
+import { formatDate } from "@/core/utils/date";
+import { kopecksToRubles } from "@/core/utils/price";
+import { OrderBadge } from "@/modules/orders/components/order-badge";
+import { Link } from "react-router-dom";
+import { Eye } from "lucide-react";
 
 export const OrdersPage = () => {
   const { t } = useTranslation();
+  
+  // Использование localStorage через React Query
+  const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
   
   const { data: ordersData, isLoading, error } = useOrders({
     page: 1,
@@ -48,6 +58,67 @@ export const OrdersPage = () => {
     completed: orders.filter(o => o.status === OrderStatus.DONE).length,
   };
 
+  const tableColumns: Column<OrderResponseDto>[] = [
+    {
+      key: "id",
+      header: "ID заказа",
+      render: (order) => (
+        <span className="font-mono text-xs">#{order.id.slice(-8)}</span>
+      ),
+    },
+    {
+      key: "customer",
+      header: "Клиент",
+      render: (order) => (
+        <div>
+          <div className="font-medium">{order.customer.name}</div>
+          <div className="text-xs text-muted-foreground">{order.customer.phone}</div>
+        </div>
+      ),
+    },
+    {
+      key: "description",
+      header: "Описание",
+      render: (order) => order.description,
+      showTooltip: true,
+    },
+    {
+      key: "address",
+      header: "Адрес",
+      render: (order) => order.address,
+      showTooltip: true,
+    },
+    {
+      key: "status",
+      header: "Статус",
+      render: (order) => <OrderBadge status={order.status} />,
+    },
+    {
+      key: "price",
+      header: "Сумма",
+      render: (order) => (
+        <span className="font-bold text-primary">{kopecksToRubles(order.price)} ₽</span>
+      ),
+    },
+    {
+      key: "createdAt",
+      header: "Дата",
+      render: (order) => formatDate(order.createdAt),
+    },
+    {
+      key: "actions",
+      header: "Действия",
+      render: (order) => (
+        <Link to={`/admin/orders/${order.id}`}>
+          <Button variant="outline" size="sm">
+            <Eye className="h-4 w-4 mr-2" />
+            Просмотр
+          </Button>
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
       {/* Заголовок */}
@@ -66,19 +137,46 @@ export const OrdersPage = () => {
       <OrderStats stats={stats} />
       
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold">{t("orders.list")}</h2>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          <h2 className="text-xl font-semibold">{t("orders.list")}</h2>
+          <div className="flex border rounded-md overflow-hidden">
+            <Button
+              variant={viewMode === "cards" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("cards")}
+              className="rounded-none border-r border-r-border data-[variant=ghost]:border-0"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "table" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("table")}
+              className="rounded-none"
+            >
+              <TableIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
         
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">{t("orders.empty")}</p>
           </div>
-        ) : (
+        ) : viewMode === "cards" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             {orders.map((order) => (
               <OrderCard key={order.id} order={order} />
             ))}
           </div>
+        ) : (
+          <DataTable
+            data={orders}
+            getRowKey={(order) => order.id}
+            emptyMessage={t("orders.empty")}
+            columns={tableColumns}
+          />
         )}
       </div>
     </div>
