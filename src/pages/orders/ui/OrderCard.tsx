@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import { Link } from "react-router-dom";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { kopecksToRubles } from "@/core/utils/price";
 
 interface OrderCardProps {
@@ -14,7 +14,8 @@ interface OrderCardProps {
 }
 
 export const OrderCard = ({ order }: OrderCardProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   return (
     <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
@@ -29,7 +30,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 {t("orders.order")} #{order.id.slice(-8)}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {formatDate(order.createdAt)}
+                {formatDateTimeLocal(order.createdAt, locale)}
               </p>
             </div>
           </div>

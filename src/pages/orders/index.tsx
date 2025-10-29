@@ -7,14 +7,15 @@ import { OrderStats } from "./ui/OrderStats";
 import { Button } from "@/core/components/ui/button";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { kopecksToRubles } from "@/core/utils/price";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
 
 export const OrdersPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   
   // Использование localStorage через React Query
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
@@ -103,7 +104,7 @@ export const OrdersPage = () => {
     {
       key: "createdAt",
       header: "Дата",
-      render: (order) => formatDate(order.createdAt),
+      render: (order) => formatDateTimeLocal(order.createdAt, locale),
     },
     {
       key: "actions",

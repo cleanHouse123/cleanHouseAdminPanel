@@ -12,8 +12,12 @@ import {
     TableRow,
 } from "@/core/components/ui/table";
 import { useAdTokens, useCreateAdToken } from "@/modules/ad-tokens/hooks/useAdTokens";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { useTranslation } from "react-i18next";
 
 export default function AdTokensPage() {
+  const { i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
     const [reference, setReference] = useState("");
     const { data: adTokens, isLoading } = useAdTokens();
     const createAdTokenMutation = useCreateAdToken();
@@ -103,7 +107,7 @@ export default function AdTokensPage() {
                             adTokens?.map((token) => (
                                 <TableRow key={token.id}>
                                     <TableCell>
-                                        {new Date(token.createdAt).toLocaleString("ru-RU")}
+                                        {formatDateTimeLocal(token.createdAt, locale)}
                                     </TableCell>
                                     <TableCell className="font-medium">{token.reference}</TableCell>
                                     <TableCell className="font-mono text-sm">

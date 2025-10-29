@@ -10,13 +10,14 @@ import { User } from "@/modules/users/types";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
 import { UserRole } from "@/core/types/user";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { SelectField } from "@/core/components/ui/SelectField";
 
 export const UsersPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
   const { data: paginationData, isLoading, error } = useUsers();
   
@@ -212,7 +213,7 @@ export const UsersPage = () => {
                 {
                   key: "createdAt",
                   header: "Дата создания",
-                  render: (user) => formatDate(user.createdAt),
+                  render: (user) => formatDateTimeLocal(user.createdAt, locale),
                 },
               ] as Column<User>[]
             }

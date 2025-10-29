@@ -9,12 +9,13 @@ import { LocationStats } from "./ui/LocationStats";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { LocationDto } from "@/modules/locations/types";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
 
 export const LocationsPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
   
   const { data: locations, isLoading, error } = useLocations();
@@ -112,7 +113,7 @@ export const LocationsPage = () => {
     {
       key: "createdAt",
       header: "Дата создания",
-      render: (location) => formatDate(location.created_at),
+      render: (location) => formatDateTimeLocal(location.created_at, locale),
     },
     {
       key: "actions",

@@ -18,14 +18,15 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { User } from "@/modules/users/types";
 import { UserRole } from "@/core/types/user";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 
 interface UserCardProps {
   user: User;
 }
 
 export const UserCard = ({ user }: UserCardProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   return (
     <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
@@ -40,7 +41,7 @@ export const UserCard = ({ user }: UserCardProps) => {
                 {user.name}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {formatDate(user.createdAt)}
+                {formatDateTimeLocal(user.createdAt, locale)}
               </p>
             </div>
           </div>
@@ -155,7 +156,7 @@ export const UserCard = ({ user }: UserCardProps) => {
               {t("users.lastUpdated")}
             </p>
             <p className="text-xs sm:text-sm truncate">
-              {formatDate(user.updatedAt)}
+              {formatDateTimeLocal(user.updatedAt, locale)}
             </p>
           </div>
         </div>

@@ -16,7 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { LocationDto } from "@/modules/locations/types";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { DeleteLocation } from "@/modules/locations/components/delete-location";
 
 interface LocationCardProps {
@@ -24,7 +24,8 @@ interface LocationCardProps {
 }
 
 export const LocationCard = ({ location }: LocationCardProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   const getLocationDisplayName = () => {
     const parts = [
@@ -74,7 +75,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
                 {getLocationDisplayName()}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {formatDate(location.created_at)}
+                {formatDateTimeLocal(location.created_at, locale)}
               </p>
             </div>
           </div>
@@ -176,7 +177,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
               {t("locations.lastUpdated")}
             </p>
             <p className="text-xs sm:text-sm truncate">
-              {formatDate(location.updated_at)}
+              {formatDateTimeLocal(location.updated_at, locale)}
             </p>
           </div>
         </div>

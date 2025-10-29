@@ -10,10 +10,11 @@ import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { Admin } from "@/modules/admins/types/admin";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 
 export const AdminPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
   const { data: admins, isLoading, error } = useAdmins();
   
@@ -110,7 +111,7 @@ export const AdminPage = () => {
     {
       key: "createdAt",
       header: "Дата создания",
-      render: (admin) => formatDate(admin.createdAt),
+      render: (admin) => formatDateTimeLocal(admin.createdAt, locale),
     },
   ];
 

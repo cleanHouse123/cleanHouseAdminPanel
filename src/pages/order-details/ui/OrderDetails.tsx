@@ -23,15 +23,16 @@ import { DeleteOrder } from "@/modules/orders/components/delete-order";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/constants/routes";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 
 interface OrderDetailsProps {
   order: OrderResponseDto;
 }
 
 export const OrderDetails = ({ order }: OrderDetailsProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   return (
     <div className="space-y-6">
@@ -97,7 +98,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               </span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {formatDate(order.createdAt)}
+              {formatDateTimeLocal(order.createdAt, locale)}
             </span>
           </div>
 
@@ -109,7 +110,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               </span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {formatDate(order.updatedAt)}
+              {formatDateTimeLocal(order.updatedAt, locale)}
             </span>
           </div>
 
@@ -122,7 +123,9 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 </span>
               </div>
               <span className="text-sm text-muted-foreground">
-                {formatDate(order.payments.find(payment => payment.status === 'paid')?.createdAt || '')}
+                {order.payments.find(payment => payment.status === 'paid')?.createdAt 
+                  ? formatDateTimeLocal(order.payments.find(payment => payment.status === 'paid')!.createdAt, locale)
+                  : ''}
               </span>
             </div>
           )}
@@ -174,7 +177,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               <h4 className="font-medium text-sm text-muted-foreground mb-1">
                 {t("orders.deliveryTime")}
               </h4>
-              <p className="text-sm break-words">{formatDate(order.scheduledAt || "")}</p>
+              <p className="text-sm break-words">{order.scheduledAt ? formatDateTimeLocal(order.scheduledAt, locale) : ""}</p>
             </div>
           </div>
 

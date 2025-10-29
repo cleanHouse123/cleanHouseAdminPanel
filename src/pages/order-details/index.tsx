@@ -5,10 +5,11 @@ import { ArrowLeft, Package, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@/core/components/ui/button";
-import { formatDate } from "@/core/utils/date";
+import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 
 export const OrderDetailsPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const { orderId } = useParams<{ orderId: string }>();
 
   const {
@@ -72,7 +73,7 @@ export const OrderDetailsPage = () => {
               {t("orders.order")} #{order.id.slice(-8)}
             </h1>
             <p className="text-muted-foreground">
-              {formatDate(order.createdAt)}
+              {formatDateTimeLocal(order.createdAt, locale)}
             </p>
           </div>
         </div>
