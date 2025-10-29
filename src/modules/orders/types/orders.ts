@@ -1,10 +1,10 @@
 export enum OrderStatus {
-  NEW = 'new',
-  PAID = 'paid',
-  ASSIGNED = 'assigned',
-  IN_PROGRESS = 'in_progress',
-  DONE = 'done',
-  CANCELED = 'canceled',
+  NEW = "new",
+  PAID = "paid",
+  ASSIGNED = "assigned",
+  IN_PROGRESS = "in_progress",
+  DONE = "done",
+  CANCELED = "canceled",
 }
 
 export interface CreateOrderDto {
@@ -62,6 +62,13 @@ export interface OrderResponseDto {
     lat: number;
     lng: number;
   };
+  addressDetails?: {
+    floor?: number;
+    building?: number;
+    entrance?: string;
+    apartment?: number;
+    buildingBlock?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -70,7 +77,6 @@ export interface OrdersListResponse {
   orders: OrderResponseDto[];
   total: number;
 }
-
 
 export interface TakeOrderDto {
   courierId: string;

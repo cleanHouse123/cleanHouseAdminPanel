@@ -58,12 +58,12 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ChangeOrderStatus
               orderId={order.id}
-              onStatusChange={() => {}}
+              onStatusChange={() => { }}
               currentStatus={order.status}
             />
             <AssignCurrier
               orderId={order.id}
-              onStatusChange={() => {}}
+              onStatusChange={() => { }}
               currentStatus={order.status}
               currentCurrierId={order.currier?.id}
             />
@@ -123,7 +123,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 </span>
               </div>
               <span className="text-sm text-muted-foreground">
-                {order.payments.find(payment => payment.status === 'paid')?.createdAt 
+                {order.payments.find(payment => payment.status === 'paid')?.createdAt
                   ? formatDateTimeLocal(order.payments.find(payment => payment.status === 'paid')!.createdAt, locale)
                   : ''}
               </span>
@@ -156,6 +156,47 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 {t("orders.orderAddress")}
               </h4>
               <p className="text-sm break-words">{order.address}</p>
+
+              {order.addressDetails && (
+                <div className="mt-3 pt-3 border-t space-y-2">
+                  <h5 className="font-medium text-xs text-muted-foreground mb-2">
+                    Детали адреса:
+                  </h5>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {order.addressDetails.building && (
+                      <div>
+                        <span className="text-muted-foreground">Здание:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.building}</span>
+                      </div>
+                    )}
+                    {order.addressDetails.buildingBlock && (
+                      <div>
+                        <span className="text-muted-foreground">Корпус:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.buildingBlock}</span>
+                      </div>
+                    )}
+                    {order.addressDetails.entrance && (
+                      <div>
+                        <span className="text-muted-foreground">Подъезд:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.entrance}</span>
+                      </div>
+                    )}
+                    {order.addressDetails.floor && (
+                      <div>
+                        <span className="text-muted-foreground">Этаж:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.floor}</span>
+                      </div>
+                    )}
+                    {order.addressDetails.apartment && (
+                      <div>
+                        <span className="text-muted-foreground">Квартира:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.apartment}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {order.coordinates && (
                 <div className="mt-2">
                   <Button
