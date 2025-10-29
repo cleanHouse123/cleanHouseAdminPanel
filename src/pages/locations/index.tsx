@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { useLocations, useDeleteLocation } from "@/modules/locations/hooks/useLocations";
 import { MapPin, XCircle, LayoutGrid, Table as TableIcon, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -12,15 +13,18 @@ import { LocationDto } from "@/modules/locations/types";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
+import { Pagination } from "@/core/components/ui/Pagination";
 
 export const LocationsPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
-  
-  const { data: locations, isLoading, error } = useLocations();
+  const [page, setPage] = useState(1);
+  const limit = 40;
+
+  const { data: paginationData, isLoading, error } = useLocations({ page, limit });
   const { mutateAsync: deleteLocation } = useDeleteLocation();
-  
+
   // Использование localStorage через React Query
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("locationsViewMode", "table");
 
@@ -151,8 +155,10 @@ export const LocationsPage = () => {
     );
   }
 
-  const locationsList = locations || [];
-  const total = locationsList.length;
+  const locationsList = paginationData?.data || [];
+  const total = paginationData?.total || 0;
+  const totalPages = Math.ceil(total / limit);
+  const hasNextPage = page < totalPages;
 
   const stats = {
     total,
@@ -176,7 +182,7 @@ export const LocationsPage = () => {
           </div>
         </div>
 
-        <Button 
+        <Button
           onClick={handleCreateLocation}
           className="w-full sm:w-auto flex-shrink-0"
         >
@@ -185,7 +191,7 @@ export const LocationsPage = () => {
       </div>
 
       <LocationStats stats={stats} />
-      
+
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <h2 className="text-xl font-semibold">{t("locations.list")}</h2>
@@ -208,7 +214,7 @@ export const LocationsPage = () => {
             </Button>
           </div>
         </div>
-        
+
         {locationsList.length === 0 ? (
           <div className="text-center py-12">
             <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -226,6 +232,17 @@ export const LocationsPage = () => {
             getRowKey={(location) => location.id}
             emptyMessage={t("locations.empty")}
             columns={tableColumns}
+          />
+        )}
+
+        {total > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            onPrevious={() => setPage((prev) => Math.max(1, prev - 1))}
+            onNext={() => setPage((prev) => (hasNextPage ? prev + 1 : prev))}
+            className="mt-6"
           />
         )}
       </div>

@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { locationsApi } from "../api";
 import { CreateLocationDto, LocationDto } from "../types";
+import { PaginationResponse } from "@/core/types/api";
 
-export const useLocations = () => {
-  return useQuery<LocationDto[]>({
-    queryKey: ["locations"],
-    queryFn: () => locationsApi.findAll(),
+export const useLocations = (params?: { page?: number; limit?: number }) => {
+  return useQuery<PaginationResponse<LocationDto>>({
+    queryKey: ["locations", params],
+    queryFn: () => locationsApi.findAll(params),
     staleTime: 2 * 60 * 1000,
     refetchInterval: 2 * 60 * 1000,
   });

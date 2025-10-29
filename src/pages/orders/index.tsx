@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useOrders } from "@/modules/orders/hooks/useOrders";
 import { Package, XCircle, LayoutGrid, Table as TableIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -12,17 +13,20 @@ import { kopecksToRubles } from "@/core/utils/price";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
+import { Pagination } from "@/core/components/ui/Pagination";
 
 export const OrdersPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
-  
+
   // Использование localStorage через React Query
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
-  
+  const [page, setPage] = useState(1);
+  const limit = 20;
+
   const { data: ordersData, isLoading, error } = useOrders({
-    page: 1,
-    limit: 20,
+    page,
+    limit,
   });
 
   if (isLoading) {
@@ -49,6 +53,8 @@ export const OrdersPage = () => {
 
   const orders = ordersData?.orders || [];
   const total = ordersData?.total || 0;
+  const totalPages = Math.ceil(total / limit);
+  const hasNextPage = page < totalPages;
 
   const stats = {
     total,
@@ -136,7 +142,7 @@ export const OrdersPage = () => {
       </div>
 
       <OrderStats stats={stats} />
-      
+
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <h2 className="text-xl font-semibold">{t("orders.list")}</h2>
@@ -159,7 +165,7 @@ export const OrdersPage = () => {
             </Button>
           </div>
         </div>
-        
+
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -177,6 +183,17 @@ export const OrdersPage = () => {
             getRowKey={(order) => order.id}
             emptyMessage={t("orders.empty")}
             columns={tableColumns}
+          />
+        )}
+
+        {total > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            onPrevious={() => setPage((prev) => Math.max(1, prev - 1))}
+            onNext={() => setPage((prev) => (hasNextPage ? prev + 1 : prev))}
+            className="mt-6"
           />
         )}
       </div>

@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminsApi } from "../api";
 import { Admin, CreateAdminDto } from "../types/admin";
+import { PaginationResponse } from "@/core/types/api";
 
-
-export const useAdmins = () => {
-  return useQuery<Admin[]>({
-    queryKey: ['admins'],
-    queryFn: () => adminsApi.findAll(),
+export const useAdmins = (params?: { page?: number; limit?: number }) => {
+  return useQuery<PaginationResponse<Admin>>({
+    queryKey: ['admins', params],
+    queryFn: () => adminsApi.findAll(params),
   });
 };
 

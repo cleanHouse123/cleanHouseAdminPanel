@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAdmins } from "@/modules/admins/hooks/useAdmins";
 import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -11,13 +12,16 @@ import { Admin } from "@/modules/admins/types/admin";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { Pagination } from "@/core/components/ui/Pagination";
 
 export const AdminPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
-  const { data: admins, isLoading, error } = useAdmins();
-  
+  const [page, setPage] = useState(1);
+  const limit = 20;
+  const { data: paginationData, isLoading, error } = useAdmins({ page, limit });
+
   // Использование localStorage через React Query
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("adminsViewMode", "table");
 
@@ -43,8 +47,10 @@ export const AdminPage = () => {
     );
   }
 
-  const adminsList = admins || [];
-  const total = adminsList.length;
+  const adminsList = paginationData?.data || [];
+  const total = paginationData?.total || 0;
+  const totalPages = Math.ceil(total / limit);
+  const hasNextPage = page < totalPages;
 
   const stats = {
     total,
@@ -100,7 +106,7 @@ export const AdminPage = () => {
               "text-xs",
               admin.isEmailVerified && admin.isPhoneVerified ? "text-green-600" : "text-red-600"
             )}>
-              {admin.isEmailVerified && admin.isPhoneVerified 
+              {admin.isEmailVerified && admin.isPhoneVerified
                 ? t("admins.verified")
                 : t("admins.notVerified")}
             </span>
@@ -130,7 +136,7 @@ export const AdminPage = () => {
           </div>
         </div>
 
-        <Button 
+        <Button
           onClick={handleCreateAdmin}
           className="w-full sm:w-auto flex-shrink-0"
         >
@@ -139,7 +145,7 @@ export const AdminPage = () => {
       </div>
 
       <AdminStats stats={stats} />
-      
+
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <h2 className="text-xl font-semibold">{t("admins.list")}</h2>
@@ -162,7 +168,7 @@ export const AdminPage = () => {
             </Button>
           </div>
         </div>
-        
+
         {adminsList.length === 0 ? (
           <div className="text-center py-12">
             <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -180,6 +186,17 @@ export const AdminPage = () => {
             getRowKey={(admin) => admin.id}
             emptyMessage={t("admins.empty")}
             columns={tableColumns}
+          />
+        )}
+
+        {total > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            onPrevious={() => setPage((prev) => Math.max(1, prev - 1))}
+            onNext={() => setPage((prev) => (hasNextPage ? prev + 1 : prev))}
+            className="mt-6"
           />
         )}
       </div>
