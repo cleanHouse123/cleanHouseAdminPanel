@@ -195,6 +195,12 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                         <span className="font-medium">{order.addressDetails.apartment}</span>
                       </div>
                     )}
+                    {order.addressDetails.domophone && (
+                      <div>
+                        <span className="text-muted-foreground">Домофон:</span>{" "}
+                        <span className="font-medium">{order.addressDetails.domophone}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

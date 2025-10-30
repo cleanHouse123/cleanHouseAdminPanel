@@ -68,6 +68,7 @@ export interface OrderResponseDto {
     entrance?: string;
     apartment?: number;
     buildingBlock?: string;
+    domophone?: string;
   };
   createdAt: string;
   updatedAt: string;
