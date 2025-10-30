@@ -2,6 +2,7 @@ import { Button } from "@/core/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/inputs/input";
+import { PhoneInput } from "@/core/components/ui/inputs/phone-input";
 import { createCurrierSchema } from "@/modules/users/forms/create-currier-form";
 import { useCreateCurrier } from "@/modules/users/hooks/useUsers";
 import { CreateUserDto } from "@/modules/users/types/index";
@@ -113,9 +114,12 @@ export const CreateCurrierPage = () => {
                   <FormItem>
                     <FormLabel className="text-foreground">{t("createCurrier.phone.label")}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="tel"
+                      <PhoneInput
+                        ref={field.ref}
+                        name={field.name}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        onChange={field.onChange}
                         placeholder={t("createCurrier.phone.placeholder")}
                         className="text-foreground placeholder:text-muted-foreground"
                       />

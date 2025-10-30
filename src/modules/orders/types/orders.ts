@@ -14,7 +14,7 @@ export interface CreateOrderDto {
   phone: string;
   coordinates?: {
     lat: number;
-    lng: number;
+    lon: number;
   };
 }
 
@@ -60,7 +60,7 @@ export interface OrderResponseDto {
   payments: PaymentDto[];
   coordinates?: {
     lat: number;
-    lng: number;
+    lon: number;
   };
   addressDetails?: {
     floor?: number;

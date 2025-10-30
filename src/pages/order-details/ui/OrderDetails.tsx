@@ -34,6 +34,8 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const navigate = useNavigate();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
+  console.log(order.coordinates, "order.coordinates");
+  
   return (
     <div className="space-y-6">
       <Card>
@@ -199,14 +201,34 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
 
               {order.coordinates && (
                 <div className="mt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center gap-2"
-                  >
-                    <Navigation className="h-4 w-4" />
-                    {t("orders.viewOnMap")}
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                      onClick={() => {
+                        const { lat, lon } = order.coordinates!;
+                        const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+                        window.open(url, "_blank", "noopener,noreferrer");
+                      }}
+                    >
+                      <Navigation className="h-4 w-4" />
+                      Google Maps
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                      onClick={() => {
+                        const { lat, lon } = order.coordinates!;
+                        const url = `https://yandex.ru/maps/?whatshere[point]=${lon},${lat}&whatshere[zoom]=16`;
+                        window.open(url, "_blank", "noopener,noreferrer");
+                      }}
+                    >
+                      <Navigation className="h-4 w-4" />
+                      Яндекс.Карты
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
