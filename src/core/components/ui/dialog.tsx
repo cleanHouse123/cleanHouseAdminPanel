@@ -34,7 +34,7 @@ const DialogContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === 'ar' || i18n.language === 'he';
-  
+
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -63,11 +63,11 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === 'ar' || i18n.language === 'he';
-  
+
   return (
     <div
       className={cn(
-        `flex flex-col space-y-1.5 ${isRTL ? 'text-right' : 'text-center sm:text-left'}`,
+        `flex flex-col space-y-1.5 ${false ? 'text-right' : 'text-center sm:text-left'}`,
         className
       )}
       {...props}

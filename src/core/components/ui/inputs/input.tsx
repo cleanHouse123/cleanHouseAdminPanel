@@ -17,10 +17,10 @@ const sizeStyles: Record<InputSize, string> = {
 
 
 const baseStyles =
-    "w-full rounded-[24px] transition-all px-6 py-4 text-base placeholder:text-muted-foreground bg-background shadow-[0px_4px_20px_0px_rgba(0,0,0,0.05)] outline-none border-none focus:outline-none focus:border-none focus:ring-2 focus:ring-ring";
+    "w-full rounded-[24px] transition-all px-6 py-4 text-base placeholder:text-muted-foreground bg-background shadow-[0px_4px_20px_0px_rgba(0,0,0,0.05)] outline-none border border-border/50 focus:outline-none focus:border-border focus:ring-2 focus:ring-ring";
 
 const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
-    ({ className, type = "text", size = "md", autoComplete, name,  ...props }, ref,) => {
+    ({ className, type = "text", size = "md", autoComplete, name, ...props }, ref,) => {
         const inputStyles = cn(
             baseStyles,
             sizeStyles[size],

@@ -79,7 +79,7 @@ export const SubscriptionPlansPage = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold">Планы подписок</h1>
-                    <p className="text-gray-600">Управление планами подписок</p>
+                    <p className="text-gray-200">Управление планами подписок</p>
                 </div>
                 <Button onClick={handleCreatePlan} className="flex items-center gap-2">
                     <Plus className="w-4 h-4" />
@@ -116,11 +116,11 @@ export const SubscriptionPlansPage = () => {
             {/* Форма создания/редактирования */}
             <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
                 <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
+                    {/* <DialogHeader>
                         <DialogTitle>
                             {editingPlan ? 'Редактировать план подписки' : 'Создать план подписки'}
                         </DialogTitle>
-                    </DialogHeader>
+                    </DialogHeader> */}
                     <SubscriptionPlanForm
                         plan={editingPlan || undefined}
                         onSubmit={handleFormSubmit}

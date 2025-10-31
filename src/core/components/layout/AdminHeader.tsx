@@ -33,7 +33,12 @@ export const AdminHeader = () => {
       <div className="flex h-full">
         {/* Левая часть - как nav bar */}
         <div className="hidden md:flex w-64 bg-muted/50 border-r border-b border-border items-center px-6">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <img
+              src="/favicon/android-chrome-512x512.png"
+              alt="ЧистоДом"
+              className="h-8 w-8 object-contain"
+            />
             <h1 className="text-xl font-semibold text-foreground">ЧистоДом</h1>
           </div>
         </div>
@@ -52,6 +57,11 @@ export const AdminHeader = () => {
               <Menu className="h-6 w-6" />
             )}
           </Button>
+          <img
+            src="/favicon/android-chrome-512x512.png"
+            alt="ЧистоДом"
+            className="h-6 w-6 object-contain mr-2"
+          />
           <h1 className="text-lg font-semibold text-foreground">Admin</h1>
         </div>
 

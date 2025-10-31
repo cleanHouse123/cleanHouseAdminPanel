@@ -100,7 +100,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
     };
 
     return (
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-2xl mx-auto border-none bg-transparent">
             <CardHeader>
                 <CardTitle>
                     {plan ? 'Редактировать план подписки' : 'Создать план подписки'}

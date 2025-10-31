@@ -46,7 +46,7 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync: loginByEmail } = useLoginByEmail();
-  const {setUser, setAccessToken, setRefreshToken, user, accessToken, refreshToken} = useAuthStore()
+  const { setUser, setAccessToken, setRefreshToken, user, accessToken, refreshToken } = useAuthStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const LoginPage = () => {
       <div className="w-full flex justify-end">
         <LanguageSwitcher />
 
-        <ThemeToggle/>
+        <ThemeToggle />
       </div>
       <div className="w-full max-w-md flex-1 flex items-center justify-center">
         <Card className="shadow-xl border-0 bg-card w-full">
@@ -131,7 +131,7 @@ export const LoginPage = () => {
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="!text-foreground" />
                     </FormItem>
                   )}
                 />
@@ -167,13 +167,13 @@ export const LoginPage = () => {
                           </button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="!text-foreground" />
                     </FormItem>
                   )}
                 />
 
                 {form.formState.errors.root && (
-                  <div className="text-destructive text-sm text-center bg-destructive/10 p-3 rounded-lg border border-destructive/20">
+                  <div className="text-foreground text-sm text-center bg-muted/10 p-3 rounded-lg border border-border">
                     {form.formState.errors.root.message}
                   </div>
                 )}
