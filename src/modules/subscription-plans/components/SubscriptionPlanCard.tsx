@@ -28,12 +28,12 @@ function formatOrdersLimit(ordersLimit?: number, usedOrders?: number) {
 export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPlanCardProps) => {
     return (
         <Card className={cn(
-            'relative transition-all hover:shadow-lg h-full flex flex-col justify-between gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8',
-            plan.popular && 'ring-2 ring-blue-500'
+            'relative transition-all hover:shadow-lg h-full flex flex-col justify-between gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8 bg-white text-gray-900 border border-gray-200',
+            plan.popular && 'ring-2 ring-[#FF5D00]'
         )}>
             {plan.popular && (
-                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-blue-500 text-white">🔥 Популярная</Badge>
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="rounded px-2 py-[2px] text-white text-[12px] bg-[#FF5D00]">🔥 Популярная</span>
                 </div>
             )}
 
@@ -41,13 +41,13 @@ export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPla
                 <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
                     {plan.name}
                 </h3>
-                <div className="text-xs sm:text-sm font-medium text-blue-600">
+                <div className="text-xs sm:text-sm font-medium text-[#FF5D00]">
                     {plan.duration}
                 </div>
-                <p className="text-xs sm:text-sm text-gray-800">{plan.description}</p>
+                <p className="text-xs sm:text-sm text-gray-700">{plan.description}</p>
 
                 {/* Информация о лимитах заказов */}
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 bg-gray-50 rounded-lg p-2 sm:p-3">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-800 bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-200">
                     <Package className="w-4 h-4 flex-shrink-0" />
                     <span className="flex-1">{formatOrdersLimit(plan.ordersLimit, plan.usedOrders)}</span>
                 </div>
@@ -83,16 +83,16 @@ export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPla
                         variant="outline"
                         size="sm"
                         onClick={() => onEdit(plan)}
-                        className="flex-1 min-w-0"
+                        className="flex-1 min-w-0 border border-gray-300 bg-white text-gray-900 hover:bg-white hover:border-gray-400 hover:text-gray-950"
                     >
                         <Edit className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span className="truncate">Редактировать</span>
                     </Button>
                     <Button
-                        variant="destructive"
+                        variant="outline"
                         size="sm"
                         onClick={() => onDelete(plan)}
-                        className="flex-1 min-w-0"
+                        className="flex-1 min-w-0 border border-red-300 text-red-600 bg-white hover:bg-white hover:border-red-400 hover:text-red-700"
                     >
                         <Trash2 className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span className="truncate">Удалить</span>

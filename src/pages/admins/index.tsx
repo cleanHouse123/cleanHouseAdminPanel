@@ -117,7 +117,10 @@ export const AdminPage = () => {
     {
       key: "createdAt",
       header: "Дата создания",
-      render: (admin) => formatDateTimeLocal(admin.createdAt, locale),
+      render: (admin) => {
+        const iso = new Date(admin.createdAt as unknown as string | number | Date).toISOString();
+        return formatDateTimeLocal(iso, locale);
+      },
     },
   ];
 
