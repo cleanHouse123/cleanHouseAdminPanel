@@ -19,8 +19,9 @@ export interface Column<T> {
   header: string;
   render?: (item: T) => React.ReactNode;
   className?: string;
-  showTooltip?: boolean; // Автоматически показывать tooltip для обрезанного текста
-  maxWidth?: string; // Максимальная ширина для обрезки
+  showTooltip?: boolean;
+  maxWidth?: string;
+  truncate?: boolean;
 }
 
 interface DataTableProps<T> {
@@ -38,16 +39,23 @@ export function DataTable<T>({
   getRowKey,
   className,
 }: DataTableProps<T>) {
-  // Обёртка для автоматического добавления tooltip
   const wrapWithTooltip = (content: React.ReactNode, column: Column<T>) => {
+    const shouldTruncate = column.truncate !== false;
+
     if (column.showTooltip && typeof content === 'string') {
+      const contentNode = shouldTruncate ? (
+        <div className={`truncate ${column.maxWidth || 'max-w-xs'}`}>
+          {content}
+        </div>
+      ) : (
+        <div>{content}</div>
+      );
+
       return (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className={`truncate ${column.maxWidth || 'max-w-xs'}`}>
-                {content}
-              </div>
+              {contentNode}
             </TooltipTrigger>
             <TooltipContent className="max-w-[250px] break-words">
               <p className="whitespace-pre-wrap">{content}</p>
@@ -57,7 +65,6 @@ export function DataTable<T>({
       );
     }
     
-    // Если content - это React элемент с truncate, обернуть в tooltip
     if (column.showTooltip && React.isValidElement(content)) {
       const props = content.props;
       if (props.className?.includes('truncate')) {

@@ -19,7 +19,6 @@ export const OrdersPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
-  // Использование localStorage через React Query
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
   const [page, setPage] = useState(1);
   const limit = 20;
@@ -94,6 +93,7 @@ export const OrdersPage = () => {
       header: "Адрес",
       render: (order) => order.address,
       showTooltip: true,
+      truncate: false,
     },
     {
       key: "status",
@@ -128,7 +128,6 @@ export const OrdersPage = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
-      {/* Заголовок */}
       <div className="flex items-center gap-3">
         <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
           <Package className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
