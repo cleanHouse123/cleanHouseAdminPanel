@@ -220,7 +220,8 @@
     "timeline": "Временная шкала",
     "createdAt": "Создан",
     "updatedAt": "Обновлен",
-    "paidAt": "Время оплаты"
+    "paidAt": "Время оплаты",
+    "noDescription": "Нет описания"
   },
   "locations": {
     "title": "Локации",

@@ -85,7 +85,17 @@ export const OrdersPage = () => {
     {
       key: "description",
       header: "Описание",
-      render: (order) => order.description,
+      render: (order) => {
+        const description = order.description?.trim();
+        if (!description) {
+          return (
+            <span className="text-muted-foreground italic">
+              {t("orders.noDescription")}
+            </span>
+          );
+        }
+        return description;
+      },
       showTooltip: true,
     },
     {

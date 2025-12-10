@@ -208,7 +208,8 @@
     "timeline": "Timeline",
     "createdAt": "Created",
     "updatedAt": "Updated",
-    "paidAt": "Payment Time"
+    "paidAt": "Payment Time",
+    "noDescription": "No description"
   },
   "locations": {
     "title": "Locations",

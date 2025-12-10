@@ -44,7 +44,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           <h4 className="font-medium text-xs sm:text-sm text-muted-foreground mb-1">
             {t("orders.description")}
           </h4>
-          <p className="text-xs sm:text-sm break-words">{order.description}</p>
+          <p className={`text-xs sm:text-sm break-words ${!order.description?.trim() ? "text-muted-foreground italic" : ""}`}>
+            {order.description?.trim() || t("orders.noDescription")}
+          </p>
         </div>
 
         {/* Адрес */}
