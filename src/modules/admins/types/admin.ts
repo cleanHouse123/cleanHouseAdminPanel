@@ -21,3 +21,10 @@ export interface CreateAdminDto {
   phone: string;
   password: string;
 }
+
+export interface UpdateAdminDto {
+  name?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
+}

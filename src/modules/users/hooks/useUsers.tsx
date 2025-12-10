@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usersApi } from "../api";
-import { User, CreateUserDto, FindUsersQueryDto } from "../types/index";
+import { User, CreateUserDto, FindUsersQueryDto, UpdateUserDto } from "../types/index";
 import { UserRole } from "@/core/types/user";
 
 interface UseUsersProps {
@@ -18,6 +18,14 @@ export const useUsers = ({ params, enabled = true }: UseUsersProps = {}) => {
   });
 };
 
+export const useUser = (id: string) => {
+  return useQuery<User>({
+    queryKey: ["user", id],
+    queryFn: () => usersApi.findOne(id),
+    enabled: !!id,
+  });
+};
+
 export const useGetCurriers = () => {
   return useQuery({
     queryKey: ["curriers"],
@@ -29,6 +37,29 @@ export const useCreateCurrier = () => {
   const queryClient = useQueryClient();
   return useMutation<User, Error, CreateUserDto>({
     mutationFn: (data) => usersApi.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["curriers"] });
+    },
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<User, Error, { id: string; data: UpdateUserDto }>({
+    mutationFn: ({ id, data }) => usersApi.update(id, data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["curriers"] });
+      queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
+    },
+  });
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, string>({
+    mutationFn: (id) => usersApi.remove(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["curriers"] });

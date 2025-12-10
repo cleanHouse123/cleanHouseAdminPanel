@@ -1,10 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { Badge } from "@/core/components/ui/badge";
-import { Mail, Phone, User, Shield, CheckCircle, XCircle, Calendar } from "lucide-react";
+import { Button } from "@/core/components/ui/button";
+import { Mail, Phone, User, Shield, CheckCircle, XCircle, Calendar, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/core/lib/utils";
 import { Admin } from "@/modules/admins/types/admin";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { DeleteAdmin } from "@/modules/admins/components/delete-admin";
 
 interface AdminCardProps {
   admin: Admin;
@@ -12,6 +15,7 @@ interface AdminCardProps {
 
 export const AdminCard = ({ admin }: AdminCardProps) => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   return (
@@ -106,6 +110,19 @@ export const AdminCard = ({ admin }: AdminCardProps) => {
               {formatDateTimeLocal(admin.updatedAt, locale)}
             </p>
           </div>
+        </div>
+
+        {/* Кнопки действий */}
+        <div className="pt-3 border-t flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(`/admin/admin/${admin.id}/edit`)}
+            title={t("common.edit")}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <DeleteAdmin adminId={admin.id} adminName={admin.name} />
         </div>
       </CardContent>
     </Card>

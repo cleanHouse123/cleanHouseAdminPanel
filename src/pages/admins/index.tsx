@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAdmins } from "@/modules/admins/hooks/useAdmins";
-import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle } from "lucide-react";
+import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AdminCard } from "./ui/AdminCard";
 import { AdminStats } from "./ui/AdminStats";
@@ -13,6 +13,7 @@ import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { Pagination } from "@/core/components/ui/Pagination";
+import { DeleteAdmin } from "@/modules/admins/components/delete-admin";
 
 export const AdminPage = () => {
   const { t, i18n } = useTranslation();
@@ -121,6 +122,23 @@ export const AdminPage = () => {
         const iso = new Date(admin.createdAt as unknown as string | number | Date).toISOString();
         return formatDateTimeLocal(iso, locale);
       },
+    },
+    {
+      key: "actions",
+      header: "Действия",
+      render: (admin) => (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(`/admin/admin/${admin.id}/edit`)}
+            title={t("common.edit")}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <DeleteAdmin adminId={admin.id} adminName={admin.name} />
+        </div>
+      ),
     },
   ];
 

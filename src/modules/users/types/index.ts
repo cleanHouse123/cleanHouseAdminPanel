@@ -17,6 +17,12 @@ export interface CreateUserDto {
   phone: string;
 }
 
+export interface UpdateUserDto {
+  name?: string;
+  phone?: string;
+  email?: string;
+}
+
 export interface FindUsersQueryDto {
   name?: string;
   phone?: string;

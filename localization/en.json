@@ -37,6 +37,7 @@
     "customer": "Customer",
     "currier": "Courier",
     "create": "Create",
+    "edit": "Edit",
     "authError": "Authentication error",
     "loginError": "Invalid email or password",
     "registerError": "Error creating account. Please try again."
@@ -285,6 +286,30 @@
     "success": "Administrator created successfully",
     "error": "Error creating administrator"
   },
+  "editAdmin": {
+    "title": "Edit Administrator",
+    "description": "Update administrator information",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter administrator name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter administrator email"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Leave empty if you don't want to change password",
+      "hint": "Leave empty if you don't want to change password"
+    },
+    "submit": "Save Changes",
+    "success": "Administrator updated successfully",
+    "notFound": "Administrator not found"
+  },
   "createLocation": {
     "title": "Create Location",
     "description": "Fill out the form to create a new location",
@@ -322,6 +347,35 @@
     "submit": "Create Courier",
     "success": "Courier created successfully",
     "error": "Error creating courier"
+  },
+  "editUser": {
+    "title": "Edit User",
+    "description": "Update user information",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter user name"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter user email"
+    },
+    "submit": "Save Changes",
+    "success": "User updated successfully",
+    "notFound": "User not found"
+  },
+  "deleteAdmin": {
+    "confirm": "Are you sure you want to delete this administrator?",
+    "success": "Administrator deleted successfully",
+    "error": "Error deleting administrator"
+  },
+  "deleteUser": {
+    "confirm": "Are you sure you want to delete this user?",
+    "success": "User deleted successfully",
+    "error": "Error deleting user"
   },
   "users": {
     "title": "Users",

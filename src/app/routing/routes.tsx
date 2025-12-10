@@ -5,8 +5,10 @@ import { RegisterPage } from "@/pages/register";
 import { createBrowserRouter } from "react-router-dom";
 import { AdminPage } from "@/pages/admins";
 import { CreateAdminPage } from "@/pages/create-admin";
+import { EditAdminPage } from "@/pages/edit-admin";
 import { UsersPage } from "@/pages/users";
 import { CreateCurrierPage } from "@/pages/create-currier";
+import { EditUserPage } from "@/pages/edit-user";
 import { OrderDetailsPage } from "@/pages/order-details";
 import { SubscriptionPlansPage } from "@/pages/subscription-plans";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -58,12 +60,20 @@ export const router = createBrowserRouter([
         element: <AdminPage />,
       },
       {
+        path: "admin/:id/edit",
+        element: <EditAdminPage />,
+      },
+      {
         path: "create-admin",
         element: <CreateAdminPage />,
       },
       {
         path: "users",
         element: <UsersPage />,
+      },
+      {
+        path: "users/:id/edit",
+        element: <EditUserPage />,
       },
       {
         path: "create-currier",

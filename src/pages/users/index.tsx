@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/core/components/ui/button";
 import { useUsers } from "@/modules/users/hooks/useUsers";
-import { Shield, XCircle, CheckCircle } from "lucide-react";
+import { Shield, XCircle, CheckCircle, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserStats } from "./ui/UserStats";
@@ -13,6 +13,7 @@ import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { SelectField } from "@/core/components/ui/SelectField";
 import { Pagination } from "@/core/components/ui/Pagination";
+import { DeleteUser } from "@/modules/users/components/delete-user";
 
 export const UsersPage = () => {
   const { t, i18n } = useTranslation();
@@ -194,6 +195,23 @@ export const UsersPage = () => {
                   render: (user) => formatDateTimeLocal(
                     user.createdAt instanceof Date ? user.createdAt.toISOString() : String(user.createdAt),
                     locale
+                  ),
+                },
+                {
+                  key: "actions",
+                  header: "Действия",
+                  render: (user) => (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/admin/users/${user.id}/edit`)}
+                        title={t("common.edit")}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <DeleteUser userId={user.id} userName={user.name} />
+                    </div>
                   ),
                 },
               ] as Column<User>[]
