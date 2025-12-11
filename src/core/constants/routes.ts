@@ -24,5 +24,8 @@ export const ROUTES = {
     AD_TOKENS: {
       LIST: "/admin/ad-tokens",
     },
+    WORK_TIME: {
+      CREATE: "/admin/work-time",
+    },
   },
 } as const;

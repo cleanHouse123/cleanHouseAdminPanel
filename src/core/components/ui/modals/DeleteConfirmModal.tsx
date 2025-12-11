@@ -16,7 +16,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   onOpenChange,
   onConfirm,
   loading,
-  textKey = "admin.common.deleteConfirm"
+  textKey = "common.deleteConfirm"
 }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar' || i18n.language === 'he';

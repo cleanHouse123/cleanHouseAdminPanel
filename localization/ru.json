@@ -26,6 +26,7 @@
     "email": "Email",
     "password": "Пароль",
     "confirmPassword": "Подтвердите пароль",
+    "deleteConfirm": "Вы уверены, что хотите удалить этот элемент?",
     "firstName": "Имя",
     "lastName": "Фамилия",
     "phone": "Телефон",

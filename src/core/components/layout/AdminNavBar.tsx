@@ -1,6 +1,6 @@
 import { Button } from '@/core/components/ui/button'
 import { ROUTES } from '@/core/constants/routes'
-import { List, Users, CreditCard, MapPin, Link } from 'lucide-react'
+import { List, Users, CreditCard, MapPin, Link, Clock } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -87,6 +87,18 @@ export const AdminNavBar = () => {
       >
         <Link className="h-4 w-4" />
         Рекламные ссылки
+      </Button>
+
+      <Button
+        variant={isActive(ROUTES.ADMIN.WORK_TIME.CREATE) ? 'default' : 'ghost'}
+        onClick={() => navigate(`${ROUTES.ADMIN.WORK_TIME.CREATE}`)}
+        className={`justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.WORK_TIME.CREATE)
+          ? 'bg-secondary hover:bg-secondary text-foreground'
+          : 'hover:bg-accent text-foreground'
+          }`}
+      >
+        <Clock className="h-4 w-4" />
+        Рабочие часы
       </Button>
     </nav>
   )

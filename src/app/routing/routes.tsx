@@ -15,6 +15,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { LocationsPage } from "@/pages/locations";
 import { CreateLocationPage } from "@/pages/create-location";
 import AdTokensPage from "@/pages/ad-tokens";
+import { WorkTimePage } from "@/pages/work-time";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
       {
         path: "ad-tokens",
         element: <AdTokensPage />,
+      },
+      {
+        path: "work-time",
+        element: <WorkTimePage />,
       },
     ],
   },

@@ -2,12 +2,12 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://cleanhouse123-cleanhouseapi-209c.twc1.net",
+  baseURL: "http://localhost:4000",
   withCredentials: false,
 });
 
 export const axiosPublic = axios.create({
-  baseURL: "https://cleanhouse123-cleanhouseapi-209c.twc1.net",
+  baseURL: "http://localhost:4000",
   withCredentials: false,
 });
 
