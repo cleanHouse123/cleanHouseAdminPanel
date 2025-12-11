@@ -2,12 +2,12 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: false,
 });
 
 export const axiosPublic = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: false,
 });
 
