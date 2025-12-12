@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAdmins } from "@/modules/admins/hooks/useAdmins";
-import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle, Pencil } from "lucide-react";
+import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AdminCard } from "./ui/AdminCard";
 import { AdminStats } from "./ui/AdminStats";
@@ -86,7 +86,7 @@ export const AdminPage = () => {
     {
       key: "role",
       header: "Роль",
-      render: (admin) => (
+      render: () => (
         <Badge className="bg-purple-100 text-purple-800 border-purple-200">
           {t("admins.role.admin")}
         </Badge>
@@ -128,15 +128,15 @@ export const AdminPage = () => {
       header: "Действия",
       render: (admin) => (
         <div className="flex items-center gap-2">
-          <Button
+          {/* <Button
             variant="outline"
             size="sm"
             onClick={() => navigate(`/admin/admin/${admin.id}/edit`)}
             title={t("common.edit")}
           >
             <Pencil className="h-4 w-4" />
-          </Button>
-          <DeleteAdmin adminId={admin.id} adminName={admin.name} />
+          </Button> */}
+          <DeleteAdmin adminId={admin.id} />
         </div>
       ),
     },

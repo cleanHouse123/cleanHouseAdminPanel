@@ -214,6 +214,23 @@
       "canceledSubtitle": "Отменены"
     },
     "orderId": "ID заказа",
+    "filters": {
+      "title": "Фильтры и сортировка",
+      "reset": "Сбросить",
+      "status": "Статус",
+      "selectStatus": "Выберите статус",
+      "allStatuses": "Все статусы",
+      "customerId": "ID клиента",
+      "customerIdPlaceholder": "Введите ID клиента",
+      "currierId": "ID курьера",
+      "currierIdPlaceholder": "Введите ID курьера",
+      "dateRange": "Период",
+      "sort": "Сортировка",
+      "selectSort": "Выберите сортировку",
+      "noSort": "Без сортировки",
+      "sortAsc": "По возрастанию даты",
+      "sortDesc": "По убыванию даты"
+    },
     "notFound": "Заказ не найден",
     "noCourierAssigned": "Курьер не назначен",
     "viewOnMap": "Посмотреть на карте",

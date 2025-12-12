@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useOrders } from "@/modules/orders/hooks/useOrders";
 import { Package, XCircle, LayoutGrid, Table as TableIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -14,19 +13,17 @@ import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
 import { Pagination } from "@/core/components/ui/Pagination";
+import { OrderFilters } from "./ui/OrderFilters";
+import { useOrderFilters } from "@/modules/orders/hooks/useOrderFilters";
 
 export const OrdersPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
-  const [page, setPage] = useState(1);
-  const limit = 20;
+  const { filters, updateFilters, getApiParams } = useOrderFilters();
 
-  const { data: ordersData, isLoading, error } = useOrders({
-    page,
-    limit,
-  });
+  const { data: ordersData, isLoading, error } = useOrders(getApiParams());
 
   if (isLoading) {
     return (
@@ -52,8 +49,9 @@ export const OrdersPage = () => {
 
   const orders = ordersData?.orders || [];
   const total = ordersData?.total || 0;
+  const limit = 20;
   const totalPages = Math.ceil(total / limit);
-  const hasNextPage = page < totalPages;
+  const hasNextPage = filters.page < totalPages;
 
   const stats = {
     total,
@@ -175,6 +173,9 @@ export const OrdersPage = () => {
           </div>
         </div>
 
+        {/* Фильтры и сортировка */}
+        <OrderFilters locale={locale} />
+
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -192,16 +193,17 @@ export const OrdersPage = () => {
             getRowKey={(order) => order.id}
             emptyMessage={t("orders.empty")}
             columns={tableColumns}
+            className="min-h-[420px]"
           />
         )}
 
         {total > 0 && (
           <Pagination
-            currentPage={page}
+            currentPage={filters.page}
             totalPages={totalPages}
             hasNextPage={hasNextPage}
-            onPrevious={() => setPage((prev) => Math.max(1, prev - 1))}
-            onNext={() => setPage((prev) => (hasNextPage ? prev + 1 : prev))}
+            onPrevious={() => updateFilters({ page: Math.max(1, filters.page - 1) })}
+            onNext={() => updateFilters({ page: hasNextPage ? filters.page + 1 : filters.page })}
             className="mt-6"
           />
         )}

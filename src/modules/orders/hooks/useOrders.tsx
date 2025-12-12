@@ -35,6 +35,9 @@ export const useOrders = (params?: {
   status?: OrderStatus;
   customerId?: string;
   currierId?: string;
+  startScheduledAtDate?: string;
+  endScheduledAtDate?: string;
+  sortOrder?: "ASC" | "DESC";
 }) => {
   return useQuery<OrdersListResponse>({
     queryKey: ["orders", params],

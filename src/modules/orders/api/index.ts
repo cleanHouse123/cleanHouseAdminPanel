@@ -24,6 +24,9 @@ export const ordersApi = {
     status?: OrderStatus;
     customerId?: string;
     currierId?: string;
+    startScheduledAtDate?: string;
+    endScheduledAtDate?: string;
+    sortOrder?: "ASC" | "DESC";
   }) =>
     axiosInstance
       .get<OrdersListResponse>("/orders", { params })

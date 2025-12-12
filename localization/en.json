@@ -210,7 +210,24 @@
     "createdAt": "Created",
     "updatedAt": "Updated",
     "paidAt": "Payment Time",
-    "noDescription": "No description"
+    "noDescription": "No description",
+    "filters": {
+      "title": "Filters and Sorting",
+      "reset": "Reset",
+      "status": "Status",
+      "selectStatus": "Select status",
+      "allStatuses": "All statuses",
+      "customerId": "Customer ID",
+      "customerIdPlaceholder": "Enter customer ID",
+      "currierId": "Courier ID",
+      "currierIdPlaceholder": "Enter courier ID",
+      "dateRange": "Date Range",
+      "sort": "Sort",
+      "selectSort": "Select sorting",
+      "noSort": "No sorting",
+      "sortAsc": "Ascending by date",
+      "sortDesc": "Descending by date"
+    }
   },
   "locations": {
     "title": "Locations",

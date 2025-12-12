@@ -8,11 +8,10 @@ import { toast } from "sonner";
 
 interface DeleteAdminProps {
   adminId: string;
-  adminName?: string;
   onDelete?: () => void;
 }
 
-export const DeleteAdmin = ({ adminId, adminName, onDelete }: DeleteAdminProps) => {
+export const DeleteAdmin = ({ adminId, onDelete }: DeleteAdminProps) => {
   const { t } = useTranslation();
   const { mutateAsync: deleteAdmin, isPending } = useDeleteAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +23,7 @@ export const DeleteAdmin = ({ adminId, adminName, onDelete }: DeleteAdminProps) 
       setIsModalOpen(false);
       onDelete?.();
     } catch (error) {
+      console.error(error);
       toast.error(t("deleteAdmin.error"));
     }
   };
