@@ -91,6 +91,21 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           )}
         </div>
 
+        {/* Количество пакетов */}
+        {order.numberPackages !== undefined && (
+          <div className="flex items-center justify-between pt-2 border-t">
+            <div className="flex items-center gap-2">
+              <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-muted-foreground">
+                {t("orders.numberPackages")}
+              </span>
+            </div>
+            <span className="text-base sm:text-lg font-bold">
+              {order.numberPackages}
+            </span>
+          </div>
+        )}
+
         {/* Сумма заказа */}
         <div className="flex items-center justify-between pt-2 border-t">
           <div className="flex items-center gap-2">

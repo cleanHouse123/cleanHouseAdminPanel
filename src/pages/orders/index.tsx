@@ -116,6 +116,13 @@ export const OrdersPage = () => {
       ),
     },
     {
+      key: "numberPackages",
+      header: "Кол-во пакетов",
+      render: (order) => (
+        <span className="font-medium">{order.numberPackages ?? "-"}</span>
+      ),
+    },
+    {
       key: "createdAt",
       header: "Дата",
       render: (order) => formatDateTimeLocal(order.createdAt, locale),

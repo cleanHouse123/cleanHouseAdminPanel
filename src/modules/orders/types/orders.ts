@@ -58,6 +58,7 @@ export interface OrderResponseDto {
   scheduledAt: string;
   notes: string;
   payments: PaymentDto[];
+  numberPackages?: number;
   coordinates?: {
     lat: number;
     lon: number;

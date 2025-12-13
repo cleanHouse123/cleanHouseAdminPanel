@@ -178,6 +178,7 @@
     "customer": "Клиент",
     "courier": "Курьер",
     "amount": "Сумма",
+    "numberPackages": "Количество пакетов",
     "unknown": "Неизвестно",
     "status": {
       "pending": "Ожидает",

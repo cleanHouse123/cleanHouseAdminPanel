@@ -81,6 +81,23 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Количество пакетов */}
+      {order.numberPackages !== undefined && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              {t("orders.numberPackages")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">
+              {order.numberPackages}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

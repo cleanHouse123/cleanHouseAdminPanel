@@ -250,6 +250,18 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
             </div>
           </div>
 
+          {order.numberPackages !== undefined && (
+            <div className="flex items-start gap-3">
+              <Package className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+              <div className="min-w-0 flex-1">
+                <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                  {t("orders.numberPackages")}
+                </h4>
+                <p className="text-sm font-semibold">{order.numberPackages}</p>
+              </div>
+            </div>
+          )}
+
         </CardContent>
       </Card>
 
