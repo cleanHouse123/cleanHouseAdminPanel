@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Button } from "@/core/components/ui/button";
 import { useUsers } from "@/modules/users/hooks/useUsers";
-import { Shield, XCircle, CheckCircle, Pencil } from "lucide-react";
+import { useUserFilters } from "@/modules/users/hooks/useUserFilters";
+import { Shield, XCircle, CheckCircle, Pencil, Search, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserStats } from "./ui/UserStats";
@@ -14,27 +14,24 @@ import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { SelectField } from "@/core/components/ui/SelectField";
 import { Pagination } from "@/core/components/ui/Pagination";
 import { DeleteUser } from "@/modules/users/components/delete-user";
+import React from "react";
 
 export const UsersPage = () => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
   const limit = 20;
-  const [selectedRole, setSelectedRole] = useState<string>("all");
+
+  const { filters, updateFilters, getApiParams } = useUserFilters();
   const { data: paginationData, isLoading, error } = useUsers({
-    params: {
-      page,
-      limit,
-      role: selectedRole !== "all" ? selectedRole as UserRole : undefined
-    }
+    params: getApiParams(limit),
   });
 
 
   const usersList = paginationData?.data || [];
   const total = paginationData?.total || 0;
   const totalPages = Math.ceil(total / limit);
-  const hasNextPage = page < totalPages;
+  const hasNextPage = filters.page < totalPages;
 
   // Фильтрация по роли делается на сервере через API параметры
 
@@ -71,6 +68,142 @@ export const UsersPage = () => {
     navigate("/admin/create-currier");
   };
 
+  // Функция для проверки, есть ли данные в колонке
+  const hasColumnData = (getValue: (user: User) => any): boolean => {
+    return usersList.some((user) => {
+      const value = getValue(user);
+      return value !== null && value !== undefined && value !== "";
+    });
+  };
+
+  // Функция для получения значения с проверкой на пустоту
+  const getValueOrEmpty = (value: any): React.ReactNode => {
+    if (value === null || value === undefined || value === "") {
+      return <span className="text-muted-foreground text-sm">Нет данных</span>;
+    }
+    return value;
+  };
+
+  // Определяем колонки с проверкой на наличие данных
+  const allColumns: Column<User>[] = [
+    {
+      key: "name",
+      header: "Имя",
+      render: (user) => getValueOrEmpty(user.name),
+      showTooltip: true,
+    },
+    {
+      key: "email",
+      header: "Email",
+      render: (user) => getValueOrEmpty(user.email),
+      showTooltip: true,
+    },
+    {
+      key: "phone",
+      header: "Телефон",
+      render: (user) => getValueOrEmpty(user.phone),
+      showTooltip: true,
+    },
+    {
+      key: "role",
+      header: "Роль",
+      render: (user) => (
+        <Badge
+          className={cn(
+            user.role === UserRole.ADMIN
+              ? "bg-purple-100 text-purple-800 border-purple-200"
+              : user.role === UserRole.CUSTOMER
+                ? "bg-blue-100 text-blue-800 border-blue-200"
+                : user.role === UserRole.CURRIER
+                  ? "bg-green-100 text-green-800 border-green-200"
+                  : "bg-gray-100 text-gray-800 border-gray-200"
+          )}
+        >
+          {user.role === UserRole.ADMIN ? t("users.role.admin") :
+            user.role === UserRole.CUSTOMER ? t("users.role.customer") :
+              user.role === UserRole.CURRIER ? t("users.role.currier") : user.role}
+        </Badge>
+      ),
+    },
+    {
+      key: "verification",
+      header: "Верификация",
+      render: (user) => (
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            {user.isEmailVerified && user.isPhoneVerified ? (
+              <CheckCircle className="h-4 w-4 text-green-600" />
+            ) : (
+              <XCircle className="h-4 w-4 text-red-600" />
+            )}
+            <span className={cn(
+              "text-xs",
+              user.isEmailVerified && user.isPhoneVerified ? "text-green-600" : "text-red-600"
+            )}>
+              {user.isEmailVerified && user.isPhoneVerified
+                ? t("users.verified")
+                : t("users.notVerified")}
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "createdAt",
+      header: "Дата создания",
+      render: (user) => {
+        if (!user.createdAt) {
+          return <span className="text-muted-foreground text-sm">Нет данных</span>;
+        }
+        return formatDateTimeLocal(
+          user.createdAt instanceof Date ? user.createdAt.toISOString() : String(user.createdAt),
+          locale
+        );
+      },
+    },
+    {
+      key: "actions",
+      header: "Действия",
+      render: (user) => (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(`/admin/users/${user.id}/edit`)}
+            title={t("common.edit")}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <DeleteUser userId={user.id} userName={user.name} />
+        </div>
+      ),
+    },
+  ];
+
+  // Фильтруем колонки - скрываем те, где нет данных
+  const visibleColumns = allColumns.filter((column) => {
+    // Колонки "Роль", "Верификация" и "Действия" всегда показываем
+    if (column.key === "role" || column.key === "verification" || column.key === "actions") {
+      return true;
+    }
+
+    // Для остальных проверяем наличие данных
+    if (column.key === "name") {
+      return hasColumnData((user) => user.name);
+    }
+    if (column.key === "email") {
+      return hasColumnData((user) => user.email);
+    }
+    if (column.key === "phone") {
+      return hasColumnData((user) => user.phone);
+    }
+    if (column.key === "createdAt") {
+      return hasColumnData((user) => user.createdAt);
+    }
+
+    return true;
+  });
+
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
@@ -97,22 +230,48 @@ export const UsersPage = () => {
       <UserStats stats={stats} />
 
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-          <h2 className="text-xl font-semibold">{t("users.list")}</h2>
-          <SelectField
-            options={[
-              { value: "all", label: "Все пользователи" },
-              { value: UserRole.CURRIER, label: "Курьеры" },
-              { value: UserRole.CUSTOMER, label: "Клиенты" },
-            ]}
-            value={selectedRole}
-            onChange={(value) => {
-              setSelectedRole(value);
-              setPage(1);
-            }}
-            placeholder="Выберите роль"
-            className="w-[180px]"
-          />
+        <div className="flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <h2 className="text-xl font-semibold">{t("users.list")}</h2>
+            <SelectField
+              options={[
+                { value: "all", label: "Все пользователи" },
+                { value: UserRole.CURRIER, label: "Курьеры" },
+                { value: UserRole.CUSTOMER, label: "Клиенты" },
+              ]}
+              value={filters.role}
+              onChange={(value) => {
+                updateFilters({ role: value, page: 1 });
+              }}
+              placeholder="Выберите роль"
+              className="w-[180px]"
+            />
+          </div>
+          
+          {/* Поле поиска */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Поиск по имени, email или телефону..."
+              value={filters.search}
+              onChange={(e) => {
+                updateFilters({ search: e.target.value, page: 1 });
+              }}
+              className="w-full pl-10 pr-10 py-2 bg-background border border-input text-foreground placeholder:text-muted-foreground rounded-md h-10 outline-none focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+            />
+            {filters.search && (
+              <button
+                onClick={() => {
+                  updateFilters({ search: "", page: 1 });
+                }}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground transition-colors"
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
 
         {usersList.length === 0 ? (
@@ -125,107 +284,17 @@ export const UsersPage = () => {
             data={usersList}
             getRowKey={(user) => user.id}
             emptyMessage={t("users.empty")}
-            columns={
-              [
-                {
-                  key: "name",
-                  header: "Имя",
-                  render: (user) => user.name,
-                  showTooltip: true,
-                },
-                {
-                  key: "email",
-                  header: "Email",
-                  render: (user) => user.email,
-                  showTooltip: true,
-                },
-                {
-                  key: "phone",
-                  header: "Телефон",
-                  render: (user) => user.phone,
-                  showTooltip: true,
-                },
-                {
-                  key: "role",
-                  header: "Роль",
-                  render: (user) => (
-                    <Badge
-                      className={cn(
-                        user.role === UserRole.ADMIN
-                          ? "bg-purple-100 text-purple-800 border-purple-200"
-                          : user.role === UserRole.CUSTOMER
-                            ? "bg-blue-100 text-blue-800 border-blue-200"
-                            : user.role === UserRole.CURRIER
-                              ? "bg-green-100 text-green-800 border-green-200"
-                              : "bg-gray-100 text-gray-800 border-gray-200"
-                      )}
-                    >
-                      {user.role === UserRole.ADMIN ? t("users.role.admin") :
-                        user.role === UserRole.CUSTOMER ? t("users.role.customer") :
-                          user.role === UserRole.CURRIER ? t("users.role.currier") : user.role}
-                    </Badge>
-                  ),
-                },
-                {
-                  key: "verification",
-                  header: "Верификация",
-                  render: (user) => (
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        {user.isEmailVerified && user.isPhoneVerified ? (
-                          <CheckCircle className="h-4 w-4 text-green-600" />
-                        ) : (
-                          <XCircle className="h-4 w-4 text-red-600" />
-                        )}
-                        <span className={cn(
-                          "text-xs",
-                          user.isEmailVerified && user.isPhoneVerified ? "text-green-600" : "text-red-600"
-                        )}>
-                          {user.isEmailVerified && user.isPhoneVerified
-                            ? t("users.verified")
-                            : t("users.notVerified")}
-                        </span>
-                      </div>
-                    </div>
-                  ),
-                },
-                {
-                  key: "createdAt",
-                  header: "Дата создания",
-                  render: (user) => formatDateTimeLocal(
-                    user.createdAt instanceof Date ? user.createdAt.toISOString() : String(user.createdAt),
-                    locale
-                  ),
-                },
-                {
-                  key: "actions",
-                  header: "Действия",
-                  render: (user) => (
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate(`/admin/users/${user.id}/edit`)}
-                        title={t("common.edit")}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <DeleteUser userId={user.id} userName={user.name} />
-                    </div>
-                  ),
-                },
-              ] as Column<User>[]
-            }
+            columns={visibleColumns}
           />
         )}
 
         {total > 0 && (
           <Pagination
-            currentPage={page}
+            currentPage={filters.page}
             totalPages={totalPages}
             hasNextPage={hasNextPage}
-            onPrevious={() => setPage((prev) => Math.max(1, prev - 1))}
-            onNext={() => setPage((prev) => (hasNextPage ? prev + 1 : prev))}
+            onPrevious={() => updateFilters({ page: Math.max(1, filters.page - 1) })}
+            onNext={() => updateFilters({ page: hasNextPage ? filters.page + 1 : filters.page })}
             className="mt-6"
           />
         )}
