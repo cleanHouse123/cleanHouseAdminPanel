@@ -33,6 +33,8 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
         badgeColor: 'blue',
         popular: false,
         ordersLimit: undefined,
+        isReferralFreeEnabled: false,
+        minReferralsForFree: undefined,
     });
 
     const [newFeature, setNewFeature] = useState('');
@@ -50,6 +52,8 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 badgeColor: plan.badgeColor,
                 popular: plan.popular,
                 ordersLimit: plan.ordersLimit,
+                isReferralFreeEnabled: plan.isReferralFreeEnabled ?? false,
+                minReferralsForFree: plan.minReferralsForFree,
             });
             setNewFeature('');
         } else {
@@ -65,6 +69,8 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 badgeColor: 'blue',
                 popular: false,
                 ordersLimit: undefined,
+                isReferralFreeEnabled: false,
+                minReferralsForFree: undefined,
             });
             setNewFeature('');
         }
@@ -205,6 +211,42 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                         />
                         <Label htmlFor="popular">Популярная подписка</Label>
                     </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="isReferralFreeEnabled"
+                            checked={formData.isReferralFreeEnabled ?? false}
+                            onCheckedChange={(checked) =>
+                                setFormData(prev => ({ ...prev, isReferralFreeEnabled: checked }))
+                            }
+                        />
+                        <Label htmlFor="isReferralFreeEnabled">
+                            Доступна бесплатно по реферальной программе
+                        </Label>
+                    </div>
+
+                    {formData.isReferralFreeEnabled && (
+                        <div>
+                            <Label htmlFor="minReferralsForFree" className="mb-2 block">
+                                Минимальное количество рефералов для бесплатного доступа
+                            </Label>
+                            <Input
+                                id="minReferralsForFree"
+                                type="number"
+                                min={0}
+                                value={formData.minReferralsForFree ?? ''}
+                                onChange={(e) => {
+                                    const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                                    setFormData(prev => ({ ...prev, minReferralsForFree: value }));
+                                }}
+                                placeholder="Например: 5"
+                                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                                Укажите, сколько рефералов нужно пригласить, чтобы получить этот план бесплатно.
+                            </p>
+                        </div>
+                    )}
 
                     <div>
                         <Label htmlFor="ordersLimit" className="mb-2 block">Лимит заказов</Label>

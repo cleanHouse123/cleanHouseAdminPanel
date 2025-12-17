@@ -11,6 +11,8 @@ export interface SubscriptionPlan {
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
   usedOrders?: number; // количество использованных заказов
+  isReferralFreeEnabled?: boolean;
+  minReferralsForFree?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -26,6 +28,8 @@ export interface CreateSubscriptionPlanDto {
   badgeColor: "blue" | "green";
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  isReferralFreeEnabled?: boolean;
+  minReferralsForFree?: number;
 }
 
 export interface UpdateSubscriptionPlanDto
@@ -42,4 +46,6 @@ export interface SubscriptionPlanFormData {
   badgeColor: "blue" | "green";
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  isReferralFreeEnabled?: boolean;
+  minReferralsForFree?: number;
 }

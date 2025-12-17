@@ -1,7 +1,7 @@
 import { SubscriptionPlan } from '../types/subscription-plan';
 import { Card } from '@/core/components/ui/card';
 import { Button } from '@/core/components/ui/button';
-import { Edit, Trash2, Package } from 'lucide-react';
+import { Edit, Trash2, Package, Users } from 'lucide-react';
 import { cn } from '@/core/lib/utils';
 import { kopecksToRubles } from '@/core/utils/price';
 
@@ -50,6 +50,18 @@ export const SubscriptionPlanCard = ({ plan, onEdit, onDelete }: SubscriptionPla
                     <Package className="w-4 h-4 flex-shrink-0" />
                     <span className="flex-1">{formatOrdersLimit(plan.ordersLimit, plan.usedOrders)}</span>
                 </div>
+
+                {plan.isReferralFreeEnabled && (
+                    <div className="mt-2 flex items-center gap-2 text-xs sm:text-sm text-muted-foreground bg-muted rounded-lg p-2 sm:p-3 border border-border/50">
+                        <Users className="w-4 h-4 flex-shrink-0" />
+                        <span className="flex-1">
+                            Доступен по реферальной программе
+                            {typeof plan.minReferralsForFree === 'number' && plan.minReferralsForFree > 0
+                                ? ` (от ${plan.minReferralsForFree} рефералов)`
+                                : ''}
+                        </span>
+                    </div>
+                )}
 
                 <div className="flex flex-wrap gap-1 sm:gap-2 pt-1 sm:pt-2">
                     {plan.features.map((feature, index) => {
