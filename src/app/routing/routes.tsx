@@ -16,6 +16,7 @@ import { LocationsPage } from "@/pages/locations";
 import { CreateLocationPage } from "@/pages/create-location";
 import AdTokensPage from "@/pages/ad-tokens";
 import { WorkTimePage } from "@/pages/work-time";
+import { AddressesPage } from "@/pages/adresses";
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +100,10 @@ export const router = createBrowserRouter([
       {
         path: "work-time",
         element: <WorkTimePage />,
+      },
+      {
+        path: "addresses",
+        element: <AddressesPage />,
       },
     ],
   },

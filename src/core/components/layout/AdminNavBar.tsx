@@ -100,6 +100,18 @@ export const AdminNavBar = () => {
         <Clock className="h-4 w-4" />
         Рабочие часы
       </Button>
+
+      <Button
+        variant={isActive(ROUTES.ADMIN.ADDRESSES.LIST) ? 'default' : 'ghost'}
+        onClick={() => navigate(`${ROUTES.ADMIN.ADDRESSES.LIST}`)}
+        className={`justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.ADDRESSES.LIST)
+          ? 'bg-secondary hover:bg-secondary text-foreground'
+          : 'hover:bg-accent text-foreground'
+          }`}
+      >
+        <MapPin className="h-4 w-4" />
+        Адреса
+      </Button>
     </nav>
   )
 } 

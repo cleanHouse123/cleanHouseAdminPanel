@@ -27,5 +27,8 @@ export const ROUTES = {
     WORK_TIME: {
       CREATE: "/admin/work-time",
     },
+    ADDRESSES: {
+      LIST: "/admin/addresses",
+    },
   },
 } as const;
