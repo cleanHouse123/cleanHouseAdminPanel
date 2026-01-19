@@ -16,6 +16,7 @@ import {
   Calendar,
   Clock,
   CreditCard,
+  AlertTriangle,
 } from "lucide-react";
 import { ChangeOrderStatus } from "@/modules/orders/components/change-order-status";
 import { AssignCurrier } from "@/modules/orders/components/assign-currier";
@@ -24,6 +25,7 @@ import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/constants/routes";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { formatOverdueTime } from "@/core/utils/overdueUtils";
 
 interface OrderDetailsProps {
   order: OrderResponseDto;
@@ -52,9 +54,29 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               <span className="text-sm font-medium text-muted-foreground">
                 {t("orders.currentStatus")}:
               </span>
-              <OrderBadge status={order.status} />
+              <OrderBadge status={order.status} isOverdue={order.isOverdue} />
+              {order.isOverdue && (
+                <span className="text-xs text-destructive font-semibold">
+                  ⚠️ ПРОСРОЧЕН
+                </span>
+              )}
             </div>
           </div>
+          {order.isOverdue && order.overdueMinutes !== undefined && (
+            <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-destructive" />
+                <span className="text-sm font-semibold text-destructive">
+                  Просрочено на {formatOverdueTime(order.overdueMinutes)}
+                </span>
+              </div>
+              {order.scheduledAt && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Запланировано: {formatDateTimeLocal(order.scheduledAt, locale)}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Панель управления */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -246,7 +268,28 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               <h4 className="font-medium text-sm text-muted-foreground mb-1">
                 {t("orders.deliveryTime")}
               </h4>
-              <p className="text-sm break-words">{order.scheduledAt ? formatDateTimeLocal(order.scheduledAt, locale) : ""}</p>
+              {order.scheduledAt ? (
+                <>
+                  <p className="text-sm break-words">
+                    {order.isOverdue ? (
+                      <span className="text-destructive font-semibold">
+                        ⚠️ Просрочено: {formatDateTimeLocal(order.scheduledAt, locale)}
+                      </span>
+                    ) : (
+                      <span>
+                        Выполнить до: {formatDateTimeLocal(order.scheduledAt, locale)}
+                      </span>
+                    )}
+                  </p>
+                  {order.isOverdue && order.overdueMinutes !== undefined && (
+                    <p className="text-xs text-destructive mt-1 font-semibold">
+                      Просрочено на {formatOverdueTime(order.overdueMinutes)}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">Не указано</p>
+              )}
             </div>
           </div>
 

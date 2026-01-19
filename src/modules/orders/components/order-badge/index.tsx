@@ -7,39 +7,50 @@ import { ORDER_STATUS_COLOR_CLASS } from "@/core/constants/orderStatusColors";
 
 interface OrderBadgeProps {
   status: OrderStatus;
+  isOverdue?: boolean;
   className?: string;
 }
 
-const getStatusColor = (status: OrderStatus) => ORDER_STATUS_COLOR_CLASS[status] ?? "bg-gray-100 text-gray-800 border-gray-200";
 
-const getStatusText = (status: OrderStatus, t: TFunction) => {
+const getStatusText = (status: OrderStatus, isOverdue: boolean | undefined, t: TFunction) => {
+  if (isOverdue) {
+    return "ПРОСРОЧЕН";
+  }
+  
   switch (status) {
     case OrderStatus.NEW:
-      return t("orders.status.new");
+      return "НОВЫЙ";
     case OrderStatus.PAID:
-      return t("orders.status.paid");
+      return "НОВЫЙ";
     case OrderStatus.ASSIGNED:
-      return t("orders.status.assigned");
+      return "В РАБОТЕ";
     case OrderStatus.IN_PROGRESS:
-      return t("orders.status.in_progress");
+      return "В РАБОТЕ";
     case OrderStatus.DONE:
-      return t("orders.status.done");
+      return "ВЫПОЛНЕН";
     case OrderStatus.CANCELED:
-      return t("orders.status.canceled");
+      return "ОТМЕНЕН";
     default:
       return status;
   }
 };
 
-export const OrderBadge = ({ status, className }: OrderBadgeProps) => {
+const getStatusColor = (status: OrderStatus, isOverdue: boolean | undefined) => {
+  if (isOverdue) {
+    return "bg-destructive text-destructive-foreground border-destructive";
+  }
+  return ORDER_STATUS_COLOR_CLASS[status] ?? "bg-gray-100 text-gray-800 border-gray-200";
+};
+
+export const OrderBadge = ({ status, isOverdue, className }: OrderBadgeProps) => {
   const { t } = useTranslation();
 
   return (
     <Badge 
       variant="outline"
-      className={cn("border", getStatusColor(status), className)}
+      className={cn("border font-semibold", getStatusColor(status, isOverdue), className)}
     >
-      {getStatusText(status, t)}
+      {isOverdue ? "🔴" : ""} {getStatusText(status, isOverdue, t)}
     </Badge>
   );
 };

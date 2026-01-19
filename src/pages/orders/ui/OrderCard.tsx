@@ -1,12 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
-import { MapPin, Phone, User, Clock, Package, Eye } from "lucide-react";
+import { MapPin, Phone, User, Clock, Package, Eye, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import { Link } from "react-router-dom";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { kopecksToRubles } from "@/core/utils/price";
+import { formatOverdueTime } from "@/core/utils/overdueUtils";
+import { cn } from "@/core/lib/utils";
 
 interface OrderCardProps {
   order: OrderResponseDto;
@@ -17,24 +19,40 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   const { t, i18n } = useTranslation();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
+  const isOverdue = order.isOverdue;
+
   return (
-    <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+    <Card className={cn(
+      "bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]",
+      isOverdue && "border-l-4 border-l-destructive bg-red-50/50 dark:bg-red-950/20"
+    )}>
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
-              <Package className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-            </div>
+            {isOverdue ? (
+              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg flex-shrink-0">
+                <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-destructive" />
+              </div>
+            ) : (
+              <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                <Package className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              </div>
+            )}
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-base sm:text-lg font-semibold truncate">
+              <CardTitle className="text-base sm:text-lg font-semibold truncate flex items-center gap-2">
                 {t("orders.order")} #{order.id.slice(-8)}
+                {isOverdue && (
+                  <span className="text-xs text-destructive font-bold">
+                    ⚠️ ПРОСРОЧЕН
+                  </span>
+                )}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 {formatDateTimeLocal(order.createdAt, locale)}
               </p>
             </div>
           </div>
-          <OrderBadge status={order.status} className="self-start sm:self-center" />
+          <OrderBadge status={order.status} isOverdue={isOverdue} className="self-start sm:self-center" />
         </div>
       </CardHeader>
       
@@ -103,6 +121,33 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             <span className="text-base sm:text-lg font-bold">
               {order.numberPackages}
             </span>
+          </div>
+        )}
+
+        {/* Просроченность */}
+        {isOverdue && order.overdueMinutes !== undefined && (
+          <div className="flex items-center justify-between pt-2 border-t border-destructive/20">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-destructive flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-destructive font-semibold">
+                Просрочено на {formatOverdueTime(order.overdueMinutes)}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Запланированное время */}
+        {order.scheduledAt && !isOverdue && (
+          <div className="flex items-center gap-2 pt-2 border-t">
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-muted-foreground">
+                Запланировано
+              </p>
+              <p className="text-xs sm:text-sm">
+                {formatDateTimeLocal(order.scheduledAt, locale)}
+              </p>
+            </div>
           </div>
         )}
 

@@ -10,6 +10,8 @@ export interface OrderFilters {
   dateRange: DateRange | undefined;
   sortOrder: "ASC" | "DESC" | "none";
   page: number;
+  isOverdue?: boolean;
+  customerSearch?: string;
 }
 
 const defaultFilters: OrderFilters = {
@@ -19,6 +21,8 @@ const defaultFilters: OrderFilters = {
   dateRange: undefined,
   sortOrder: "none",
   page: 1,
+  isOverdue: undefined,
+  customerSearch: "",
 };
 
 /**
@@ -34,6 +38,8 @@ export function useOrderFilters() {
     const currierId = searchParams.get("currierId") || defaultFilters.currierId;
     const sortOrder = (searchParams.get("sortOrder") || defaultFilters.sortOrder) as "ASC" | "DESC" | "none";
     const page = parseInt(searchParams.get("page") || "1", 10);
+    const isOverdue = searchParams.get("isOverdue") === "true" ? true : searchParams.get("isOverdue") === "false" ? false : undefined;
+    const customerSearch = searchParams.get("customerSearch") || defaultFilters.customerSearch;
 
     // Парсинг дат из URL
     let dateRange: DateRange | undefined = undefined;
@@ -53,6 +59,8 @@ export function useOrderFilters() {
       dateRange,
       sortOrder,
       page,
+      isOverdue,
+      customerSearch,
     };
   }, [searchParams]);
 
@@ -85,6 +93,12 @@ export function useOrderFilters() {
         }
         if (updatedFilters.page > 1) {
           params.set("page", updatedFilters.page.toString());
+        }
+        if (updatedFilters.isOverdue !== undefined) {
+          params.set("isOverdue", updatedFilters.isOverdue.toString());
+        }
+        if (updatedFilters.customerSearch?.trim()) {
+          params.set("customerSearch", updatedFilters.customerSearch.trim());
         }
 
         setSearchParams(params, { replace: true });
@@ -120,7 +134,9 @@ export function useOrderFilters() {
     filters.customerId.trim() !== "" ||
     filters.currierId.trim() !== "" ||
     filters.dateRange?.from ||
-    filters.sortOrder !== defaultFilters.sortOrder;
+    filters.sortOrder !== defaultFilters.sortOrder ||
+    filters.isOverdue !== undefined ||
+    filters.customerSearch?.trim() !== "";
 
   // Подготовка параметров для API
   const getApiParams = useCallback(() => {
@@ -151,6 +167,8 @@ export function useOrderFilters() {
         ).toISOString(),
       }),
       ...(filters.sortOrder !== "none" && { sortOrder: filters.sortOrder as "ASC" | "DESC" }),
+      ...(filters.isOverdue !== undefined && { isOverdue: filters.isOverdue }),
+      ...(filters.customerSearch?.trim() && { customerSearch: filters.customerSearch.trim() }),
     };
   }, [filters]);
 

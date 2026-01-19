@@ -1,4 +1,4 @@
-import { Package, Clock, CheckCircle, DollarSign, XCircle } from "lucide-react";
+import { Package, Clock, CheckCircle, DollarSign, XCircle, AlertTriangle } from "lucide-react";
 import { StatCard } from "@/core/components/ui/stats/StatCard";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ interface OrderStatsProps {
     canceled: number;
     inProgress: number;
     completed: number;
+    overdue?: number;
   };
 }
 export const OrderStats = ({ stats }: OrderStatsProps) => {
@@ -64,6 +65,16 @@ export const OrderStats = ({ stats }: OrderStatsProps) => {
         iconBgColor="bg-red-100"
         iconColor="text-red-600"
       />
+      {stats.overdue !== undefined && stats.overdue > 0 && (
+        <StatCard
+          title={t("orders.stats.overdue") || "Просроченные"}
+          value={stats.overdue}
+          subtitle={t("orders.stats.overdueSubtitle") || "Требуют внимания"}
+          icon={AlertTriangle}
+          iconBgColor="bg-red-100"
+          iconColor="text-red-600"
+        />
+      )}
     </div>
   );
 };

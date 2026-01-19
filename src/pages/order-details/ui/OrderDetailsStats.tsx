@@ -5,11 +5,14 @@ import {
   Package, 
   Clock, 
   Calendar,
-  DollarSign
+  DollarSign,
+  AlertTriangle
 } from "lucide-react";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDateTimeLocal, formatDateOnlyLocal } from "@/core/utils/dateUtils";
 import { kopecksToRubles } from "@/core/utils/price";
+import { formatOverdueTime } from "@/core/utils/overdueUtils";
+import { cn } from "@/core/lib/utils";
 
 interface OrderDetailsStatsProps {
   order: OrderResponseDto;
@@ -22,15 +25,24 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Статус заказа */}
-      <Card>
+      <Card className={cn(order.isOverdue && "border-l-4 border-l-destructive bg-red-50/50 dark:bg-red-950/20")}>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-            <Package className="h-4 w-4" />
+            {order.isOverdue ? (
+              <AlertTriangle className="h-4 w-4 text-destructive" />
+            ) : (
+              <Package className="h-4 w-4" />
+            )}
             {t("orders.orderStatus")}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <OrderBadge status={order.status} />
+          <OrderBadge status={order.status} isOverdue={order.isOverdue} />
+          {order.isOverdue && order.overdueMinutes !== undefined && (
+            <div className="mt-2 text-xs text-destructive font-semibold">
+              ⚠️ Просрочено на {formatOverdueTime(order.overdueMinutes)}
+            </div>
+          )}
         </CardContent>
       </Card>
 

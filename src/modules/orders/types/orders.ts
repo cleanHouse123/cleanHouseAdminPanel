@@ -71,6 +71,8 @@ export interface OrderResponseDto {
     buildingBlock?: string;
     domophone?: string;
   };
+  isOverdue?: boolean;
+  overdueMinutes?: number;
   createdAt: string;
   updatedAt: string;
 }

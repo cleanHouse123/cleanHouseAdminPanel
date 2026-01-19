@@ -30,6 +30,7 @@ interface DataTableProps<T> {
   emptyMessage?: string;
   getRowKey: (item: T) => string;
   className?: string;
+  getRowClassName?: (item: T) => string;
 }
 
 export function DataTable<T>({
@@ -38,6 +39,7 @@ export function DataTable<T>({
   emptyMessage = "Нет данных",
   getRowKey,
   className,
+  getRowClassName,
 }: DataTableProps<T>) {
   const wrapWithTooltip = (content: React.ReactNode, column: Column<T>) => {
     const shouldTruncate = column.truncate !== false;
@@ -108,7 +110,10 @@ export function DataTable<T>({
             </TableRow>
           ) : (
             data.map((item) => (
-              <TableRow key={getRowKey(item)}>
+              <TableRow 
+                key={getRowKey(item)}
+                className={getRowClassName ? getRowClassName(item) : undefined}
+              >
                 {columns.map((column) => {
                   const content = column.render ? column.render(item) : (item[column.key as keyof T] as React.ReactNode);
                   return (

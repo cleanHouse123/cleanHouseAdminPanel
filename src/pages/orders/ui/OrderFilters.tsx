@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { X, Search, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { OrderStatus } from "@/modules/orders/types/orders";
 import { Button } from "@/core/components/ui/button";
@@ -6,6 +6,10 @@ import { SelectField } from "@/core/components/ui/SelectField";
 import { DateRangePicker } from "@/core/components/ui/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { useOrderFilters } from "@/modules/orders/hooks/useOrderFilters";
+import { Switch } from "@/core/components/ui/switch";
+import { useDebounce } from "@/core/hooks/utils/useDebounce";
+import { useEffect, useState } from "react";
+
 
 interface OrderFiltersProps {
   locale: "ru" | "en";
@@ -14,6 +18,13 @@ interface OrderFiltersProps {
 export function OrderFilters({ locale }: OrderFiltersProps) {
   const { t } = useTranslation();
   const { filters, updateFilters, resetFilters, hasActiveFilters } = useOrderFilters();
+  const [customerSearchValue, setCustomerSearchValue] = useState(filters.customerSearch || "");
+  const debouncedCustomerSearch = useDebounce(customerSearchValue, 500);
+
+  useEffect(() => {
+    updateFilters({ customerSearch: debouncedCustomerSearch, page: 1 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedCustomerSearch]);
 
   // Опции для фильтра по статусу
   const statusOptions = [
@@ -51,6 +62,46 @@ export function OrderFilters({ locale }: OrderFiltersProps) {
       </div>
 
       <div className="flex flex-wrap gap-4">
+        {/* Фильтр просроченных заказов */}
+        <div className="min-w-full max-w-full flex items-center justify-between p-3 border rounded-md bg-background">
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <div>
+              <label className="text-sm font-medium">
+                {t("orders.filters.showOverdue") || "Показать только просроченные"}
+              </label>
+              <p className="text-xs text-muted-foreground">
+                {t("orders.filters.showOverdueDescription") || "Заказы с истекшим сроком выполнения"}
+              </p>
+            </div>
+          </div>
+          <Switch
+            checked={filters.isOverdue === true}
+            onCheckedChange={(checked) => {
+              updateFilters({ isOverdue: checked || undefined, page: 1 });
+            }}
+          />
+        </div>
+
+        {/* Поиск по клиенту */}
+        <div className="min-w-full max-w-full">
+          <label className="text-sm font-medium mb-2 block">
+            {"Поиск по клиенту"}
+          </label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              value={customerSearchValue}
+              onChange={(e) => {
+                setCustomerSearchValue(e.target.value);
+              }}
+              placeholder={"Имя, телефон или email клиента"}
+              className="w-full py-2 pl-10 pr-3 bg-background border border-input text-foreground rounded-md outline-none focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+            />
+          </div>
+        </div>
+
         {/* Фильтр по статусу */}
         <div className="min-w-full max-w-full">
           <SelectField
@@ -59,40 +110,8 @@ export function OrderFilters({ locale }: OrderFiltersProps) {
             onChange={(value) => {
               updateFilters({ status: value, page: 1 });
             }}
-            placeholder={t("orders.filters.selectStatus") || "Выберите статус"}
+            placeholder={"Выберите статус"}
             label={t("orders.filters.status") || "Статус"}
-          />
-        </div>
-
-        {/* Фильтр по ID клиента */}
-        <div className="min-w-full max-w-full">
-          <label className="text-sm font-medium mb-2 block">
-            {t("orders.filters.customerId") || "ID клиента"}
-          </label>
-          <input
-            type="text"
-            value={filters.customerId}
-            onChange={(e) => {
-              updateFilters({ customerId: e.target.value, page: 1 });
-            }}
-            placeholder={t("orders.filters.customerIdPlaceholder") || "Введите ID клиента"}
-            className="w-full py-2 px-3 bg-background border border-input text-foreground rounded-md outline-none focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring"
-          />
-        </div>
-
-        {/* Фильтр по ID курьера */}
-        <div className="min-w-full max-w-full">
-          <label className="text-sm font-medium mb-2 block">
-            {t("orders.filters.currierId") || "ID курьера"}
-          </label>
-          <input
-            type="text"
-            value={filters.currierId}
-            onChange={(e) => {
-              updateFilters({ currierId: e.target.value, page: 1 });
-            }}
-            placeholder={t("orders.filters.currierIdPlaceholder") || "Введите ID курьера"}
-            className="w-full py-2 px-3 bg-background border border-input text-foreground rounded-md outline-none focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring"
           />
         </div>
 

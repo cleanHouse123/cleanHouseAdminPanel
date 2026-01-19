@@ -1,5 +1,5 @@
 import { useOrders } from "@/modules/orders/hooks/useOrders";
-import { Package, XCircle, LayoutGrid, Table as TableIcon } from "lucide-react";
+import { Package, XCircle, LayoutGrid, Table as TableIcon, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { OrderStatus, OrderResponseDto } from "@/modules/orders/types/orders";
 import { OrderCard } from "./ui/OrderCard";
@@ -15,6 +15,8 @@ import { Eye } from "lucide-react";
 import { Pagination } from "@/core/components/ui/Pagination";
 import { OrderFilters } from "./ui/OrderFilters";
 import { useOrderFilters } from "@/modules/orders/hooks/useOrderFilters";
+import { formatOverdueTime } from "@/core/utils/overdueUtils";
+import { cn } from "@/core/lib/utils";
 
 export const OrdersPage = () => {
   const { t, i18n } = useTranslation();
@@ -60,6 +62,7 @@ export const OrdersPage = () => {
     canceled: orders.filter(o => o.status === OrderStatus.CANCELED).length,
     inProgress: orders.filter(o => o.status === OrderStatus.IN_PROGRESS).length,
     completed: orders.filter(o => o.status === OrderStatus.DONE).length,
+    overdue: orders.filter(o => o.isOverdue === true).length,
   };
 
   const tableColumns: Column<OrderResponseDto>[] = [
@@ -67,7 +70,12 @@ export const OrdersPage = () => {
       key: "id",
       header: "ID заказа",
       render: (order) => (
-        <span className="font-mono text-xs">#{order.id.slice(-8)}</span>
+        <div className="flex items-center gap-2">
+          {order.isOverdue && (
+            <AlertTriangle className="h-4 w-4 text-destructive flex-shrink-0" />
+          )}
+          <span className="font-mono text-xs">#{order.id.slice(-8)}</span>
+        </div>
       ),
     },
     {
@@ -77,6 +85,9 @@ export const OrdersPage = () => {
         <div>
           <div className="font-medium">{order.customer.name}</div>
           <div className="text-xs text-muted-foreground">{order.customer.phone}</div>
+          {order.customer.email && (
+            <div className="text-xs text-muted-foreground">{order.customer.email}</div>
+          )}
         </div>
       ),
     },
@@ -106,7 +117,28 @@ export const OrdersPage = () => {
     {
       key: "status",
       header: "Статус",
-      render: (order) => <OrderBadge status={order.status} />,
+      render: (order) => <OrderBadge status={order.status} isOverdue={order.isOverdue} />,
+    },
+    {
+      key: "overdue",
+      header: "Просроченность",
+      render: (order) => {
+        if (order.isOverdue && order.overdueMinutes !== undefined) {
+          return (
+            <span className="text-destructive font-semibold text-sm">
+              ⚠️ Просрочено на {formatOverdueTime(order.overdueMinutes)}
+            </span>
+          );
+        }
+        if (order.scheduledAt) {
+          return (
+            <span className="text-xs text-muted-foreground">
+              До {formatDateTimeLocal(order.scheduledAt, locale)}
+            </span>
+          );
+        }
+        return <span className="text-xs text-muted-foreground">Не указано</span>;
+      },
     },
     {
       key: "price",
@@ -124,7 +156,7 @@ export const OrdersPage = () => {
     },
     {
       key: "createdAt",
-      header: "Дата",
+      header: "Дата создания",
       render: (order) => formatDateTimeLocal(order.createdAt, locale),
     },
     {
@@ -201,6 +233,12 @@ export const OrdersPage = () => {
             emptyMessage={t("orders.empty")}
             columns={tableColumns}
             className="min-h-[420px]"
+            getRowClassName={(order) =>
+              cn(
+                order.isOverdue &&
+                "bg-red-50/50 dark:bg-red-950/20 border-l-4 border-l-destructive hover:bg-red-100/50 dark:hover:bg-red-950/30"
+              )
+            }
           />
         )}
 

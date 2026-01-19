@@ -38,6 +38,8 @@ export const useOrders = (params?: {
   startScheduledAtDate?: string;
   endScheduledAtDate?: string;
   sortOrder?: "ASC" | "DESC";
+  isOverdue?: boolean;
+  customerSearch?: string;
 }) => {
   return useQuery<OrdersListResponse>({
     queryKey: ["orders", params],

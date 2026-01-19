@@ -27,6 +27,8 @@ export const ordersApi = {
     startScheduledAtDate?: string;
     endScheduledAtDate?: string;
     sortOrder?: "ASC" | "DESC";
+    isOverdue?: boolean;
+    customerSearch?: string;
   }) =>
     axiosInstance
       .get<OrdersListResponse>("/orders", { params })
