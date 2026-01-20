@@ -14,7 +14,7 @@ import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { SelectField } from "@/core/components/ui/SelectField";
 import { Pagination } from "@/core/components/ui/Pagination";
 import { DeleteUser } from "@/modules/users/components/delete-user";
-import React from "react";
+import React, { useMemo } from "react";
 
 export const UsersPage = () => {
   const { t, i18n } = useTranslation();
@@ -23,19 +23,35 @@ export const UsersPage = () => {
   const limit = 20;
 
   const { filters, updateFilters, getApiParams } = useUserFilters();
-  const { data: paginationData, isLoading, error } = useUsers({
+  const { data: paginationData, isLoading, isFetching, error } = useUsers({
     params: getApiParams(limit),
   });
-
 
   const usersList = paginationData?.data || [];
   const total = paginationData?.total || 0;
   const totalPages = Math.ceil(total / limit);
   const hasNextPage = filters.page < totalPages;
 
-  // Фильтрация по роли делается на сервере через API параметры
+  // Мемоизируем stats чтобы избежать пересчета и layout shifts
+  const stats = useMemo(() => {
+    if (!paginationData || !usersList.length) {
+      return {
+        total: 0,
+        verified: 0,
+        unverified: 0,
+        emailVerified: 0,
+      };
+    }
+    return {
+      total,
+      verified: usersList.filter((user: User) => user.isEmailVerified && user.isPhoneVerified).length,
+      unverified: usersList.filter((user: User) => !user.isEmailVerified || !user.isPhoneVerified).length,
+      emailVerified: usersList.filter((user: User) => user.isEmailVerified).length,
+    };
+  }, [paginationData, usersList, total]);
 
-  if (isLoading) {
+  // Показываем полный loading только при первой загрузке
+  if (isLoading && !paginationData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -46,7 +62,7 @@ export const UsersPage = () => {
     );
   }
 
-  if (error) {
+  if (error && !paginationData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -56,13 +72,6 @@ export const UsersPage = () => {
       </div>
     );
   }
-
-  const stats = {
-    total,
-    verified: usersList.filter((user: User) => user.isEmailVerified && user.isPhoneVerified).length,
-    unverified: usersList.filter((user: User) => !user.isEmailVerified || !user.isPhoneVerified).length,
-    emailVerified: usersList.filter((user: User) => user.isEmailVerified).length,
-  };
 
   const handleCreateUser = () => {
     navigate("/admin/create-currier");
@@ -205,7 +214,14 @@ export const UsersPage = () => {
   });
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6 relative">
+      {/* Индикатор загрузки поверх контента при обновлении данных */}
+      {isFetching && paginationData && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-primary/20 z-50">
+          <div className="h-full bg-primary animate-pulse" style={{ width: '30%' }} />
+        </div>
+      )}
+      
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">

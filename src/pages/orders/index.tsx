@@ -17,6 +17,7 @@ import { OrderFilters } from "./ui/OrderFilters";
 import { useOrderFilters } from "@/modules/orders/hooks/useOrderFilters";
 import { formatOverdueTime } from "@/core/utils/overdueUtils";
 import { cn } from "@/core/lib/utils";
+import { useMemo } from "react";
 
 export const OrdersPage = () => {
   const { t, i18n } = useTranslation();
@@ -25,9 +26,40 @@ export const OrdersPage = () => {
   const [viewMode, setViewMode] = useLocalStorageQuery<"cards" | "table">("ordersViewMode", "table");
   const { filters, updateFilters, getApiParams } = useOrderFilters();
 
-  const { data: ordersData, isLoading, error } = useOrders(getApiParams());
+  const { data: ordersData, isLoading, isFetching, error } = useOrders(getApiParams());
 
-  if (isLoading) {
+  const orders = ordersData?.orders || [];
+  const total = ordersData?.total || 0;
+  const limit = 20;
+  const totalPages = Math.ceil(total / limit);
+  const hasNextPage = filters.page < totalPages;
+
+  // Мемоизируем stats чтобы избежать пересчета и layout shifts
+  const stats = useMemo(() => {
+    if (!ordersData) {
+      return {
+        total: 0,
+        new: 0,
+        paid: 0,
+        canceled: 0,
+        inProgress: 0,
+        completed: 0,
+        overdue: 0,
+      };
+    }
+    return {
+      total: ordersData.total || 0,
+      new: orders.filter(o => o.status === OrderStatus.NEW).length,
+      paid: orders.filter(o => o.status === OrderStatus.PAID).length,
+      canceled: orders.filter(o => o.status === OrderStatus.CANCELED).length,
+      inProgress: orders.filter(o => o.status === OrderStatus.IN_PROGRESS).length,
+      completed: orders.filter(o => o.status === OrderStatus.DONE).length,
+      overdue: orders.filter(o => o.isOverdue === true).length,
+    };
+  }, [ordersData, orders]);
+
+  // Показываем полный loading только при первой загрузке
+  if (isLoading && !ordersData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -38,7 +70,7 @@ export const OrdersPage = () => {
     );
   }
 
-  if (error) {
+  if (error && !ordersData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -48,22 +80,6 @@ export const OrdersPage = () => {
       </div>
     );
   }
-
-  const orders = ordersData?.orders || [];
-  const total = ordersData?.total || 0;
-  const limit = 20;
-  const totalPages = Math.ceil(total / limit);
-  const hasNextPage = filters.page < totalPages;
-
-  const stats = {
-    total,
-    new: orders.filter(o => o.status === OrderStatus.NEW).length,
-    paid: orders.filter(o => o.status === OrderStatus.PAID).length,
-    canceled: orders.filter(o => o.status === OrderStatus.CANCELED).length,
-    inProgress: orders.filter(o => o.status === OrderStatus.IN_PROGRESS).length,
-    completed: orders.filter(o => o.status === OrderStatus.DONE).length,
-    overdue: orders.filter(o => o.isOverdue === true).length,
-  };
 
   const tableColumns: Column<OrderResponseDto>[] = [
     {
@@ -174,7 +190,14 @@ export const OrdersPage = () => {
   ];
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6 relative">
+      {/* Индикатор загрузки поверх контента при обновлении данных */}
+      {isFetching && ordersData && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-primary/20 z-50">
+          <div className="h-full bg-primary animate-pulse" style={{ width: '30%' }} />
+        </div>
+      )}
+      
       <div className="flex items-center gap-3">
         <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
           <Package className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />

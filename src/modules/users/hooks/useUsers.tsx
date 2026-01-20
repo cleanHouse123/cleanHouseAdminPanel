@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { usersApi } from "../api";
 import { User, CreateUserDto, FindUsersQueryDto, UpdateUserDto } from "../types/index";
 import { UserRole } from "@/core/types/user";
@@ -15,6 +15,7 @@ export const useUsers = ({ params, enabled = true }: UseUsersProps = {}) => {
     enabled,
     staleTime: 5 * 60 * 1000, // 5 минут
     retry: 3,
+    placeholderData: keepPreviousData,
   });
 };
 

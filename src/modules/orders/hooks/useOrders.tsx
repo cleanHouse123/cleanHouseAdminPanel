@@ -1,5 +1,5 @@
 import { useGetMe } from "@/modules/auth/hooks/useGetMe";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { ordersApi } from "../api";
@@ -46,6 +46,7 @@ export const useOrders = (params?: {
     queryFn: () => ordersApi.findAll(params),
     staleTime: 2 * 60 * 1000,
     refetchInterval: 2 * 60 * 1000,
+    placeholderData: keepPreviousData,
   });
 };
 
