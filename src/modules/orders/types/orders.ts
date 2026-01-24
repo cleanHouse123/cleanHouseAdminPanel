@@ -56,6 +56,7 @@ export interface OrderResponseDto {
   price: string;
   status: OrderStatus;
   scheduledAt: string;
+  assignedAt?: string;
   notes: string;
   payments: PaymentDto[];
   numberPackages?: number;
@@ -97,4 +98,8 @@ export interface CompleteOrderDto {
 export interface CancelOrderDto {
   courierId: string;
   reason?: string;
+}
+
+export interface ReassignOrderDto {
+  newCourierId: string;
 }
