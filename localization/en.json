@@ -198,7 +198,9 @@
       "completed": "Completed",
       "completedSubtitle": "Successfully completed",
       "canceled": "Canceled",
-      "canceledSubtitle": "Canceled"
+      "canceledSubtitle": "Canceled",
+      "overdue": "Overdue",
+      "overdueSubtitle": "Require urgent attention"
     },
     "orderId": "Order ID",
     "notFound": "Order not found",

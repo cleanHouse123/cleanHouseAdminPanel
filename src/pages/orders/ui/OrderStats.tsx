@@ -67,9 +67,9 @@ export const OrderStats = ({ stats }: OrderStatsProps) => {
       />
       {stats.overdue !== undefined && stats.overdue > 0 && (
         <StatCard
-          title={t("orders.stats.overdue") || "Просроченные"}
+          title={t("orders.stats.overdue")}
           value={stats.overdue}
-          subtitle={t("orders.stats.overdueSubtitle") || "Требуют внимания"}
+          subtitle={t("orders.stats.overdueSubtitle")}
           icon={AlertTriangle}
           iconBgColor="bg-red-100"
           iconColor="text-red-600"

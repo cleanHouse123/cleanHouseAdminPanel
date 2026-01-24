@@ -212,7 +212,9 @@
       "completed": "Завершены",
       "completedSubtitle": "Успешно выполнены",
       "canceled": "Отменены",
-      "canceledSubtitle": "Отменены"
+      "canceledSubtitle": "Отменены",
+      "overdue": "Просроченные",
+      "overdueSubtitle": "Требуют срочного внимания"
     },
     "orderId": "ID заказа",
     "filters": {
