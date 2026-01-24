@@ -7,7 +7,7 @@ import {
 } from "@/core/components/ui/inputs/select";
 import { OrderStatus } from "../../types/orders";
 import { useTranslation } from "react-i18next";
-import { useUpdateOrderStatus } from "../../hooks/useOrders";
+import { useUpdateOrderStatus, useReassignOrder } from "../../hooks/useOrders";
 import { useGetCurriers } from "@/modules/users/hooks/useUsers";
 import { User } from "@/modules/users/types";
 import { Loader2 } from "lucide-react";
@@ -23,23 +23,37 @@ export const AssignCurrier = ({
   orderId,
   onStatusChange,
   currentCurrierId,
+  currentStatus,
 }: AssignCurrierProps) => {
   const { t } = useTranslation();
 
-  const { mutateAsync: updateOrderStatus, isPending } = useUpdateOrderStatus();
+  const { mutateAsync: updateOrderStatus, isPending: isPendingUpdate } = useUpdateOrderStatus();
+  const { mutateAsync: reassignOrder, isPending: isPendingReassign } = useReassignOrder();
   const { data: curriersData, isLoading: isLoadingCurriers } = useGetCurriers();
 
   const curriers = curriersData?.data || [];
+  const isPending = isPendingUpdate || isPendingReassign;
 
   const handleCurrierChange = async (currierId: string) => {
     try {
-      await updateOrderStatus({
-        id: orderId,
-        data: {
-          status: OrderStatus.ASSIGNED,
-          currierId: currierId,
-        },
-      });
+      // Если заказ уже назначен курьеру и мы меняем курьера - используем reassignOrder
+      if (currentCurrierId && currentCurrierId !== currierId) {
+        await reassignOrder({
+          id: orderId,
+          reassignOrderDto: {
+            newCourierId: currierId,
+          },
+        });
+      } else {
+        // Если заказ еще не назначен - используем updateOrderStatus
+        await updateOrderStatus({
+          id: orderId,
+          data: {
+            status: OrderStatus.ASSIGNED,
+            currierId: currierId,
+          },
+        });
+      }
       onStatusChange(OrderStatus.ASSIGNED);
     } catch (error) {
       console.error("Ошибка при назначении курьера:", error);

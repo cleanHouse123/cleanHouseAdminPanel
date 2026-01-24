@@ -58,18 +58,18 @@ export const OrderStats = ({ stats }: OrderStatsProps) => {
         iconColor="text-green-600"
       />
       <StatCard
-        title={t("orders.stats.canceled")}
+        title={'Отменено'}
         value={stats.canceled}
-        subtitle={t("orders.stats.canceledSubtitle")}
+        subtitle={'Заказов отменено'}
         icon={XCircle}
         iconBgColor="bg-red-100"
         iconColor="text-red-600"
       />
       {stats.overdue !== undefined && stats.overdue > 0 && (
         <StatCard
-          title={t("orders.stats.overdue")}
+          title={'Просрочено'}
           value={stats.overdue}
-          subtitle={t("orders.stats.overdueSubtitle")}
+          subtitle={'Заказов просрочено'}
           icon={AlertTriangle}
           iconBgColor="bg-red-100"
           iconColor="text-red-600"
