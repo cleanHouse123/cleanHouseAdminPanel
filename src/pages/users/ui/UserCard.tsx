@@ -45,34 +45,62 @@ export const UserCard = ({ user }: UserCardProps) => {
               </p>
             </div>
           </div>
-          <Badge 
-            className={cn(
-              "self-start sm:self-center",
-              user.role === UserRole.ADMIN 
-                ? "bg-purple-100 text-purple-800 border-purple-200" 
-                : user.role === UserRole.CUSTOMER
-                ? "bg-blue-100 text-blue-800 border-blue-200"
-                : user.role === UserRole.CURRIER
-                ? "bg-green-100 text-green-800 border-green-200"
-                : "bg-gray-100 text-gray-800 border-gray-200"
+          <div className="flex flex-wrap gap-1 self-start sm:self-center">
+            {(user.roles || []).map((role) => (
+              <Badge 
+                key={role}
+                className={cn(
+                  role === UserRole.ADMIN 
+                    ? "bg-purple-100 text-purple-800 border-purple-200" 
+                    : role === UserRole.CUSTOMER
+                    ? "bg-blue-100 text-blue-800 border-blue-200"
+                    : role === UserRole.CURRIER
+                    ? "bg-green-100 text-green-800 border-green-200"
+                    : "bg-gray-100 text-gray-800 border-gray-200"
+                )}
+              >
+                {role === UserRole.ADMIN ? t("users.role.admin") : 
+                 role === UserRole.CUSTOMER ? t("users.role.customer") : 
+                 role === UserRole.CURRIER ? t("users.role.currier") : role}
+              </Badge>
+            ))}
+            {(!user.roles || user.roles.length === 0) && (
+              <span className="text-muted-foreground text-xs">Нет ролей</span>
             )}
-          >
-            {user.role === UserRole.ADMIN ? t("users.role.admin") : 
-             user.role === UserRole.CUSTOMER ? t("users.role.customer") : 
-             user.role === UserRole.CURRIER ? t("users.role.currier") : user.role}
-          </Badge>
+          </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-3 sm:space-y-4">
-        {/* Role */}
+        {/* Roles */}
         <div className="flex items-start gap-2">
           <Shield className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium">{t("common.role")}</p>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">
-              {user.role}
-            </p>
+            <p className="text-xs sm:text-sm font-medium">{t("common.role") || "Роли"}</p>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {(user.roles || []).map((role) => (
+                <Badge
+                  key={role}
+                  className={cn(
+                    "text-xs",
+                    role === UserRole.ADMIN
+                      ? "bg-purple-100 text-purple-800 border-purple-200"
+                      : role === UserRole.CUSTOMER
+                        ? "bg-blue-100 text-blue-800 border-blue-200"
+                        : role === UserRole.CURRIER
+                          ? "bg-green-100 text-green-800 border-green-200"
+                          : "bg-gray-100 text-gray-800 border-gray-200"
+                  )}
+                >
+                  {role === UserRole.ADMIN ? t("users.role.admin") :
+                    role === UserRole.CUSTOMER ? t("users.role.customer") :
+                      role === UserRole.CURRIER ? t("users.role.currier") : role}
+                </Badge>
+              ))}
+              {(!user.roles || user.roles.length === 0) && (
+                <span className="text-xs text-muted-foreground">Нет ролей</span>
+              )}
+            </div>
           </div>
         </div>
         {/* Email */}

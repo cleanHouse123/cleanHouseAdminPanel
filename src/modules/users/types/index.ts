@@ -2,7 +2,7 @@ import { UserRole } from "@/core/types/user";
 
 export interface User {
   id: string;
-  role: UserRole;
+  roles: UserRole[];
   name: string;
   email: string;
   phone: string;
@@ -21,6 +21,7 @@ export interface UpdateUserDto {
   name?: string;
   phone?: string;
   email?: string;
+  roles?: UserRole[];
 }
 
 export interface FindUsersQueryDto {
