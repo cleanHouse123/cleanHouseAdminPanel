@@ -382,6 +382,10 @@
       "label": "Email",
       "placeholder": "Enter user email"
     },
+    "roles": {
+      "label": "Roles",
+      "placeholder": "Select roles"
+    },
     "submit": "Save Changes",
     "success": "User updated successfully",
     "notFound": "User not found"

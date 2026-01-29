@@ -199,8 +199,8 @@ export const UsersPage = () => {
 
   // Фильтруем колонки - скрываем те, где нет данных
   const visibleColumns = allColumns.filter((column) => {
-    // Колонки "Роль", "Верификация" и "Действия" всегда показываем
-    if (column.key === "role" || column.key === "verification" || column.key === "actions") {
+    // Колонки "Роли", "Верификация" и "Действия" всегда показываем
+    if (column.key === "roles" || column.key === "verification" || column.key === "actions") {
       return true;
     }
 
