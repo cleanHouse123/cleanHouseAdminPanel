@@ -21,7 +21,7 @@ const getStatusText = (status: OrderStatus, isOverdue: boolean | undefined, t: T
     case OrderStatus.NEW:
       return "НОВЫЙ";
     case OrderStatus.PAID:
-      return "НОВЫЙ";
+      return "ОПЛАЧЕН";
     case OrderStatus.ASSIGNED:
       return "В РАБОТЕ";
     case OrderStatus.IN_PROGRESS:
