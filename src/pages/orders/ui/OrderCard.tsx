@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
-import { MapPin, Phone, User, Clock, Package, Eye, AlertTriangle } from "lucide-react";
+import { MapPin, Phone, User, Clock, Package, Eye, AlertTriangle, MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import { Link } from "react-router-dom";
@@ -79,8 +79,28 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         {/* Телефон */}
         <div className="flex items-center gap-2">
           <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
-          <span className="text-xs sm:text-sm">{order.customer.phone}</span>
+          <a
+            href={`tel:${order.customer.phone}`}
+            className="text-xs sm:text-sm text-primary hover:underline"
+          >
+            {order.customer.phone}
+          </a>
         </div>
+
+        {/* Telegram */}
+        {order.customer.telegramUsername && (
+          <div className="flex items-center gap-2">
+            <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+            <a
+              href={`https://t.me/${order.customer.telegramUsername}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm text-primary hover:underline"
+            >
+              @{order.customer.telegramUsername}
+            </a>
+          </div>
+        )}
 
         {/* Информация о клиенте и курьере */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 border-t">

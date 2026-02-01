@@ -8,6 +8,7 @@ export interface User {
   phone: string;
   isPhoneVerified: boolean;
   isEmailVerified: boolean;
+  telegramUsername?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

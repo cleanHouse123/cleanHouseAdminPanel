@@ -17,6 +17,7 @@ import {
   Clock,
   CreditCard,
   AlertTriangle,
+  MessageCircle,
 } from "lucide-react";
 import { ChangeOrderStatus } from "@/modules/orders/components/change-order-status";
 import { AssignCurrier } from "@/modules/orders/components/assign-currier";
@@ -348,6 +349,22 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 {order.customer.phone}
               </a>
             </div>
+            {order.customer.telegramUsername && (
+              <div>
+                <h4 className="font-medium text-sm text-muted-foreground mb-1">
+                  Telegram
+                </h4>
+                <a
+                  href={`https://t.me/${order.customer.telegramUsername}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline flex items-center gap-1"
+                >
+                  <MessageCircle className="h-3 w-3" />
+                  @{order.customer.telegramUsername}
+                </a>
+              </div>
+            )}
           </CardContent>
         </Card>
 

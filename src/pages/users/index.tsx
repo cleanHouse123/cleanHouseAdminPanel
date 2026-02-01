@@ -110,7 +110,34 @@ export const UsersPage = () => {
     {
       key: "phone",
       header: "Телефон",
-      render: (user) => getValueOrEmpty(user.phone),
+      render: (user) => (
+        user.phone ? (
+          <a href={`tel:${user.phone}`} className="text-primary hover:underline">
+            {user.phone}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      ),
+      showTooltip: true,
+    },
+    {
+      key: "telegram",
+      header: "Telegram",
+      render: (user) => (
+        user.telegramUsername ? (
+          <a
+            href={`https://t.me/${user.telegramUsername}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            @{user.telegramUsername}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      ),
       showTooltip: true,
     },
     {

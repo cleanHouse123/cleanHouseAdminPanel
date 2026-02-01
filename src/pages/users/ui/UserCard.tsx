@@ -13,6 +13,7 @@ import {
   XCircle,
   Calendar,
   User as UserIcon,
+  MessageCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
@@ -140,9 +141,12 @@ export const UserCard = ({ user }: UserCardProps) => {
             <p className="text-xs sm:text-sm font-medium">
               {t("common.phone")}
             </p>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+            <a
+              href={`tel:${user.phone}`}
+              className="text-xs sm:text-sm text-primary hover:underline truncate block"
+            >
               {user.phone}
-            </p>
+            </a>
           </div>
           <div className="flex items-center gap-1 flex-shrink-0">
             {user.isPhoneVerified ? (
@@ -162,6 +166,26 @@ export const UserCard = ({ user }: UserCardProps) => {
             </span>
           </div>
         </div>
+
+        {/* Telegram */}
+        {user.telegramUsername && (
+          <div className="flex items-start gap-2">
+            <MessageCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium">
+                Telegram
+              </p>
+              <a
+                href={`https://t.me/${user.telegramUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm text-primary hover:underline truncate block"
+              >
+                @{user.telegramUsername}
+              </a>
+            </div>
+          </div>
+        )}
 
         {/* ID администратора */}
         <div className="flex items-center gap-2 pt-2 border-t">
