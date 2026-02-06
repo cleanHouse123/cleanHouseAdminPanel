@@ -50,7 +50,7 @@ export const OrderBadge = ({ status, isOverdue, className }: OrderBadgeProps) =>
       variant="outline"
       className={cn("border font-semibold", getStatusColor(status, isOverdue), className)}
     >
-      {isOverdue ? "🔴" : ""} {getStatusText(status, isOverdue, t)}
+      {getStatusText(status, isOverdue, t)}
     </Badge>
   );
 };

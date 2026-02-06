@@ -161,7 +161,7 @@ export const OrdersPage = () => {
       render: (order) => {
         if (order.isOverdue && order.overdueMinutes !== undefined) {
           return (
-            <span className="text-destructive font-semibold text-sm">
+            <span className="text-destructive font-semibold text-sm whitespace-nowrap">
               ⚠️ Просрочено на {formatOverdueTime(order.overdueMinutes)}
             </span>
           );
