@@ -174,7 +174,7 @@ export const OrdersPage = () => {
           }
 
           return (
-            <span className="text-destructive font-semibold text-sm whitespace-nowrap">
+            <span className="text-foreground font-semibold text-sm whitespace-nowrap">
               ⚠️ Просрочено и не оплачено
             </span>
           );

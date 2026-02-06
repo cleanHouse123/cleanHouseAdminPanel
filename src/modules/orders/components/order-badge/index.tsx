@@ -4,6 +4,8 @@ import { cn } from "@/core/lib/utils";
 import { OrderStatus } from "../../types/orders";
 import { TFunction } from "i18next";
 import { ORDER_STATUS_COLOR_CLASS } from "@/core/constants/orderStatusColors";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/core/components/ui/tooltip";
+import { AlertCircle } from "lucide-react";
 
 interface OrderBadgeProps {
   status: OrderStatus;
@@ -11,12 +13,7 @@ interface OrderBadgeProps {
   className?: string;
 }
 
-
-const getStatusText = (status: OrderStatus, isOverdue: boolean | undefined, t: TFunction) => {
-  if (isOverdue) {
-    return "ПРОСРОЧЕН";
-  }
-  
+const getStatusText = (status: OrderStatus, t: TFunction) => {
   switch (status) {
     case OrderStatus.NEW:
       return "НОВЫЙ";
@@ -36,9 +33,16 @@ const getStatusText = (status: OrderStatus, isOverdue: boolean | undefined, t: T
 };
 
 const getStatusColor = (status: OrderStatus, isOverdue: boolean | undefined) => {
-  if (isOverdue) {
+  const isUnpaidStatus =
+    status === OrderStatus.NEW ||
+    status === OrderStatus.ASSIGNED ||
+    status === OrderStatus.IN_PROGRESS;
+
+  // Если заказ просрочен и ещё не оплачен — подчёркиваем это красным бейджем
+  if (isOverdue && isUnpaidStatus) {
     return "bg-destructive text-destructive-foreground border-destructive";
   }
+
   return ORDER_STATUS_COLOR_CLASS[status] ?? "bg-gray-100 text-gray-800 border-gray-200";
 };
 
@@ -46,11 +50,25 @@ export const OrderBadge = ({ status, isOverdue, className }: OrderBadgeProps) =>
   const { t } = useTranslation();
 
   return (
-    <Badge 
-      variant="outline"
-      className={cn("border font-semibold", getStatusColor(status, isOverdue), className)}
-    >
-      {getStatusText(status, isOverdue, t)}
-    </Badge>
+    <div className={cn("flex items-center gap-2", className)}>
+      <Badge
+        variant="outline"
+        className={cn("border font-semibold", getStatusColor(status, isOverdue))}
+      >
+        {getStatusText(status, t)}
+      </Badge>
+      {isOverdue && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span aria-label="Заказ просрочен">
+              <AlertCircle className="h-3 w-3 text-destructive" />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent variant="danger" size="sm" sideOffset={4}>
+            Заказ просрочен
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </div>
   );
 };
