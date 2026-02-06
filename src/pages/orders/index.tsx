@@ -139,13 +139,27 @@ export const OrdersPage = () => {
       key: "overdue",
       header: "Просроченность",
       render: (order) => {
-        if (order.isOverdue && order.overdueMinutes !== undefined) {
+        const isOverdue = order.isOverdue;
+        const isPaid =
+          order.status === OrderStatus.PAID ||
+          order.payments?.some((payment) => payment.status === "paid");
+
+        if (isOverdue && order.overdueMinutes !== undefined) {
+          if (isPaid) {
+            return (
+              <span className="text-destructive font-semibold text-sm">
+                ⚠️ Просрочено на {formatOverdueTime(order.overdueMinutes)}
+              </span>
+            );
+          }
+
           return (
             <span className="text-destructive font-semibold text-sm">
-              ⚠️ Просрочено на {formatOverdueTime(order.overdueMinutes)}
+              ⚠️ Просрочено и не оплачено
             </span>
           );
         }
+
         if (order.scheduledAt) {
           return (
             <span className="text-xs text-muted-foreground">
@@ -153,6 +167,7 @@ export const OrdersPage = () => {
             </span>
           );
         }
+
         return <span className="text-xs text-muted-foreground">Не указано</span>;
       },
     },

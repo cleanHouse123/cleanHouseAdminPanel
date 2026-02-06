@@ -20,6 +20,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
   const isOverdue = order.isOverdue;
+  const isPaid = order.status === OrderStatus.PAID || order.payments?.some((payment) => payment.status === "paid");
 
   return (
     <Card className={cn(
@@ -129,9 +130,18 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           <div className="flex items-center justify-between pt-2 border-t border-destructive/20">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-destructive flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-destructive font-semibold">
-                Просрочено на {formatOverdueTime(order.overdueMinutes)}
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xs sm:text-sm text-destructive font-semibold">
+                  {isPaid
+                    ? `Просрочено на ${formatOverdueTime(order.overdueMinutes)}`
+                    : `Просрочено и не оплачено`}
+                </span>
+                {!isPaid && (
+                  <span className="text-[10px] sm:text-xs text-destructive/80">
+                    Просрочено на {formatOverdueTime(order.overdueMinutes)}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         )}
