@@ -212,7 +212,9 @@
       "completed": "Завершены",
       "completedSubtitle": "Успешно выполнены",
       "canceled": "Отменены",
-      "canceledSubtitle": "Отменены"
+      "canceledSubtitle": "Отменены",
+      "overdue": "Просроченные",
+      "overdueSubtitle": "Требуют срочного внимания"
     },
     "orderId": "ID заказа",
     "filters": {
@@ -230,7 +232,9 @@
       "selectSort": "Выберите сортировку",
       "noSort": "Без сортировки",
       "sortAsc": "По возрастанию даты",
-      "sortDesc": "По убыванию даты"
+      "sortDesc": "По убыванию даты",
+      "showOverdue": "Показать только просроченные",
+      "showOverdueDescription": "Заказы с истекшим сроком выполнения"
     },
     "notFound": "Заказ не найден",
     "noCourierAssigned": "Курьер не назначен",
@@ -393,6 +397,10 @@
     "email": {
       "label": "Email",
       "placeholder": "Введите email пользователя"
+    },
+    "roles": {
+      "label": "Роли",
+      "placeholder": "Выберите роли"
     },
     "submit": "Сохранить изменения",
     "success": "Пользователь успешно обновлен",

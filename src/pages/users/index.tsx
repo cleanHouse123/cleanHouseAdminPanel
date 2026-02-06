@@ -110,28 +110,63 @@ export const UsersPage = () => {
     {
       key: "phone",
       header: "Телефон",
-      render: (user) => getValueOrEmpty(user.phone),
+      render: (user) => (
+        user.phone ? (
+          <a href={`tel:${user.phone}`} className="text-primary hover:underline">
+            {user.phone}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      ),
       showTooltip: true,
     },
     {
-      key: "role",
-      header: "Роль",
+      key: "telegram",
+      header: "Telegram",
       render: (user) => (
-        <Badge
-          className={cn(
-            user.role === UserRole.ADMIN
-              ? "bg-purple-100 text-purple-800 border-purple-200"
-              : user.role === UserRole.CUSTOMER
-                ? "bg-blue-100 text-blue-800 border-blue-200"
-                : user.role === UserRole.CURRIER
-                  ? "bg-green-100 text-green-800 border-green-200"
-                  : "bg-gray-100 text-gray-800 border-gray-200"
+        user.telegramUsername ? (
+          <a
+            href={`https://t.me/${user.telegramUsername}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            @{user.telegramUsername}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      ),
+      showTooltip: true,
+    },
+    {
+      key: "roles",
+      header: "Роли",
+      render: (user) => (
+        <div className="flex flex-wrap gap-1">
+          {(user.roles || []).map((role) => (
+            <Badge
+              key={role}
+              className={cn(
+                role === UserRole.ADMIN
+                  ? "bg-purple-100 text-purple-800 border-purple-200"
+                  : role === UserRole.CUSTOMER
+                    ? "bg-blue-100 text-blue-800 border-blue-200"
+                    : role === UserRole.CURRIER
+                      ? "bg-green-100 text-green-800 border-green-200"
+                      : "bg-gray-100 text-gray-800 border-gray-200"
+              )}
+            >
+              {role === UserRole.ADMIN ? t("users.role.admin") :
+                role === UserRole.CUSTOMER ? t("users.role.customer") :
+                  role === UserRole.CURRIER ? t("users.role.currier") : role}
+            </Badge>
+          ))}
+          {(!user.roles || user.roles.length === 0) && (
+            <span className="text-muted-foreground text-sm">Нет ролей</span>
           )}
-        >
-          {user.role === UserRole.ADMIN ? t("users.role.admin") :
-            user.role === UserRole.CUSTOMER ? t("users.role.customer") :
-              user.role === UserRole.CURRIER ? t("users.role.currier") : user.role}
-        </Badge>
+        </div>
       ),
     },
     {
@@ -191,8 +226,8 @@ export const UsersPage = () => {
 
   // Фильтруем колонки - скрываем те, где нет данных
   const visibleColumns = allColumns.filter((column) => {
-    // Колонки "Роль", "Верификация" и "Действия" всегда показываем
-    if (column.key === "role" || column.key === "verification" || column.key === "actions") {
+    // Колонки "Роли", "Верификация" и "Действия" всегда показываем
+    if (column.key === "roles" || column.key === "verification" || column.key === "actions") {
       return true;
     }
 

@@ -3,9 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/c
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/inputs/input";
 import { PhoneInput } from "@/core/components/ui/inputs/phone-input";
+import { MultiSelect } from "@/core/components/ui/inputs/multiSelect";
 import { updateUserSchema } from "@/modules/users/forms/update-user-form";
 import { useUpdateUser, useUser } from "@/modules/users/hooks/useUsers";
 import { UpdateUserDto } from "@/modules/users/types/index";
+import { UserRole } from "@/core/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, CheckCircle, User, XCircle } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -28,8 +30,15 @@ export const EditUserPage = () => {
       name: "",
       phone: "",
       email: "",
+      roles: [],
     },
   });
+
+  const roleOptions = [
+    { id: 1, name: t("users.role.admin"), value: UserRole.ADMIN },
+    { id: 2, name: t("users.role.customer"), value: UserRole.CUSTOMER },
+    { id: 3, name: t("users.role.currier"), value: UserRole.CURRIER },
+  ];
 
   useEffect(() => {
     if (user) {
@@ -37,6 +46,7 @@ export const EditUserPage = () => {
         name: user.name,
         phone: user.phone,
         email: user.email || "",
+        roles: user.roles || [],
       });
     }
   }, [user, form]);
@@ -51,6 +61,9 @@ export const EditUserPage = () => {
       if (data.phone && data.phone !== user?.phone) updateData.phone = data.phone;
       if (data.email !== undefined && data.email !== user?.email) {
         updateData.email = data.email || undefined;
+      }
+      if (data.roles && JSON.stringify(data.roles.sort()) !== JSON.stringify((user?.roles || []).sort())) {
+        updateData.roles = data.roles;
       }
 
       if (Object.keys(updateData).length === 0) {
@@ -190,6 +203,27 @@ export const EditUserPage = () => {
                         type="email"
                         placeholder={t("editUser.email.placeholder")}
                         className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Roles Field */}
+              <FormField
+                control={form.control}
+                name="roles"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("editUser.roles.label") || "Роли"}</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        options={roleOptions}
+                        value={field.value || []}
+                        onChange={field.onChange}
+                        placeholder={t("editUser.roles.placeholder") || "Выберите роли"}
+                        showSearch={false}
                       />
                     </FormControl>
                     <FormMessage className="text-destructive" />

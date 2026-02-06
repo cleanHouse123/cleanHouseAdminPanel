@@ -100,9 +100,29 @@ export const OrdersPage = () => {
       render: (order) => (
         <div>
           <div className="font-medium">{order.customer.name}</div>
-          <div className="text-xs text-muted-foreground">{order.customer.phone}</div>
+          <div className="text-xs text-muted-foreground">
+            <a href={`tel:${order.customer.phone}`} className="text-primary hover:underline">
+              {order.customer.phone}
+            </a>
+          </div>
           {order.customer.email && (
-            <div className="text-xs text-muted-foreground">{order.customer.email}</div>
+            <div className="text-xs text-muted-foreground">
+              <a href={`mailto:${order.customer.email}`} className="text-primary hover:underline">
+                {order.customer.email}
+              </a>
+            </div>
+          )}
+          {order.customer.telegramUsername && (
+            <div className="text-xs text-muted-foreground">
+              <a
+                href={`https://t.me/${order.customer.telegramUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                @{order.customer.telegramUsername}
+              </a>
+            </div>
           )}
         </div>
       ),
@@ -154,7 +174,7 @@ export const OrdersPage = () => {
           }
 
           return (
-            <span className="text-destructive font-semibold text-sm">
+            <span className="text-destructive font-semibold text-sm whitespace-nowrap">
               ⚠️ Просрочено и не оплачено
             </span>
           );

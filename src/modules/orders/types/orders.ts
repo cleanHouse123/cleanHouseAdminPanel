@@ -43,6 +43,7 @@ export interface UserDto {
   hash_password: string | null;
   refreshTokenHash: string | null;
   lastLoginAt: string | null;
+  telegramUsername?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -56,6 +57,7 @@ export interface OrderResponseDto {
   price: string;
   status: OrderStatus;
   scheduledAt: string;
+  assignedAt?: string;
   notes: string;
   payments: PaymentDto[];
   numberPackages?: number;
@@ -97,4 +99,8 @@ export interface CompleteOrderDto {
 export interface CancelOrderDto {
   courierId: string;
   reason?: string;
+}
+
+export interface ReassignOrderDto {
+  newCourierId: string;
 }

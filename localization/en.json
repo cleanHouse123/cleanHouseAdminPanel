@@ -198,7 +198,9 @@
       "completed": "Completed",
       "completedSubtitle": "Successfully completed",
       "canceled": "Canceled",
-      "canceledSubtitle": "Canceled"
+      "canceledSubtitle": "Canceled",
+      "overdue": "Overdue",
+      "overdueSubtitle": "Require urgent attention"
     },
     "orderId": "Order ID",
     "notFound": "Order not found",
@@ -226,7 +228,9 @@
       "selectSort": "Select sorting",
       "noSort": "No sorting",
       "sortAsc": "Ascending by date",
-      "sortDesc": "Descending by date"
+      "sortDesc": "Descending by date",
+      "showOverdue": "Show only overdue",
+      "showOverdueDescription": "Orders with expired due date"
     }
   },
   "locations": {
@@ -379,6 +383,10 @@
     "email": {
       "label": "Email",
       "placeholder": "Enter user email"
+    },
+    "roles": {
+      "label": "Roles",
+      "placeholder": "Select roles"
     },
     "submit": "Save Changes",
     "success": "User updated successfully",

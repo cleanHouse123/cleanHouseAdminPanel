@@ -21,7 +21,7 @@ const getStatusText = (status: OrderStatus, isOverdue: boolean | undefined, t: T
     case OrderStatus.NEW:
       return "НОВЫЙ";
     case OrderStatus.PAID:
-      return "НОВЫЙ";
+      return "ОПЛАЧЕН";
     case OrderStatus.ASSIGNED:
       return "В РАБОТЕ";
     case OrderStatus.IN_PROGRESS:
@@ -50,7 +50,7 @@ export const OrderBadge = ({ status, isOverdue, className }: OrderBadgeProps) =>
       variant="outline"
       className={cn("border font-semibold", getStatusColor(status, isOverdue), className)}
     >
-      {isOverdue ? "🔴" : ""} {getStatusText(status, isOverdue, t)}
+      {getStatusText(status, isOverdue, t)}
     </Badge>
   );
 };

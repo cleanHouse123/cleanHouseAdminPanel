@@ -8,6 +8,7 @@ import {
   OrderResponseDto,
   OrdersListResponse,
   OrderStatus,
+  ReassignOrderDto,
   UpdateOrderStatusDto,
 } from "../types/orders";
 
@@ -144,6 +145,44 @@ export const useDeleteOrder = () => {
       const errorMessage =
         (error?.response?.data as { message?: string })?.message ||
         "Ошибка удаления заказа";
+      toast.error("Ошибка", {
+        description: errorMessage,
+        duration: 5000,
+      });
+    },
+  });
+};
+
+// Переназначить заказ другому курьеру
+export const useReassignOrder = () => {
+  const queryClient = useQueryClient();
+  const { data: user } = useGetMe();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      reassignOrderDto,
+    }: {
+      id: string;
+      reassignOrderDto: ReassignOrderDto;
+    }) => ordersApi.reassignOrder(id, reassignOrderDto),
+    onSuccess: (data) => {
+      toast.success("Заказ переназначен!", {
+        description: `Заказ #${data.id.slice(-8)} успешно переназначен другому курьеру`,
+        duration: 4000,
+      });
+
+      // Обновляем кэш заказов
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order", data.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["customer-orders", user?.id],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const errorMessage =
+        (error?.response?.data as { message?: string })?.message ||
+        "Ошибка переназначения заказа";
       toast.error("Ошибка", {
         description: errorMessage,
         duration: 5000,
