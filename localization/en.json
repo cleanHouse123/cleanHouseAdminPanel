@@ -228,7 +228,9 @@
       "selectSort": "Select sorting",
       "noSort": "No sorting",
       "sortAsc": "Ascending by date",
-      "sortDesc": "Descending by date"
+      "sortDesc": "Descending by date",
+      "showOverdue": "Show only overdue",
+      "showOverdueDescription": "Orders with expired due date"
     }
   },
   "locations": {

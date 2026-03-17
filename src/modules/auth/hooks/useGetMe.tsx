@@ -1,6 +1,7 @@
 import { User } from "@/core/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "../api";
+import { useAuthStore } from "../store/authStore";
 import { isAxiosError } from "axios";
 
 
@@ -17,9 +18,7 @@ export const useGetMe = () => {
         retry: (failureCount, error: unknown) => {
             // Не повторять запрос при 401 ошибке (неавторизован)
             if (isAxiosError(error) && error.response?.status === 401) {
-                // Очищаем токены при 401 ошибке
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
+                useAuthStore.getState().clearUser();
                 return false;
             }
             // Повторить максимум 2 раза для других ошибок

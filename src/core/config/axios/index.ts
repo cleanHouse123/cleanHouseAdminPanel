@@ -1,14 +1,16 @@
 import axios from "axios";
 import { toast } from "sonner";
+import { useAuthStore } from "@/modules/auth/store/authStore";
+
+const baseURL = import.meta.env.VITE_API_URL || "https://cleanhouse123-cleanhouseapi-4d55.twc1.net/";
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://cleanhouse123-cleanhouseapi-4d55.twc1.net/',
+  baseURL,
   withCredentials: false,
 });
-//import.meta.env.VITE_API_URL
 
 export const axiosPublic = axios.create({
-  baseURL: 'https://cleanhouse123-cleanhouseapi-4d55.twc1.net/',
+  baseURL,
   withCredentials: false,
 });
 
@@ -78,6 +80,7 @@ axiosInstance.interceptors.response.use(
         if (!refreshToken || !accessToken) {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
+          useAuthStore.getState().clearUser();
           return Promise.reject(error);
         }
 
@@ -91,6 +94,10 @@ axiosInstance.interceptors.response.use(
         localStorage.setItem("accessToken", newAccessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
 
+        // Синхронизируем authStore (как в clenHouseWeb — единый источник правды)
+        useAuthStore.getState().setAccessToken(newAccessToken);
+        useAuthStore.getState().setRefreshToken(newRefreshToken);
+
         axiosInstance.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${newAccessToken}`;
@@ -102,6 +109,8 @@ axiosInstance.interceptors.response.use(
         processQueue(refreshError as Error, null);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        // Очищаем authStore, чтобы ProtectedRoute перенаправил на логин
+        useAuthStore.getState().clearUser();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
