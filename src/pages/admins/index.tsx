@@ -101,11 +101,11 @@ export const AdminPage = () => {
             {admin.isEmailVerified && admin.isPhoneVerified ? (
               <CheckCircle className="h-4 w-4 text-green-600" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600" />
+              <XCircle className="h-4 w-4 text-orange-600" />
             )}
             <span className={cn(
               "text-xs",
-              admin.isEmailVerified && admin.isPhoneVerified ? "text-green-600" : "text-red-600"
+              admin.isEmailVerified && admin.isPhoneVerified ? "text-green-600" : "text-orange-600"
             )}>
               {admin.isEmailVerified && admin.isPhoneVerified
                 ? t("admins.verified")

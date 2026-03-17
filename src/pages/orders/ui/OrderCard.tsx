@@ -25,13 +25,13 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Card className={cn(
       "bg-card border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]",
-      isOverdue && "border-l-4 border-l-destructive bg-red-50/50 dark:bg-red-950/20"
+      isOverdue && "border-l-4 border-l-destructive bg-orange-50/50 dark:bg-orange-950/20"
     )}>
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             {isOverdue ? (
-              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg flex-shrink-0">
+              <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex-shrink-0">
                 <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-destructive" />
               </div>
             ) : (

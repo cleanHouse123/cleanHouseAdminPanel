@@ -125,7 +125,7 @@ export const LocationsPage = () => {
       render: (location) => (
         <button
           onClick={() => handleDelete(location.id)}
-          className="p-2 hover:bg-red-50 rounded-md transition-colors text-destructive hover:text-destructive-foreground"
+          className="p-2 hover:bg-orange-50 rounded-md transition-colors text-destructive hover:text-destructive-foreground"
         >
           <Trash2 className="h-4 w-4" />
         </button>
