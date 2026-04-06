@@ -37,8 +37,8 @@ export const UserStats = ({ stats }: UserStatsProps) => {
         value={stats.unverified}
         subtitle={t("users.stats.unverifiedSubtitle")}
         icon={XCircle}
-        iconBgColor="bg-red-100"
-        iconColor="text-red-600"
+        iconBgColor="bg-orange-100"
+        iconColor="text-orange-600"
       />
       <StatCard
         title={t("users.stats.emailVerified")}

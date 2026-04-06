@@ -25,7 +25,7 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Статус заказа */}
-      <Card className={cn(order.isOverdue && "border-l-4 border-l-destructive bg-red-50/50 dark:bg-red-950/20")}>
+      <Card className={cn(order.isOverdue && "border-l-4 border-l-destructive bg-orange-50/50 dark:bg-orange-950/20")}>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
             {order.isOverdue ? (

@@ -138,7 +138,7 @@ export const AddressesPage = () => {
           {!address.isPrimary && !address.isSupportableArea && (
             <Badge
               variant="default"
-              className="bg-red-100 text-red-800 border-red-200"
+              className="bg-orange-100 text-orange-800 border-orange-200"
             >
               Не поддерживаемая зона
             </Badge>

@@ -35,7 +35,7 @@ export const adminsApi = {
 
   update: (id: string, data: UpdateAdminDto) =>
     axiosInstance
-      .patch<UpdateAdminDto, AxiosResponse<Admin>>(`/user/admin/${id}`, data)
+      .patch<UpdateAdminDto, AxiosResponse<Admin>>(`/user/${id}`, data)
       .then((res) => res.data),
 
   findOne: async (id: string) => {

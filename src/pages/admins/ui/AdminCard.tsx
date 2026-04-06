@@ -53,11 +53,11 @@ export const AdminCard = ({ admin }: AdminCardProps) => {
             {admin.isEmailVerified ? (
               <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
             ) : (
-              <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
+              <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-orange-600" />
             )}
             <span className={cn(
               "text-xs hidden sm:inline",
-              admin.isEmailVerified ? "text-green-600" : "text-red-600"
+              admin.isEmailVerified ? "text-green-600" : "text-orange-600"
             )}>
               {admin.isEmailVerified ? t("admins.verified") : t("admins.notVerified")}
             </span>
@@ -75,11 +75,11 @@ export const AdminCard = ({ admin }: AdminCardProps) => {
             {admin.isPhoneVerified ? (
               <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
             ) : (
-              <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
+              <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-orange-600" />
             )}
             <span className={cn(
               "text-xs hidden sm:inline",
-              admin.isPhoneVerified ? "text-green-600" : "text-red-600"
+              admin.isPhoneVerified ? "text-green-600" : "text-orange-600"
             )}>
               {admin.isPhoneVerified ? t("admins.verified") : t("admins.notVerified")}
             </span>

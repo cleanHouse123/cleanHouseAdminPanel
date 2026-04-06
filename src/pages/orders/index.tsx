@@ -294,7 +294,7 @@ export const OrdersPage = () => {
             getRowClassName={(order) =>
               cn(
                 order.isOverdue &&
-                "bg-red-50/50 dark:bg-red-950/20 border-l-4 border-l-destructive hover:bg-red-100/50 dark:hover:bg-red-950/30"
+                "bg-orange-50/50 dark:bg-orange-950/20 border-l-4 border-l-destructive hover:bg-orange-100/50 dark:hover:bg-orange-950/30"
               )
             }
           />

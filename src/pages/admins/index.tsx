@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAdmins } from "@/modules/admins/hooks/useAdmins";
-import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle } from "lucide-react";
+import { Shield, XCircle, LayoutGrid, Table as TableIcon, CheckCircle, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AdminCard } from "./ui/AdminCard";
 import { AdminStats } from "./ui/AdminStats";
@@ -101,11 +101,11 @@ export const AdminPage = () => {
             {admin.isEmailVerified && admin.isPhoneVerified ? (
               <CheckCircle className="h-4 w-4 text-green-600" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600" />
+              <XCircle className="h-4 w-4 text-orange-600" />
             )}
             <span className={cn(
               "text-xs",
-              admin.isEmailVerified && admin.isPhoneVerified ? "text-green-600" : "text-red-600"
+              admin.isEmailVerified && admin.isPhoneVerified ? "text-green-600" : "text-orange-600"
             )}>
               {admin.isEmailVerified && admin.isPhoneVerified
                 ? t("admins.verified")
@@ -128,14 +128,14 @@ export const AdminPage = () => {
       header: "Действия",
       render: (admin) => (
         <div className="flex items-center gap-2">
-          {/* <Button
+          <Button
             variant="outline"
             size="sm"
             onClick={() => navigate(`/admin/admin/${admin.id}/edit`)}
             title={t("common.edit")}
           >
             <Pencil className="h-4 w-4" />
-          </Button> */}
+          </Button>
           <DeleteAdmin adminId={admin.id} />
         </div>
       ),

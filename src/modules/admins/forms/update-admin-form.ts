@@ -5,7 +5,7 @@ export const updateAdminSchema = z.object({
   email: z.string().min(1, "validation.email.required").email("validation.email.invalid").optional(),
   phone: z.string().min(1, "validation.phone.required").min(10, "validation.phone.minLength").optional(),
   password: z.union([
-    z.string().min(8, "validation.password.minLength"),
+    z.string().min(8, "validation.password.minLength").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "validation.password.complex"),
     z.literal(""),
   ]).optional(),
 });

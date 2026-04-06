@@ -178,11 +178,11 @@ export const UsersPage = () => {
             {user.isEmailVerified && user.isPhoneVerified ? (
               <CheckCircle className="h-4 w-4 text-green-600" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600" />
+              <XCircle className="h-4 w-4 text-orange-600" />
             )}
             <span className={cn(
               "text-xs",
-              user.isEmailVerified && user.isPhoneVerified ? "text-green-600" : "text-red-600"
+              user.isEmailVerified && user.isPhoneVerified ? "text-green-600" : "text-orange-600"
             )}>
               {user.isEmailVerified && user.isPhoneVerified
                 ? t("users.verified")
