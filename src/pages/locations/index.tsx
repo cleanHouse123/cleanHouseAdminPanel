@@ -10,7 +10,8 @@ import { LocationStats } from "./ui/LocationStats";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { LocationDto } from "@/modules/locations/types";
-import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { getLocationTypeI18nKey } from "@/modules/locations/utils/locationTypeI18n";
+import { formatDateTime } from "@/core/utils/dateUtils";
 import { Badge } from "@/core/components/ui/badge";
 import { cn } from "@/core/lib/utils";
 import { Pagination } from "@/core/components/ui/Pagination";
@@ -38,6 +39,8 @@ export const LocationsPage = () => {
 
   const getLocationDisplayName = (location: LocationDto) => {
     const parts = [
+      location.sub_area,
+      location.city_district,
       location.settlement,
       location.city,
       location.area,
@@ -47,6 +50,8 @@ export const LocationsPage = () => {
   };
 
   const getLocationType = (location: LocationDto) => {
+    if (location.sub_area) return "subArea";
+    if (location.city_district) return "cityDistrict";
     if (location.settlement) return "settlement";
     if (location.city) return "city";
     if (location.area) return "area";
@@ -56,6 +61,10 @@ export const LocationsPage = () => {
 
   const getLocationTypeColor = (type: string) => {
     switch (type) {
+      case "subArea":
+        return "bg-teal-100 text-teal-800 border-teal-200";
+      case "cityDistrict":
+        return "bg-cyan-100 text-cyan-800 border-cyan-200";
       case "settlement":
         return "bg-green-100 text-green-800 border-green-200";
       case "city":
@@ -72,7 +81,7 @@ export const LocationsPage = () => {
   const tableColumns: Column<LocationDto>[] = [
     {
       key: "name",
-      header: "Название",
+      header: t("locations.table.name"),
       render: (location) => (
         <div className="font-medium">{getLocationDisplayName(location)}</div>
       ),
@@ -80,48 +89,66 @@ export const LocationsPage = () => {
     },
     {
       key: "region",
-      header: "Регион",
-      render: (location) => location.region || "-",
+      header: t("locations.region"),
+      render: (location) => location.region || "—",
       showTooltip: true,
     },
     {
       key: "area",
-      header: "Область",
-      render: (location) => location.area || "-",
+      header: t("locations.area"),
+      render: (location) => location.area || "—",
       showTooltip: true,
     },
     {
       key: "city",
-      header: "Город",
-      render: (location) => location.city || "-",
+      header: t("locations.city"),
+      render: (location) => location.city || "—",
       showTooltip: true,
     },
     {
       key: "settlement",
-      header: "Населенный пункт",
-      render: (location) => location.settlement || "-",
+      header: t("locations.settlement"),
+      render: (location) => location.settlement || "—",
+      showTooltip: true,
+    },
+    {
+      key: "city_district",
+      header: t("locations.cityDistrict"),
+      render: (location) => location.city_district || "—",
+      showTooltip: true,
+    },
+    {
+      key: "sub_area",
+      header: t("locations.subArea"),
+      render: (location) => location.sub_area || "—",
+      showTooltip: true,
+    },
+    {
+      key: "street",
+      header: t("locations.street"),
+      render: (location) => location.street || "—",
       showTooltip: true,
     },
     {
       key: "type",
-      header: "Тип",
+      header: t("locations.table.type"),
       render: (location) => {
         const type = getLocationType(location);
         return (
           <Badge className={cn(getLocationTypeColor(type))}>
-            {t(`locations.type.${type}`)}
+            {t(getLocationTypeI18nKey(type))}
           </Badge>
         );
       },
     },
     {
       key: "createdAt",
-      header: "Дата создания",
-      render: (location) => formatDateTimeLocal(location.created_at, locale),
+      header: t("locations.table.createdAt"),
+      render: (location) => formatDateTime(location.created_at, locale),
     },
     {
       key: "actions",
-      header: "Действия",
+      header: t("locations.table.actions"),
       render: (location) => (
         <button
           onClick={() => handleDelete(location.id)}
@@ -227,12 +254,14 @@ export const LocationsPage = () => {
             ))}
           </div>
         ) : (
-          <DataTable
-            data={locationsList}
-            getRowKey={(location) => location.id}
-            emptyMessage={t("locations.empty")}
-            columns={tableColumns}
-          />
+          <div className="w-full overflow-x-auto">
+            <DataTable
+              data={locationsList}
+              getRowKey={(location) => location.id}
+              emptyMessage={t("locations.empty")}
+              columns={tableColumns}
+            />
+          </div>
         )}
 
         {total > 0 && (

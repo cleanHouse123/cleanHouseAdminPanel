@@ -282,6 +282,12 @@
       "subArea": "Муниципальный округ",
       "unknown": "Не задано"
     },
+    "table": {
+      "name": "Название",
+      "type": "Тип",
+      "createdAt": "Дата создания",
+      "actions": "Действия"
+    },
     "deleteLocation": "Удалить локацию",
     "deleteLocationConfirm": "Вы уверены, что хотите удалить эту локацию?",
     "deleteLocationSuccess": "Локация успешно удалена",

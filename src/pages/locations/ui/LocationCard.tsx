@@ -16,6 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { LocationDto } from "@/modules/locations/types";
+import { getLocationTypeI18nKey } from "@/modules/locations/utils/locationTypeI18n";
 import { formatDateTime } from "@/core/utils/dateUtils";
 import { DeleteLocation } from "@/modules/locations/components/delete-location";
 
@@ -93,7 +94,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
               getLocationTypeColor(locationType)
             )}
           >
-            {t(`locations.type.${locationType}`)}
+            {t(getLocationTypeI18nKey(locationType))}
           </Badge>
         </div>
       </CardHeader>
