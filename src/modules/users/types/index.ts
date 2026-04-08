@@ -1,5 +1,7 @@
 import { UserRole } from "@/core/types/user";
 
+export type UserDeletedFilter = "active" | "deleted" | "all";
+
 export interface User {
   id: string;
   roles: UserRole[];
@@ -9,6 +11,7 @@ export interface User {
   isPhoneVerified: boolean;
   isEmailVerified: boolean;
   telegramUsername?: string | null;
+  deletedAt?: Date | string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,6 +33,7 @@ export interface FindUsersQueryDto {
   phone?: string;
   email?: string;
   role?: UserRole;
+  deleted?: UserDeletedFilter;
   page?: number;
   limit?: number;
 }

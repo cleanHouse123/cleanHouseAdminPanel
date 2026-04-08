@@ -29,4 +29,7 @@ export const usersApi = {
 
   remove: (id: string) =>
     axiosInstance.delete(`/user/${id}`).then(() => undefined),
+
+  restore: (id: string) =>
+    axiosInstance.patch(`/user/${id}/restore`).then(() => undefined),
 };

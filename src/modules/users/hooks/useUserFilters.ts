@@ -1,18 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { UserRole } from "@/core/types/user";
-import { FindUsersQueryDto } from "../types";
+import { FindUsersQueryDto, UserDeletedFilter } from "../types";
 import { useDebounce } from "@/core/hooks/utils/useDebounce";
 
 export interface UserFilters {
   search: string;
   role: string;
+  deleted: UserDeletedFilter;
   page: number;
 }
 
 const defaultFilters: UserFilters = {
   search: "",
   role: "all",
+  deleted: "active",
   page: 1,
 };
 
@@ -26,11 +28,15 @@ export function useUserFilters() {
   const getFiltersFromURL = useCallback((): UserFilters => {
     const search = searchParams.get("search") || defaultFilters.search;
     const role = searchParams.get("role") || defaultFilters.role;
+    const deleted =
+      (searchParams.get("deleted") as UserDeletedFilter) ||
+      defaultFilters.deleted;
     const page = parseInt(searchParams.get("page") || "1", 10);
 
     return {
       search,
       role,
+      deleted,
       page,
     };
   }, [searchParams]);
@@ -56,7 +62,7 @@ export function useUserFilters() {
     }
   }, [debouncedSearch, searchParams, setSearchParams]);
 
-  // Обновление URL при изменении фильтров (role и page обновляются сразу)
+  // Обновление URL при изменении фильтров (role/deleted/page обновляются сразу)
   const updateURL = useCallback(
     (newFilters: Partial<UserFilters>) => {
       setFilters((prevFilters) => {
@@ -64,11 +70,17 @@ export function useUserFilters() {
         const params = new URLSearchParams();
 
         // Search обновляется через debounce в отдельном useEffect
-        // Здесь обновляем только role и page
+        // Здесь обновляем только role/deleted/page
         if (updatedFilters.role !== defaultFilters.role) {
           params.set("role", updatedFilters.role);
         } else {
           params.delete("role");
+        }
+
+        if (updatedFilters.deleted !== defaultFilters.deleted) {
+          params.set("deleted", updatedFilters.deleted);
+        } else {
+          params.delete("deleted");
         }
         
         if (updatedFilters.page > 1) {
@@ -90,17 +102,29 @@ export function useUserFilters() {
     [searchParams, setSearchParams]
   );
 
-  // Синхронизация с URL при изменении searchParams (role и page)
+  // Синхронизация с URL при изменении searchParams (role/deleted/page)
   // Search синхронизируется отдельно через debounce
   useEffect(() => {
     const urlRole = searchParams.get("role") || defaultFilters.role;
+    const urlDeleted =
+      (searchParams.get("deleted") as UserDeletedFilter) ||
+      defaultFilters.deleted;
     const urlPage = parseInt(searchParams.get("page") || "1", 10);
     
     setFilters((prev) => {
-      // Обновляем только role и page из URL
+      // Обновляем только role/deleted/page из URL
       // Search обновляется через debounce в отдельном useEffect
-      if (prev.role !== urlRole || prev.page !== urlPage) {
-        return { ...prev, role: urlRole, page: urlPage };
+      if (
+        prev.role !== urlRole ||
+        prev.deleted !== urlDeleted ||
+        prev.page !== urlPage
+      ) {
+        return {
+          ...prev,
+          role: urlRole,
+          deleted: urlDeleted,
+          page: urlPage,
+        };
       }
       return prev;
     });
@@ -113,7 +137,7 @@ export function useUserFilters() {
         const updated = { ...prev, ...newFilters };
         
         // Для search обновляем только локальное состояние (URL обновится через debounce)
-        // Для role и page обновляем URL сразу
+        // Для role/deleted/page обновляем URL сразу
         if (newFilters.search === undefined) {
           updateURL(newFilters);
         }
@@ -132,7 +156,9 @@ export function useUserFilters() {
 
   // Проверка наличия активных фильтров
   const hasActiveFilters =
-    filters.search.trim() !== "" || filters.role !== defaultFilters.role;
+    filters.search.trim() !== "" ||
+    filters.role !== defaultFilters.role ||
+    filters.deleted !== defaultFilters.deleted;
 
   // Определяем, по какому полю искать на основе формата запроса (используем debounced значение)
   const getSearchParams = useCallback((): Partial<FindUsersQueryDto> => {
@@ -158,10 +184,13 @@ export function useUserFilters() {
         page: filters.page,
         limit,
         ...(filters.role !== "all" && { role: filters.role as UserRole }),
+        ...(filters.deleted !== defaultFilters.deleted && {
+          deleted: filters.deleted,
+        }),
         ...getSearchParams(),
       };
     },
-    [filters.page, filters.role, getSearchParams]
+    [filters.page, filters.role, filters.deleted, getSearchParams]
   );
 
   return {

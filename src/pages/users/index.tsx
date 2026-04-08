@@ -14,6 +14,7 @@ import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { SelectField } from "@/core/components/ui/SelectField";
 import { Pagination } from "@/core/components/ui/Pagination";
 import { DeleteUser } from "@/modules/users/components/delete-user";
+import { RestoreUser } from "@/modules/users/components/restore-user";
 import React, { useMemo } from "react";
 
 export const UsersPage = () => {
@@ -170,6 +171,20 @@ export const UsersPage = () => {
       ),
     },
     {
+      key: "status",
+      header: "Статус",
+      render: (user) =>
+        user.deletedAt ? (
+          <Badge className="bg-red-100 text-red-800 border-red-200">
+            Удален
+          </Badge>
+        ) : (
+          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200">
+            Активен
+          </Badge>
+        ),
+    },
+    {
       key: "verification",
       header: "Верификация",
       render: (user) => (
@@ -206,19 +221,41 @@ export const UsersPage = () => {
       },
     },
     {
+      key: "deletedAt",
+      header: "Дата удаления",
+      render: (user) => {
+        if (!user.deletedAt) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+
+        return formatDateTimeLocal(
+          user.deletedAt instanceof Date
+            ? user.deletedAt.toISOString()
+            : String(user.deletedAt),
+          locale
+        );
+      },
+    },
+    {
       key: "actions",
       header: "Действия",
       render: (user) => (
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate(`/admin/users/${user.id}/edit`)}
-            title={t("common.edit")}
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <DeleteUser userId={user.id} userName={user.name} />
+          {!user.deletedAt && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(`/admin/users/${user.id}/edit`)}
+              title={t("common.edit")}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+          )}
+          {user.deletedAt ? (
+            <RestoreUser userId={user.id} userName={user.name} />
+          ) : (
+            <DeleteUser userId={user.id} userName={user.name} />
+          )}
         </div>
       ),
     },
@@ -227,7 +264,12 @@ export const UsersPage = () => {
   // Фильтруем колонки - скрываем те, где нет данных
   const visibleColumns = allColumns.filter((column) => {
     // Колонки "Роли", "Верификация" и "Действия" всегда показываем
-    if (column.key === "roles" || column.key === "verification" || column.key === "actions") {
+    if (
+      column.key === "roles" ||
+      column.key === "status" ||
+      column.key === "verification" ||
+      column.key === "actions"
+    ) {
       return true;
     }
 
@@ -243,6 +285,9 @@ export const UsersPage = () => {
     }
     if (column.key === "createdAt") {
       return hasColumnData((user) => user.createdAt);
+    }
+    if (column.key === "deletedAt") {
+      return hasColumnData((user) => user.deletedAt);
     }
 
     return true;
@@ -284,19 +329,34 @@ export const UsersPage = () => {
         <div className="flex flex-col gap-3 sm:gap-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
             <h2 className="text-xl font-semibold">{t("users.list")}</h2>
-            <SelectField
-              options={[
-                { value: "all", label: "Все пользователи" },
-                { value: UserRole.CURRIER, label: "Курьеры" },
-                { value: UserRole.CUSTOMER, label: "Клиенты" },
-              ]}
-              value={filters.role}
-              onChange={(value) => {
-                updateFilters({ role: value, page: 1 });
-              }}
-              placeholder="Выберите роль"
-              className="w-[180px]"
-            />
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <SelectField
+                options={[
+                  { value: "all", label: "Все пользователи" },
+                  { value: UserRole.CURRIER, label: "Курьеры" },
+                  { value: UserRole.CUSTOMER, label: "Клиенты" },
+                ]}
+                value={filters.role}
+                onChange={(value) => {
+                  updateFilters({ role: value, page: 1 });
+                }}
+                placeholder="Выберите роль"
+                className="w-full sm:w-[180px]"
+              />
+              <SelectField
+                options={[
+                  { value: "active", label: "Активные" },
+                  { value: "deleted", label: "Удаленные" },
+                  { value: "all", label: "Все статусы" },
+                ]}
+                value={filters.deleted}
+                onChange={(value) => {
+                  updateFilters({ deleted: value as "active" | "deleted" | "all", page: 1 });
+                }}
+                placeholder="Статус"
+                className="w-full sm:w-[180px]"
+              />
+            </div>
           </div>
           
           {/* Поле поиска */}
@@ -336,6 +396,9 @@ export const UsersPage = () => {
             getRowKey={(user) => user.id}
             emptyMessage={t("users.empty")}
             columns={visibleColumns}
+            getRowClassName={(user) =>
+              user.deletedAt ? "bg-red-50/40 border-red-100/70" : ""
+            }
           />
         )}
 

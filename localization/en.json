@@ -402,6 +402,11 @@
     "success": "User deleted successfully",
     "error": "Error deleting user"
   },
+  "restoreUser": {
+    "action": "Restore user",
+    "success": "User restored successfully",
+    "error": "Error restoring user"
+  },
   "users": {
     "title": "Users",
     "subtitle": "Total users: {{count}}",

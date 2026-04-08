@@ -67,3 +67,14 @@ export const useDeleteUser = () => {
     },
   });
 };
+
+export const useRestoreUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, string>({
+    mutationFn: (id) => usersApi.restore(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["curriers"] });
+    },
+  });
+};
