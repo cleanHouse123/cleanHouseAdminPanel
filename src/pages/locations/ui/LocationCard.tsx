@@ -16,7 +16,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { cn } from "@/core/lib/utils";
 import { LocationDto } from "@/modules/locations/types";
-import { formatDateTimeLocal } from "@/core/utils/dateUtils";
+import { getLocationTypeI18nKey } from "@/modules/locations/utils/locationTypeI18n";
+import { formatDateTime } from "@/core/utils/dateUtils";
 import { DeleteLocation } from "@/modules/locations/components/delete-location";
 
 interface LocationCardProps {
@@ -29,6 +30,8 @@ export const LocationCard = ({ location }: LocationCardProps) => {
 
   const getLocationDisplayName = () => {
     const parts = [
+      location.sub_area,
+      location.city_district,
       location.settlement,
       location.city,
       location.area,
@@ -38,6 +41,8 @@ export const LocationCard = ({ location }: LocationCardProps) => {
   };
 
   const getLocationType = () => {
+    if (location.sub_area) return "subArea";
+    if (location.city_district) return "cityDistrict";
     if (location.settlement) return "settlement";
     if (location.city) return "city";
     if (location.area) return "area";
@@ -47,6 +52,10 @@ export const LocationCard = ({ location }: LocationCardProps) => {
 
   const getLocationTypeColor = (type: string) => {
     switch (type) {
+      case "subArea":
+        return "bg-teal-100 text-teal-800 border-teal-200";
+      case "cityDistrict":
+        return "bg-cyan-100 text-cyan-800 border-cyan-200";
       case "settlement":
         return "bg-green-100 text-green-800 border-green-200";
       case "city":
@@ -75,7 +84,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
                 {getLocationDisplayName()}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {formatDateTimeLocal(location.created_at, locale)}
+                {formatDateTime(location.created_at, locale)}
               </p>
             </div>
           </div>
@@ -85,7 +94,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
               getLocationTypeColor(locationType)
             )}
           >
-            {t(`locations.type.${locationType}`)}
+            {t(getLocationTypeI18nKey(locationType))}
           </Badge>
         </div>
       </CardHeader>
@@ -143,6 +152,30 @@ export const LocationCard = ({ location }: LocationCardProps) => {
           </div>
         )}
 
+        {location.city_district && (
+          <div className="flex items-start gap-2">
+            <Building className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium">{t("locations.cityDistrict")}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                {location.city_district}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {location.sub_area && (
+          <div className="flex items-start gap-2">
+            <Navigation className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium">{t("locations.subArea")}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                {location.sub_area}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Street */}
         {location.street && (
           <div className="flex items-start gap-2">
@@ -177,7 +210,7 @@ export const LocationCard = ({ location }: LocationCardProps) => {
               {t("locations.lastUpdated")}
             </p>
             <p className="text-xs sm:text-sm truncate">
-              {formatDateTimeLocal(location.updated_at, locale)}
+              {formatDateTime(location.updated_at, locale)}
             </p>
           </div>
         </div>

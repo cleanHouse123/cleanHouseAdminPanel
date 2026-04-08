@@ -8,6 +8,7 @@ import { CreateLocationDto } from "@/modules/locations/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, CheckCircle, MapPin, XCircle } from "lucide-react";
 import { useState } from "react";
+import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -20,12 +21,16 @@ export const CreateLocationPage = () => {
   const { mutateAsync: createLocation, isPending, error } = useCreateLocation();
 
   const form = useForm<CreateLocationDto>({
-    resolver: zodResolver(createLocationSchema),
+    resolver: zodResolver(
+      createLocationSchema,
+    ) as Resolver<CreateLocationDto>,
     defaultValues: {
       region: null,
       area: null,
       city: null,
       settlement: null,
+      city_district: null,
+      sub_area: null,
     },
   });
 
@@ -159,6 +164,46 @@ export const CreateLocationPage = () => {
                         {...field}
                         value={field.value || ""}
                         placeholder={t("createLocation.settlement.placeholder")}
+                        className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="city_district"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("createLocation.cityDistrict.label")}</FormLabel>
+                    <p className="text-xs text-muted-foreground mb-1">{t("createLocation.cityDistrict.hint")}</p>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ""}
+                        placeholder={t("createLocation.cityDistrict.placeholder")}
+                        className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="sub_area"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("createLocation.subArea.label")}</FormLabel>
+                    <p className="text-xs text-muted-foreground mb-1">{t("createLocation.subArea.hint")}</p>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ""}
+                        placeholder={t("createLocation.subArea.placeholder")}
                         className="text-foreground placeholder:text-muted-foreground"
                       />
                     </FormControl>
