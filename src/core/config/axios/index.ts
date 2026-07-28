@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useAuthStore } from "@/modules/auth/store/authStore";
 
-const baseURL = import.meta.env.VITE_API_URL || "https://cleanhouse123-cleanhouseapi-4d55.twc1.net/";
+const baseURL = import.meta.env.VITE_API_URL || "https://cleanhouse123-cleanhouseapi-f5cc.twc1.net/";
 
 export const axiosInstance = axios.create({
   baseURL,
