@@ -24,6 +24,7 @@ export const CreateCurrierPage = () => {
     resolver: zodResolver(createCurrierSchema),
     defaultValues: {
       name: "",
+      email: "",
       phone: "",
     },
   });
@@ -97,6 +98,27 @@ export const CreateCurrierPage = () => {
                       <Input
                         {...field}
                         placeholder={t("createCurrier.name.placeholder")}
+                        className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+
+              {/* Email Field */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("createCurrier.email.label")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder={t("createCurrier.email.placeholder")}
                         className="text-foreground placeholder:text-muted-foreground"
                       />
                     </FormControl>

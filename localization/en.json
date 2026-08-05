@@ -390,6 +390,10 @@
       "label": "Name",
       "placeholder": "Enter courier name"
     },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter courier email"
+    },
     "phone": {
       "label": "Phone",
       "placeholder": "Enter phone number"

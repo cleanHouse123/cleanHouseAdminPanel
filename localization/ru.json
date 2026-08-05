@@ -404,6 +404,10 @@
       "label": "Имя",
       "placeholder": "Введите имя курьера"
     },
+    "email": {
+      "label": "Email",
+      "placeholder": "Введите email курьера"
+    },
     "phone": {
       "label": "Телефон",
       "placeholder": "Введите номер телефона"
