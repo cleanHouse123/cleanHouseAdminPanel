@@ -119,9 +119,9 @@ export const LoginPage = () => {
                       <FormLabel className="text-sm font-medium text-card-foreground">
                         {t("common.email")}
                       </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                      <div className="relative">
+                        <Mail className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                        <FormControl>
                           <Input
                             {...field}
                             type="email"
@@ -129,8 +129,8 @@ export const LoginPage = () => {
                             className="pl-12 bg-input border-input focus:border-ring focus:ring-ring"
                             autoComplete="email"
                           />
-                        </div>
-                      </FormControl>
+                        </FormControl>
+                      </div>
                       <FormMessage className="!text-foreground" />
                     </FormItem>
                   )}
@@ -144,9 +144,9 @@ export const LoginPage = () => {
                       <FormLabel className="text-sm font-medium text-card-foreground">
                         {t("common.password")}
                       </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                      <div className="relative">
+                        <Lock className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                        <FormControl>
                           <Input
                             {...field}
                             type={showPassword ? "text" : "password"}
@@ -154,19 +154,19 @@ export const LoginPage = () => {
                             className="pl-12 pr-12 bg-input border-input focus:border-ring focus:ring-ring"
                             autoComplete="current-password"
                           />
-                          <button
-                            type="button"
-                            onClick={togglePasswordVisibility}
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
+                        </FormControl>
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
+                      </div>
                       <FormMessage className="!text-foreground" />
                     </FormItem>
                   )}
