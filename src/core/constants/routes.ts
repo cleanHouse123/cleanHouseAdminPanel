@@ -21,6 +21,9 @@ export const ROUTES = {
     SUBSCRIPTION_PLANS: {
       LIST: "/admin/subscription-plans",
     },
+    COUPONS: {
+      LIST: "/admin/coupons",
+    },
     AD_TOKENS: {
       LIST: "/admin/ad-tokens",
     },
