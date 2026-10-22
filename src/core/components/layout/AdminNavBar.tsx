@@ -1,6 +1,6 @@
 import { Button } from '@/core/components/ui/button'
 import { ROUTES } from '@/core/constants/routes'
-import { List, Users, CreditCard, MapPin, Link, Clock } from 'lucide-react'
+import { List, Users, CreditCard, MapPin, Link, Clock, Ticket } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -75,6 +75,18 @@ export const AdminNavBar = () => {
       >
         <CreditCard className="h-4 w-4" />
         {t('nav.subscriptionPlans')}
+      </Button>
+
+      <Button
+        variant={isActive(ROUTES.ADMIN.COUPONS.LIST) ? 'default' : 'ghost'}
+        onClick={() => navigate(`${ROUTES.ADMIN.COUPONS.LIST}`)}
+        className={`justify-start gap-2 rounded-lg ${isActive(ROUTES.ADMIN.COUPONS.LIST)
+          ? 'bg-secondary hover:bg-secondary text-foreground'
+          : 'hover:bg-accent text-foreground'
+          }`}
+      >
+        <Ticket className="h-4 w-4" />
+        Промокоды
       </Button>
 
       <Button

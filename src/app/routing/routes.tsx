@@ -11,6 +11,7 @@ import { CreateCurrierPage } from "@/pages/create-currier";
 import { EditUserPage } from "@/pages/edit-user";
 import { OrderDetailsPage } from "@/pages/order-details";
 import { SubscriptionPlansPage } from "@/pages/subscription-plans";
+import { CouponsPage } from "@/pages/coupons";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { LocationsPage } from "@/pages/locations";
 import { CreateLocationPage } from "@/pages/create-location";
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path: "subscription-plans",
         element: <SubscriptionPlansPage />,
+      },
+      {
+        path: "coupons",
+        element: <CouponsPage />,
       },
       {
         path: "locations",
