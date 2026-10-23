@@ -16,15 +16,15 @@ interface ChangeOrderStatusProps {
   orderId: string;
   onStatusChange: (status: OrderStatus) => void;
   currentStatus: OrderStatus;
-  /** Оплаченная сумма в рублях: если больше нуля, отмена идёт через диалог возврата */
-  paidAmount?: number;
+  /** Оплаченная сумма в копейках: если больше нуля, отмена идёт через диалог возврата */
+  paidAmountInKopecks?: number;
 }
 
 export const ChangeOrderStatus = ({
   orderId,
   onStatusChange,
   currentStatus,
-  paidAmount = 0,
+  paidAmountInKopecks = 0,
 }: ChangeOrderStatusProps) => {
   const { t } = useTranslation();
   const [isRefundDialogOpen, setIsRefundDialogOpen] = useState(false);
@@ -34,7 +34,7 @@ export const ChangeOrderStatus = ({
   const handleStatusChange = async (status: OrderStatus) => {
     // По оплаченному заказу нельзя просто сменить статус: сначала решаем,
     // возвращать ли деньги
-    if (status === OrderStatus.CANCELED && paidAmount > 0) {
+    if (status === OrderStatus.CANCELED && paidAmountInKopecks > 0) {
       setIsRefundDialogOpen(true);
       return;
     }
@@ -85,7 +85,7 @@ export const ChangeOrderStatus = ({
         open={isRefundDialogOpen}
         onOpenChange={setIsRefundDialogOpen}
         orderId={orderId}
-        paidAmount={paidAmount}
+        paidAmountInKopecks={paidAmountInKopecks}
         onCanceled={() => onStatusChange(OrderStatus.CANCELED)}
       />
 

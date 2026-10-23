@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 import { ROUTES } from "@/core/constants/routes";
 import { useOrdersAwaitingRefund } from "../../hooks/useOrders";
+import { formatKopecks } from "@/core/utils/price";
 
 /**
  * Оплаченные отменённые заказы, по которым не решили, что с деньгами.
@@ -50,7 +51,7 @@ export const OrdersAwaitingRefund = () => {
                 )}
               </div>
               <div className="text-right">
-                <div className="font-medium">{order.amount} ₽</div>
+                <div className="font-medium">{formatKopecks(order.amount)}</div>
                 <div
                   className={
                     days >= 10

@@ -12,14 +12,15 @@ import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/inputs/input";
 import { Label } from "@/core/components/ui/label";
 import { useCancelOrderWithRefund } from "../../hooks/useOrders";
+import { formatKopecks } from "@/core/utils/price";
 import { RefundDecision } from "../../types/orders";
 
 interface CancelWithRefundDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   orderId: string;
-  /** Оплаченная сумма в рублях */
-  paidAmount: number;
+  /** Оплаченная сумма в копейках, как она хранится у платежа */
+  paidAmountInKopecks: number;
   onCanceled: () => void;
 }
 
@@ -32,11 +33,12 @@ export const CancelWithRefundDialog = ({
   open,
   onOpenChange,
   orderId,
-  paidAmount,
+  paidAmountInKopecks,
   onCanceled,
 }: CancelWithRefundDialogProps) => {
+  const paidRubles = paidAmountInKopecks / 100;
   const [decision, setDecision] = useState<RefundDecision>(RefundDecision.FULL);
-  const [amount, setAmount] = useState(String(paidAmount));
+  const [amount, setAmount] = useState(String(paidRubles));
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -57,8 +59,8 @@ export const CancelWithRefundDialog = ({
         setError("Укажите сумму возврата");
         return;
       }
-      if (parsedAmount > paidAmount) {
-        setError(`Сумма больше оплаченной: ${paidAmount} ₽`);
+      if (parsedAmount > paidRubles) {
+        setError(`Сумма больше оплаченной: ${formatKopecks(paidAmountInKopecks)}`);
         return;
       }
     }
@@ -85,7 +87,7 @@ export const CancelWithRefundDialog = ({
     [
       {
         value: RefundDecision.FULL,
-        label: `Вернуть полностью — ${paidAmount} ₽`,
+        label: `Вернуть полностью — ${formatKopecks(paidAmountInKopecks)}`,
         hint: "Заказ отменён не по вине клиента",
       },
       {
@@ -106,8 +108,8 @@ export const CancelWithRefundDialog = ({
         <DialogHeader>
           <DialogTitle>Отмена оплаченного заказа</DialogTitle>
           <DialogDescription>
-            По заказу прошла оплата на {paidAmount} ₽. Выберите, что делать с
-            деньгами — возврат уйдёт в YooKassa сразу.
+            По заказу прошла оплата на {formatKopecks(paidAmountInKopecks)}.
+            Выберите, что делать с деньгами — возврат уйдёт в YooKassa сразу.
           </DialogDescription>
         </DialogHeader>
 
