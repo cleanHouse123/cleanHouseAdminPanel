@@ -37,8 +37,8 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const navigate = useNavigate();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
-  // Сумма, которую реально списали: по ней считается возврат при отмене
-  const paidAmount = order.payments
+  // Сумма, которую реально списали, в копейках: по ней считается возврат
+  const paidAmountInKopecks = order.payments
     .filter((payment) => payment.status === "paid")
     .reduce((sum, payment) => sum + Number(payment.amount), 0);
 
@@ -89,7 +89,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               orderId={order.id}
               onStatusChange={() => { }}
               currentStatus={order.status}
-              paidAmount={paidAmount}
+              paidAmountInKopecks={paidAmountInKopecks}
             />
             <AssignCurrier
               orderId={order.id}
