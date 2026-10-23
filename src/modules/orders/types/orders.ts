@@ -52,6 +52,8 @@ export interface PaymentDto {
   status: string;
   method: string;
   createdAt: string;
+  /** Платёж в YooKassa: без него возвращать нечего (оплата лимитом подписки) */
+  yookassaId?: string | null;
   refundStatus?: "none" | "pending" | "succeeded" | "canceled" | null;
   refundAmount?: number | null;
   refundReason?: string | null;

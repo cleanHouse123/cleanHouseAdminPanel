@@ -21,6 +21,11 @@ interface CancelWithRefundDialogProps {
   orderId: string;
   /** Оплаченная сумма в копейках, как она хранится у платежа */
   paidAmountInKopecks: number;
+  /**
+   * Заказ уже отменён, решают только судьбу денег: так приходят заказы
+   * из очереди «ожидают возврата»
+   */
+  alreadyCanceled?: boolean;
   onCanceled: () => void;
 }
 
@@ -34,6 +39,7 @@ export const CancelWithRefundDialog = ({
   onOpenChange,
   orderId,
   paidAmountInKopecks,
+  alreadyCanceled = false,
   onCanceled,
 }: CancelWithRefundDialogProps) => {
   const paidRubles = paidAmountInKopecks / 100;
@@ -106,10 +112,15 @@ export const CancelWithRefundDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Отмена оплаченного заказа</DialogTitle>
+          <DialogTitle>
+            {alreadyCanceled
+              ? "Решение по возврату"
+              : "Отмена оплаченного заказа"}
+          </DialogTitle>
           <DialogDescription>
-            По заказу прошла оплата на {formatKopecks(paidAmountInKopecks)}.
-            Выберите, что делать с деньгами — возврат уйдёт в YooKassa сразу.
+            {alreadyCanceled
+              ? `Заказ отменён, но деньги остались у нас: оплата на ${formatKopecks(paidAmountInKopecks)}. Выберите, что с ними делать — возврат уйдёт в YooKassa сразу.`
+              : `По заказу прошла оплата на ${formatKopecks(paidAmountInKopecks)}. Выберите, что делать с деньгами — возврат уйдёт в YooKassa сразу.`}
           </DialogDescription>
         </DialogHeader>
 
@@ -175,7 +186,7 @@ export const CancelWithRefundDialog = ({
           </Button>
           <Button onClick={handleSubmit} disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Отменить заказ
+            {alreadyCanceled ? "Сохранить решение" : "Отменить заказ"}
           </Button>
         </DialogFooter>
       </DialogContent>
