@@ -7,6 +7,7 @@ import { Button } from '@/core/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/components/ui/card';
 import { Plus, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/core/components/ui/dialog';
+import { SubscriptionsAwaitingRefund } from "@/modules/subscription-refunds/components/subscriptions-awaiting-refund";
 
 export const SubscriptionPlansPage = () => {
     const {
@@ -86,6 +87,8 @@ export const SubscriptionPlansPage = () => {
                     Создать план
                 </Button>
             </div>
+
+            <SubscriptionsAwaitingRefund />
 
             {plans.length === 0 ? (
                 <Card>
