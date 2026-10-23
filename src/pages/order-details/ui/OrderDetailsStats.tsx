@@ -11,6 +11,7 @@ import {
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDateTimeLocal, formatDateOnlyLocal } from "@/core/utils/dateUtils";
 import { formatKopecks } from "@/core/utils/price";
+import { isPaidBySubscription } from "@/modules/orders/utils/payment";
 import { formatOverdueTime } from "@/core/utils/overdueUtils";
 import { cn } from "@/core/lib/utils";
 
@@ -58,6 +59,11 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
           <div className="text-2xl font-bold text-primary">
             {formatKopecks(order.price)}
           </div>
+          {isPaidBySubscription(order.payments) && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Оплачено подпиской — деньги по заказу не поступали
+            </p>
+          )}
         </CardContent>
       </Card>
 
