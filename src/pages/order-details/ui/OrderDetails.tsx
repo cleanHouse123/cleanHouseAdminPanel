@@ -6,7 +6,7 @@ import {
 } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { OrderResponseDto } from "@/modules/orders/types/orders";
+import { OrderResponseDto, OrderStatus } from "@/modules/orders/types/orders";
 import {
   MapPin,
   User,
@@ -22,6 +22,7 @@ import {
 import { ChangeOrderStatus } from "@/modules/orders/components/change-order-status";
 import { AssignCurrier } from "@/modules/orders/components/assign-currier";
 import { DeleteOrder } from "@/modules/orders/components/delete-order";
+import { ResolveRefund } from "@/modules/orders/components/resolve-refund";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/constants/routes";
@@ -37,12 +38,23 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const navigate = useNavigate();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
-  // Сумма, которую реально списали, в копейках: по ней считается возврат
-  const paidAmountInKopecks = order.payments
+  // Возврат делается по последнему оплаченному платежу — так же, как на бэкенде
+  const paidPayment = order.payments
     .filter((payment) => payment.status === "paid")
-    .reduce((sum, payment) => sum + Number(payment.amount), 0);
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )[0];
+  const paidAmountInKopecks = Number(paidPayment?.amount ?? 0);
 
-  
+  // Заказ отменён, деньги ушли в YooKassa, а решения по ним нет:
+  // такой заказ висит в очереди «ожидают возврата»
+  const awaitsRefundDecision =
+    order.status === OrderStatus.CANCELED &&
+    Boolean(paidPayment?.yookassaId) &&
+    !paidPayment?.refundStatus;
+
+
   return (
     <div className="space-y-6">
       <Card>
@@ -81,6 +93,13 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
                 </p>
               )}
             </div>
+          )}
+
+          {awaitsRefundDecision && (
+            <ResolveRefund
+              orderId={order.id}
+              paidAmountInKopecks={paidAmountInKopecks}
+            />
           )}
 
           {/* Панель управления */}
