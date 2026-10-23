@@ -10,6 +10,7 @@ import {
   OrderStatus,
   ReassignOrderDto,
   UpdateOrderStatusDto,
+  CancelWithRefundDto,
 } from "../types/orders";
 
 interface UseOrderDetailsProps {
@@ -92,6 +93,38 @@ export const useUpdateOrderStatus = () => {
     },
   });
 };
+
+// Отменить оплаченный заказ вместе с решением по деньгам
+export const useCancelOrderWithRefund = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: CancelWithRefundDto }) =>
+      ordersApi.cancelWithRefund(id, data),
+    onSuccess: (order) => {
+      toast.success("Заказ отменён", {
+        description: `Решение по оплате заказа #${order.id.slice(-8)} сохранено`,
+        duration: 4000,
+      });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order", order.id] });
+      queryClient.invalidateQueries({ queryKey: ["orders-awaiting-refund"] });
+    },
+    onError: (error: AxiosError) => {
+      const errorMessage =
+        (error?.response?.data as { message?: string })?.message ||
+        "Не удалось отменить заказ";
+      toast.error("Ошибка", { description: errorMessage, duration: 5000 });
+    },
+  });
+};
+
+// Оплаченные отменённые заказы без решения по возврату
+export const useOrdersAwaitingRefund = () =>
+  useQuery({
+    queryKey: ["orders-awaiting-refund"],
+    queryFn: () => ordersApi.findAwaitingRefund(),
+  });
 
 // Отменить заказ
 export const useCancelOrder = () => {

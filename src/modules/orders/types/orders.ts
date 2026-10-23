@@ -23,6 +23,28 @@ export interface UpdateOrderStatusDto {
   currierId?: string;
 }
 
+export enum RefundDecision {
+  FULL = "full",
+  PARTIAL = "partial",
+  NONE = "none",
+}
+
+export interface CancelWithRefundDto {
+  refund: RefundDecision;
+  /** Сумма возврата в рублях, только для частичного возврата */
+  amount?: number;
+  reason?: string;
+}
+
+/** Оплаченный отменённый заказ, по которому не решили, что с деньгами */
+export interface OrderAwaitingRefund {
+  orderId: string;
+  paymentId: string;
+  amount: number;
+  customerName?: string;
+  canceledAt: string;
+}
+
 export interface PaymentDto {
   id: string;
   orderId: string;
@@ -30,6 +52,9 @@ export interface PaymentDto {
   status: string;
   method: string;
   createdAt: string;
+  refundStatus?: "none" | "pending" | "succeeded" | "canceled" | null;
+  refundAmount?: number | null;
+  refundReason?: string | null;
 }
 
 export interface UserDto {
