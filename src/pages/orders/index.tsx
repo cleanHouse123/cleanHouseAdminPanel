@@ -9,6 +9,7 @@ import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
 import { formatKopecks } from "@/core/utils/price";
+import { isPaidBySubscription } from "@/modules/orders/utils/payment";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
@@ -196,7 +197,14 @@ export const OrdersPage = () => {
       key: "price",
       header: "Сумма",
       render: (order) => (
-        <span className="font-bold text-primary">{formatKopecks(order.price)}</span>
+        <div>
+          <span className="font-bold text-primary">
+            {formatKopecks(order.price)}
+          </span>
+          {isPaidBySubscription(order.payments) && (
+            <div className="text-xs text-muted-foreground">по подписке</div>
+          )}
+        </div>
       ),
     },
     {
