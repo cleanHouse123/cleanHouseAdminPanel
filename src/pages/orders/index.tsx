@@ -8,12 +8,13 @@ import { Button } from "@/core/components/ui/button";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
-import { kopecksToRubles } from "@/core/utils/price";
+import { formatKopecks } from "@/core/utils/price";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
 import { Pagination } from "@/core/components/ui/Pagination";
 import { OrderFilters } from "./ui/OrderFilters";
+import { OrdersAwaitingRefund } from "@/modules/orders/components/orders-awaiting-refund";
 import { useOrderFilters } from "@/modules/orders/hooks/useOrderFilters";
 import { formatOverdueTime } from "@/core/utils/overdueUtils";
 import { cn } from "@/core/lib/utils";
@@ -195,7 +196,7 @@ export const OrdersPage = () => {
       key: "price",
       header: "Сумма",
       render: (order) => (
-        <span className="font-bold text-primary">{kopecksToRubles(order.price)} ₽</span>
+        <span className="font-bold text-primary">{formatKopecks(order.price)}</span>
       ),
     },
     {
@@ -271,6 +272,8 @@ export const OrdersPage = () => {
         </div>
 
         {/* Фильтры и сортировка */}
+        <OrdersAwaitingRefund />
+
         <OrderFilters locale={locale} />
 
         {orders.length === 0 ? (

@@ -10,6 +10,8 @@ import {
   CancelOrderDto,
   ReassignOrderDto,
   OrderStatus,
+  CancelWithRefundDto,
+  OrderAwaitingRefund,
 } from "../types/orders";
 import { AxiosResponse } from "axios";
 
@@ -46,6 +48,19 @@ export const ordersApi = {
         `/orders/${id}/status`,
         data
       )
+      .then((res) => res.data),
+
+  cancelWithRefund: (id: string, data: CancelWithRefundDto) =>
+    axiosInstance
+      .post<CancelWithRefundDto, AxiosResponse<OrderResponseDto>>(
+        `/orders/${id}/cancel-with-refund`,
+        data
+      )
+      .then((res) => res.data),
+
+  findAwaitingRefund: () =>
+    axiosInstance
+      .get<OrderAwaitingRefund[]>("/orders/refunds/awaiting")
       .then((res) => res.data),
 
   remove: (id: string) =>

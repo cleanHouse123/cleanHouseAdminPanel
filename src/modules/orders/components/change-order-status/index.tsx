@@ -9,19 +9,36 @@ import { OrderStatus } from "../../types/orders";
 import { useTranslation } from "react-i18next";
 import { useUpdateOrderStatus } from "../../hooks/useOrders";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { CancelWithRefundDialog } from "../cancel-with-refund";
 
 interface ChangeOrderStatusProps {
   orderId: string;
   onStatusChange: (status: OrderStatus) => void;
   currentStatus: OrderStatus;
+  /** Оплаченная сумма в рублях: если больше нуля, отмена идёт через диалог возврата */
+  paidAmount?: number;
 }
 
-export const ChangeOrderStatus = ({ orderId, onStatusChange, currentStatus }: ChangeOrderStatusProps) => {
+export const ChangeOrderStatus = ({
+  orderId,
+  onStatusChange,
+  currentStatus,
+  paidAmount = 0,
+}: ChangeOrderStatusProps) => {
   const { t } = useTranslation();
+  const [isRefundDialogOpen, setIsRefundDialogOpen] = useState(false);
 
   const { mutateAsync: updateOrderStatus, isPending } = useUpdateOrderStatus();
 
   const handleStatusChange = async (status: OrderStatus) => {
+    // По оплаченному заказу нельзя просто сменить статус: сначала решаем,
+    // возвращать ли деньги
+    if (status === OrderStatus.CANCELED && paidAmount > 0) {
+      setIsRefundDialogOpen(true);
+      return;
+    }
+
     try {
       await updateOrderStatus({ id: orderId, data: { status } });
       onStatusChange(status);
@@ -64,6 +81,14 @@ export const ChangeOrderStatus = ({ orderId, onStatusChange, currentStatus }: Ch
           </SelectItem>
         </SelectContent>
       </Select>
+      <CancelWithRefundDialog
+        open={isRefundDialogOpen}
+        onOpenChange={setIsRefundDialogOpen}
+        orderId={orderId}
+        paidAmount={paidAmount}
+        onCanceled={() => onStatusChange(OrderStatus.CANCELED)}
+      />
+
       {isPending && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-3 w-3 animate-spin" />

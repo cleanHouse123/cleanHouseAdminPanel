@@ -37,7 +37,11 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
   const navigate = useNavigate();
   const locale = (i18n.language === "en" ? "en" : "ru") as "ru" | "en";
 
-  console.log(order.coordinates, "order.coordinates");
+  // Сумма, которую реально списали: по ней считается возврат при отмене
+  const paidAmount = order.payments
+    .filter((payment) => payment.status === "paid")
+    .reduce((sum, payment) => sum + Number(payment.amount), 0);
+
   
   return (
     <div className="space-y-6">
@@ -85,6 +89,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
               orderId={order.id}
               onStatusChange={() => { }}
               currentStatus={order.status}
+              paidAmount={paidAmount}
             />
             <AssignCurrier
               orderId={order.id}
