@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { formatDateTimeLocal, formatDateOnlyLocal } from "@/core/utils/dateUtils";
-import { kopecksToRubles } from "@/core/utils/price";
+import { formatKopecks } from "@/core/utils/price";
 import { formatOverdueTime } from "@/core/utils/overdueUtils";
 import { cn } from "@/core/lib/utils";
 
@@ -56,7 +56,7 @@ export const OrderDetailsStats = ({ order }: OrderDetailsStatsProps) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
-            {kopecksToRubles(order.price)} ₽
+            {formatKopecks(order.price)}
           </div>
         </CardContent>
       </Card>

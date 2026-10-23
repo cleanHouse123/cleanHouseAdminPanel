@@ -8,7 +8,7 @@ import { Button } from "@/core/components/ui/button";
 import { DataTable, Column } from "@/core/components/ui/DataTable";
 import { useLocalStorageQuery } from "@/core/hooks/utils/useLocalStorageQuery";
 import { formatDateTimeLocal } from "@/core/utils/dateUtils";
-import { kopecksToRubles } from "@/core/utils/price";
+import { formatKopecks } from "@/core/utils/price";
 import { OrderBadge } from "@/modules/orders/components/order-badge";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
@@ -196,7 +196,7 @@ export const OrdersPage = () => {
       key: "price",
       header: "Сумма",
       render: (order) => (
-        <span className="font-bold text-primary">{kopecksToRubles(order.price)} ₽</span>
+        <span className="font-bold text-primary">{formatKopecks(order.price)}</span>
       ),
     },
     {
