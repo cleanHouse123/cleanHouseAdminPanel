@@ -130,8 +130,10 @@ export const CancelSubscriptionDialog = ({
               </p>
               <p className="mt-1 text-muted-foreground">
                 {formatKopecks(suggested.price)} −{" "}
-                {formatKopecks(suggested.usedAmount ?? 0)} ={" "}
-                {formatKopecks(suggested.refundAmount)}
+                {formatKopecks(suggested.usedAmount ?? 0)}
+                {suggested.bagsDeduction > 0 &&
+                  ` − ${formatKopecks(suggested.bagsDeduction)} за пакеты`}{" "}
+                = {formatKopecks(suggested.refundAmount)}
               </p>
             </>
           ) : (
@@ -143,6 +145,8 @@ export const CancelSubscriptionDialog = ({
               <p className="mt-1 text-muted-foreground">
                 Формулы для безлимита в оферте нет — считаем пропорционально
                 неиспользованным дням
+                {suggested.bagsDeduction > 0 &&
+                  `, минус ${formatKopecks(suggested.bagsDeduction)} за использованные пакеты`}
               </p>
             </>
           )}

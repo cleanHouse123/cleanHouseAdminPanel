@@ -33,6 +33,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
         badgeColor: 'blue',
         popular: false,
         ordersLimit: undefined,
+        bagPriceInKopecks: undefined,
         isReferralFreeEnabled: false,
         minReferralsForFree: undefined,
     });
@@ -52,6 +53,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 badgeColor: plan.badgeColor,
                 popular: plan.popular,
                 ordersLimit: plan.ordersLimit,
+                bagPriceInKopecks: plan.bagPriceInKopecks,
                 isReferralFreeEnabled: plan.isReferralFreeEnabled ?? false,
                 minReferralsForFree: plan.minReferralsForFree,
             });
@@ -69,6 +71,7 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                 badgeColor: 'blue',
                 popular: false,
                 ordersLimit: undefined,
+                bagPriceInKopecks: undefined,
                 isReferralFreeEnabled: false,
                 minReferralsForFree: undefined,
             });
@@ -264,6 +267,33 @@ export const SubscriptionPlanForm = ({ plan, onSubmit, onCancel, isLoading }: Su
                         />
                         <p className="text-xs text-gray-500 mt-1">
                             -1 = безлимит, пустое = неограниченно
+                        </p>
+                    </div>
+
+                    <div>
+                        <Label htmlFor="bagPrice" className="mb-2 block">Цена пакета, ₽</Label>
+                        <Input
+                            id="bagPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={
+                                formData.bagPriceInKopecks === undefined
+                                    ? ''
+                                    : formData.bagPriceInKopecks / 100
+                            }
+                            onChange={(e) => {
+                                const value =
+                                    e.target.value === ''
+                                        ? undefined
+                                        : Math.round(parseFloat(e.target.value.replace(',', '.')) * 100);
+                                setFormData(prev => ({ ...prev, bagPriceInKopecks: value }));
+                            }}
+                            placeholder="0 — не удерживать"
+                            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                            Удерживается из возврата за использованные пакеты — пункт 6.2 Оферты
                         </p>
                     </div>
 
