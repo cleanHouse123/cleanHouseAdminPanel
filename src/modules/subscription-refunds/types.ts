@@ -11,6 +11,8 @@ export interface SubscriptionRefundBreakdown {
   usedAmount?: number;
   totalDays?: number;
   remainingDays?: number;
+  /** Удержано за использованные пакеты, пункт 6.2 Оферты */
+  bagsDeduction: number;
   refundAmount: number;
 }
 

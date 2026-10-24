@@ -10,6 +10,8 @@ export interface SubscriptionPlan {
   badgeColor: "blue" | "green";
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  /** Цена пакета в копейках: удерживается из возврата, пункт 6.2 Оферты */
+  bagPriceInKopecks?: number;
   usedOrders?: number; // количество использованных заказов
   isReferralFreeEnabled?: boolean;
   minReferralsForFree?: number;
@@ -28,6 +30,8 @@ export interface CreateSubscriptionPlanDto {
   badgeColor: "blue" | "green";
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  /** Цена пакета в копейках: удерживается из возврата, пункт 6.2 Оферты */
+  bagPriceInKopecks?: number;
   isReferralFreeEnabled?: boolean;
   minReferralsForFree?: number;
 }
@@ -46,6 +50,8 @@ export interface SubscriptionPlanFormData {
   badgeColor: "blue" | "green";
   popular: boolean;
   ordersLimit?: number; // -1 = безлимит, null/undefined = не установлен
+  /** Цена пакета в копейках: удерживается из возврата, пункт 6.2 Оферты */
+  bagPriceInKopecks?: number;
   isReferralFreeEnabled?: boolean;
   minReferralsForFree?: number;
 }
