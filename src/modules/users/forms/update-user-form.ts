@@ -6,5 +6,12 @@ export const updateUserSchema = z.object({
   phone: z.string().min(1, "validation.phone.required").min(10, "validation.phone.minLength").optional(),
   email: z.string().email("validation.email.invalid").optional().or(z.literal("")),
   roles: z.array(z.nativeEnum(UserRole)).optional(),
+  // пустое поле означает «пароль не меняем»
+  password: z
+    .string()
+    .min(8, "validation.password.minLength")
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "validation.password.complex")
+    .optional()
+    .or(z.literal("")),
 });
 

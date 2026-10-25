@@ -26,6 +26,7 @@ export const CreateCurrierPage = () => {
       name: "",
       email: "",
       phone: "",
+      password: "",
     },
   });
 
@@ -146,6 +147,29 @@ export const CreateCurrierPage = () => {
                         className="text-foreground placeholder:text-muted-foreground"
                       />
                     </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("createCurrier.password.label")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder={t("createCurrier.password.placeholder")}
+                        className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground">{t("createCurrier.password.hint")}</p>
                     <FormMessage className="text-destructive" />
                   </FormItem>
                 )}

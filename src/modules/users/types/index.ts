@@ -20,6 +20,8 @@ export interface CreateUserDto {
   name: string;
   email: string;
   phone: string;
+  /** Пароль для входа в мобильное приложение */
+  password: string;
 }
 
 export interface UpdateUserDto {
@@ -27,6 +29,8 @@ export interface UpdateUserDto {
   phone?: string;
   email?: string;
   roles?: UserRole[];
+  /** Новый пароль; пустое значение не отправляем — пароль остаётся прежним */
+  password?: string;
 }
 
 export interface FindUsersQueryDto {
