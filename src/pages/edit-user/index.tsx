@@ -31,6 +31,7 @@ export const EditUserPage = () => {
       phone: "",
       email: "",
       roles: [],
+      password: "",
     },
   });
 
@@ -65,6 +66,8 @@ export const EditUserPage = () => {
       if (data.roles && JSON.stringify(data.roles.sort()) !== JSON.stringify((user?.roles || []).sort())) {
         updateData.roles = data.roles;
       }
+      // пустое поле значит «пароль не меняем»
+      if (data.password) updateData.password = data.password;
 
       if (Object.keys(updateData).length === 0) {
         navigate("/admin/users");
@@ -226,6 +229,29 @@ export const EditUserPage = () => {
                         showSearch={false}
                       />
                     </FormControl>
+                    <FormMessage className="text-destructive" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{t("editUser.password.label")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value || ""}
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder={t("editUser.password.placeholder")}
+                        className="text-foreground placeholder:text-muted-foreground"
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground">{t("editUser.password.hint")}</p>
                     <FormMessage className="text-destructive" />
                   </FormItem>
                 )}
